@@ -7,12 +7,16 @@
   <meta name="description" content="Official profile of Harsh Bamniya — PhD Scholar at Centre for Transportation Systems (CTRANS), IIT Roorkee, working in AI, Computer Vision (YOLO), and Infrastructure Systems." />
   <meta name="keywords" content="Harsh Bamniya, IIT Roorkee, CTRANS, PhD Scholar, Computer Vision, YOLO, Civil Engineering, CHOTU AI, Infrastructure Systems" />
   <meta name="author" content="Harsh Bamniya" />
-  <link rel="canonical" href="https://harshbamniya.github.io/" />
+  <meta name="theme-color" content="#070b14" />
+  <link rel="canonical" href="https://harshraja1234.github.io/harshbamniya.github.io/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2338bdf8'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-weight='700' font-size='28' fill='%2304111d'%3EHB%3C/text%3E%3C/svg%3E" />
 
   <!-- Open Graph / Social Preview -->
   <meta property="og:title" content="Harsh Bamniya — PhD Scholar, IIT Roorkee" />
   <meta property="og:description" content="Where Transportation & Infrastructure Engineering meet Artificial Intelligence and Computer Vision." />
   <meta property="og:type" content="profile" />
+  <meta property="og:url" content="https://harshraja1234.github.io/harshbamniya.github.io/" />
+  <meta name="twitter:card" content="summary" />
 
   <!-- Google Knowledge Graph / Person Schema Markup -->
   <script type="application/ld+json">
@@ -20,6 +24,7 @@
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Harsh Bamniya",
+    "url": "https://harshraja1234.github.io/harshbamniya.github.io/",
     "jobTitle": "PhD Scholar",
     "worksFor": {
       "@type": "Organization",
@@ -30,14 +35,8 @@
       "name": "Indian Institute of Technology Roorkee"
     },
     "alumniOf": [
-      {
-        "@type": "CollegeOrUniversity",
-        "name": "Indian Institute of Technology Roorkee"
-      },
-      {
-        "@type": "CollegeOrUniversity",
-        "name": "Institute of Engineering and Technology (IET), DAVV Indore"
-      }
+      { "@type": "CollegeOrUniversity", "name": "Indian Institute of Technology Roorkee" },
+      { "@type": "CollegeOrUniversity", "name": "Institute of Engineering and Technology (IET), DAVV Indore" }
     ],
     "address": {
       "@type": "PostalAddress",
@@ -57,203 +56,1077 @@
     ],
     "sameAs": [
       "https://www.linkedin.com/in/harsh-bamniya-622303116",
-      "https://www.instagram.com/harsh_raja_/"
+      "https://www.instagram.com/harsh_raja_/",
+      "https://www.researchgate.net/profile/Harsh-Bamniya-2"
     ]
   }
   </script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --accent: #38bdf8;
-      --border: #334155;
+      --bg: #070b14;
+      --card: rgba(15, 23, 38, 0.72);
+      --line: rgba(148, 163, 184, 0.13);
+      --line2: rgba(148, 163, 184, 0.28);
+      --text: #e8eef7;
+      --soft: #c3cedc;
+      --muted: #8b9ab0;
+      --dim: #5d6b80;
+      --cyan: #38bdf8;
+      --amber: #fbbf24;
+      --green: #34d399;
+      --violet: #a78bfa;
+      --rose: #fb7185;
+      --radius: 18px;
+      --sans: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 76px; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
       line-height: 1.65;
-      padding: 2rem 1rem;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
-    .container { max-width: 860px; margin: 0 auto; }
-    header {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: -2; pointer-events: none;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+              mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+      opacity: .55;
     }
-    h1 { font-size: 2.2rem; color: #fff; margin-bottom: 0.3rem; }
-    .subtitle { color: var(--accent); font-weight: 600; font-size: 1.05rem; margin-bottom: 0.8rem; }
-    .bio { color: var(--muted); margin-bottom: 1.2rem; }
-    .links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-    .links a {
-      text-decoration: none;
-      color: var(--text);
-      background: #0f172a;
-      border: 1px solid var(--border);
-      padding: 0.45rem 0.9rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      transition: 0.2s;
+    body::after {
+      content: "";
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(640px 420px at 85% 8%, rgba(56, 189, 248, .13), transparent 70%),
+        radial-gradient(520px 420px at 8% 35%, rgba(251, 191, 36, .06), transparent 70%),
+        radial-gradient(600px 500px at 60% 100%, rgba(167, 139, 250, .07), transparent 70%);
     }
-    .links a:hover { border-color: var(--accent); color: var(--accent); }
-    section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.75rem;
-      margin-bottom: 1.5rem;
+    a { color: inherit; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+    .mono { font-family: var(--mono); }
+    svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    /* ---------- NAV ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(7, 11, 20, .72);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
     }
-    h2 {
-      font-size: 1.25rem;
-      color: var(--accent);
-      margin-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.5rem;
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 1rem; }
+    .logo { display: flex; align-items: center; gap: .65rem; font-weight: 700; text-decoration: none; letter-spacing: .01em; flex-shrink: 0; }
+    .logo-mark {
+      width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--cyan), #2563eb); color: #04111d; font-size: .82rem; font-weight: 700;
     }
-    .item { margin-bottom: 1.1rem; }
-    .item:last-child { margin-bottom: 0; }
-    .item-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
-    .item-title { font-weight: 600; color: #fff; }
-    .item-date { color: var(--muted); font-size: 0.9rem; }
-    .item-sub { color: var(--muted); font-size: 0.95rem; }
-    ul { margin-left: 1.2rem; margin-top: 0.4rem; color: var(--muted); }
-    li { margin-bottom: 0.3rem; }
-    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
-    .tag {
-      background: #0f172a;
-      border: 1px solid var(--border);
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      color: #e2e8f0;
+    .nav-links { display: flex; gap: .2rem; overflow-x: auto; scrollbar-width: none; }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-size: .9rem; padding: .4rem .75rem;
+      border-radius: 8px; white-space: nowrap; transition: color .2s, background .2s;
     }
-    footer { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 2rem; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); background: rgba(148, 163, 184, .1); }
+    @media (max-width: 720px) { .logo .name { display: none; } }
+
+    /* ---------- HERO ---------- */
+    .hero { padding: 4.5rem 0 2rem; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 3rem; align-items: center; }
+    @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; } .hero { padding-top: 3rem; } }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .55rem;
+      font-family: var(--mono); font-size: .76rem; color: var(--cyan); letter-spacing: .04em;
+      border: 1px solid rgba(56, 189, 248, .3); background: rgba(56, 189, 248, .07);
+      padding: .35rem .85rem; border-radius: 999px;
+    }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, .6); }
+      70% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+    }
+    h1 { font-size: clamp(2.7rem, 6.2vw, 4.4rem); line-height: 1.02; letter-spacing: -.035em; margin: 1.2rem 0 1rem; font-weight: 700; }
+    .grad {
+      background: linear-gradient(90deg, #fff 10%, var(--cyan) 55%, var(--amber));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lede { font-size: 1.18rem; color: var(--soft); max-width: 34rem; }
+    .lede .hl { color: var(--cyan); }
+    .lede .hl2 { color: var(--amber); }
+    .bio { color: var(--muted); margin-top: 1rem; max-width: 36rem; }
+    .cta { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.8rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .7rem 1.1rem; border-radius: 12px; font: 600 .92rem var(--sans);
+      text-decoration: none; color: var(--text); cursor: pointer;
+      border: 1px solid var(--line2); background: rgba(15, 23, 38, .65);
+      transition: transform .2s, border-color .2s, background .2s, color .2s;
+    }
+    .btn:hover { transform: translateY(-2px); border-color: var(--cyan); color: var(--cyan); }
+    .btn.primary { background: var(--cyan); color: #04111d; border-color: var(--cyan); }
+    .btn.primary:hover { background: #7dd3fc; color: #04111d; }
+    .btn svg.i { width: 18px; height: 18px; }
+
+    /* Detection feed */
+    .feed {
+      position: relative; border-radius: 22px; overflow: hidden; aspect-ratio: 40 / 33;
+      border: 1px solid var(--line2); background: #05080f;
+      box-shadow: 0 30px 90px -25px rgba(56, 189, 248, .35), inset 0 0 0 1px rgba(56, 189, 248, .05);
+    }
+    .feed canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .feed::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 3px);
+      box-shadow: inset 0 0 80px rgba(0, 0, 0, .7);
+    }
+    .hud {
+      position: absolute; left: 0; right: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center;
+      padding: .8rem 1rem; font-family: var(--mono); font-size: .68rem; color: #9fb3c8; letter-spacing: .07em; pointer-events: none;
+    }
+    .hud.top { top: 0; background: linear-gradient(#05080f, transparent); }
+    .hud.bot { bottom: 0; background: linear-gradient(transparent, #05080f); }
+    .hud b { color: var(--text); font-weight: 500; }
+    .rec { color: var(--rose); display: inline-flex; align-items: center; gap: .45rem; }
+    .rec::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--rose); animation: blink 1.2s steps(2) infinite; }
+    @keyframes blink { 50% { opacity: .2; } }
+    .feed-caption { margin-top: .85rem; font-size: .75rem; color: var(--dim); font-family: var(--mono); text-align: center; }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 3.5rem; }
+    @media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+    .stat { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 1.1rem 1.25rem; position: relative; overflow: hidden; }
+    .stat::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--c, var(--cyan)); }
+    .stat .n { font-size: 2.1rem; font-weight: 700; letter-spacing: -.03em; line-height: 1.2; }
+    .stat .n small { font-size: 1.1rem; color: var(--c, var(--cyan)); margin-left: 2px; }
+    .stat .l { color: var(--muted); font-size: .85rem; }
+
+    /* ---------- SECTIONS ---------- */
+    section { padding: 4.5rem 0; }
+    .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .sec-label { font-family: var(--mono); color: var(--cyan); font-size: .76rem; letter-spacing: .14em; text-transform: uppercase; }
+    .sec-label::before { content: "// "; color: var(--dim); }
+    h2 { font-size: clamp(1.75rem, 3.6vw, 2.5rem); letter-spacing: -.025em; line-height: 1.15; margin-top: .35rem; }
+    .card {
+      border: 1px solid var(--line); background: var(--card); border-radius: var(--radius); padding: 1.6rem;
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+      transition: border-color .25s, transform .25s;
+    }
+    .card:hover { border-color: var(--line2); }
+    .icon-box {
+      width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 1rem;
+      color: var(--c, var(--cyan));
+      background: color-mix(in srgb, var(--c, var(--cyan)) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--c, var(--cyan)) 32%, transparent);
+    }
+    .icon-box svg.i { width: 23px; height: 23px; }
+    .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .chip {
+      display: inline-flex; align-items: center; gap: .45rem;
+      font-size: .84rem; padding: .32rem .75rem; border-radius: 999px;
+      border: 1px solid var(--line2); background: rgba(7, 11, 20, .6); color: #dbe4ef;
+      transition: border-color .2s, color .2s;
+    }
+    .chip:hover { border-color: var(--c, var(--cyan)); color: #fff; }
+    .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--cyan)); }
+    .chip.plain::before { display: none; }
+
+    /* Focus */
+    .focus { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    @media (max-width: 860px) { .focus { grid-template-columns: 1fr; } }
+    .focus .card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--c) 45%, transparent); }
+    .focus h3 { font-size: 1.15rem; margin-bottom: .4rem; }
+    .focus p { color: var(--muted); font-size: .95rem; }
+
+    /* Publication */
+    .pub { display: grid; grid-template-columns: 220px 1fr; gap: 2rem; align-items: center; padding: 2rem; position: relative; overflow: hidden; }
+    @media (max-width: 760px) { .pub { grid-template-columns: 1fr; } }
+    .pub-visual { aspect-ratio: 1; border-radius: 16px; background: #05080f; border: 1px solid var(--line); display: grid; place-items: center; }
+    .pub-visual svg { width: 82%; height: 82%; }
+    .pub-meta { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: .8rem; }
+    .badge { font-family: var(--mono); font-size: .72rem; padding: .25rem .6rem; border-radius: 6px; letter-spacing: .06em; border: 1px solid; }
+    .badge.a { color: var(--amber); border-color: rgba(251, 191, 36, .35); background: rgba(251, 191, 36, .08); }
+    .badge.c { color: var(--cyan); border-color: rgba(56, 189, 248, .35); background: rgba(56, 189, 248, .08); }
+    .pub h3 { font-size: clamp(1.25rem, 2.4vw, 1.6rem); line-height: 1.3; letter-spacing: -.015em; }
+    .pub .venue { color: var(--muted); margin: .6rem 0 1.1rem; }
+    .pub .chips { margin-bottom: 1.4rem; }
+
+    /* Project */
+    .project { display: grid; grid-template-columns: 1.25fr 1fr; gap: 1rem; }
+    @media (max-width: 860px) { .project { grid-template-columns: 1fr; } }
+    .project h3 { font-size: 1.6rem; letter-spacing: -.02em; }
+    .project h3 span { color: var(--violet); }
+    .project .desc { color: var(--soft); margin: .6rem 0 1.2rem; }
+    .features { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-top: 1.4rem; }
+    @media (max-width: 520px) { .features { grid-template-columns: 1fr; } }
+    .feat { padding: 1rem; border-radius: 14px; border: 1px solid var(--line); background: rgba(7, 11, 20, .5); }
+    .feat .ft { display: flex; align-items: center; gap: .55rem; font-weight: 600; font-size: .95rem; margin-bottom: .3rem; color: #fff; }
+    .feat .ft svg { color: var(--c); }
+    .feat p { color: var(--muted); font-size: .86rem; line-height: 1.55; }
+    .orb-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.6rem; text-align: center; min-height: 380px; position: relative; overflow: hidden; }
+    .orb { position: relative; width: 150px; height: 150px; display: grid; place-items: center; }
+    .orb-core {
+      width: 92px; height: 92px; border-radius: 50%; display: grid; place-items: center; z-index: 2; color: #fff;
+      background: radial-gradient(circle at 35% 30%, #c4b5fd, #7c3aed 45%, #1e1b4b 100%);
+      box-shadow: 0 0 40px rgba(167, 139, 250, .6), 0 0 90px rgba(56, 189, 248, .25);
+    }
+    .orb-core svg.i { width: 34px; height: 34px; }
+    .ring { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(167, 139, 250, .5); animation: ring 3s ease-out infinite; }
+    .ring.r2 { animation-delay: 1s; }
+    .ring.r3 { animation-delay: 2s; }
+    @keyframes ring { from { transform: scale(.6); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+    .wave { display: flex; align-items: center; gap: 4px; height: 44px; }
+    .wave span { width: 4px; border-radius: 4px; background: linear-gradient(var(--cyan), var(--violet)); animation: wv 1.1s ease-in-out infinite; animation-delay: var(--d); height: 20%; }
+    @keyframes wv { 0%, 100% { height: 18%; } 50% { height: var(--h); } }
+    .wake { font-family: var(--mono); font-size: 1rem; color: var(--soft); }
+    .wake b { color: var(--violet); font-weight: 500; }
+    .big-num { font-size: 3rem; font-weight: 700; letter-spacing: -.04em; line-height: 1; }
+    .big-num + .l { color: var(--muted); font-size: .85rem; margin-top: .25rem; }
+
+    /* Journey */
+    .filters { display: inline-flex; gap: .25rem; padding: .3rem; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+    .filters button {
+      font: 500 .86rem var(--sans); color: var(--muted); background: none; border: 0; cursor: pointer;
+      padding: .45rem .9rem; border-radius: 9px; transition: background .2s, color .2s;
+    }
+    .filters button.on { background: rgba(56, 189, 248, .14); color: var(--cyan); }
+    .timeline { position: relative; padding-left: 2.2rem; }
+    .timeline::before {
+      content: ""; position: absolute; left: 9px; top: 6px; bottom: 6px; width: 2px;
+      background: linear-gradient(var(--cyan), var(--violet) 50%, var(--amber));
+      opacity: .45; border-radius: 2px;
+    }
+    .t-item { position: relative; margin-bottom: 1rem; }
+    .t-item.hide { display: none; }
+    .t-dot {
+      position: absolute; left: -2.2rem; top: 1.55rem; width: 20px; height: 20px; border-radius: 50%;
+      background: var(--bg); border: 2px solid var(--c); display: grid; place-items: center;
+    }
+    .t-dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+    .t-item.now .t-dot { box-shadow: 0 0 0 6px color-mix(in srgb, var(--c) 18%, transparent); }
+    .t-item .card { padding: 1.25rem 1.4rem; }
+    .t-item .card:hover { transform: translateX(4px); }
+    .t-top { display: flex; justify-content: space-between; gap: .75rem; flex-wrap: wrap; align-items: baseline; }
+    .t-title { font-weight: 600; font-size: 1.05rem; color: #fff; }
+    .t-date { font-family: var(--mono); font-size: .76rem; color: var(--c); padding: .15rem .55rem; border-radius: 6px; background: color-mix(in srgb, var(--c) 10%, transparent); white-space: nowrap; }
+    .t-org { color: var(--muted); font-size: .93rem; display: flex; align-items: center; gap: .4rem; margin-top: .15rem; }
+    .t-org svg.i { width: 15px; height: 15px; color: var(--c); }
+    .t-item ul { margin: .6rem 0 0 1.1rem; color: var(--muted); font-size: .92rem; }
+    .t-item li { margin-bottom: .25rem; }
+    .t-item li::marker { color: var(--c); }
+
+    /* Skills */
+    .skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    @media (max-width: 860px) { .skills { grid-template-columns: 1fr; } }
+    .skills h3 { font-size: 1.05rem; margin-bottom: 1rem; display: flex; align-items: center; gap: .6rem; }
+    .skills h3 svg { color: var(--c); }
+
+    /* Achievements */
+    .ach { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    @media (max-width: 960px) { .ach { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .ach { grid-template-columns: 1fr; } }
+    .ach .card:hover { transform: translateY(-4px); }
+    .ach .yr { font-family: var(--mono); font-size: .74rem; color: var(--c); letter-spacing: .06em; }
+    .ach h3 { font-size: 1rem; line-height: 1.4; margin: .3rem 0 .35rem; }
+    .ach p { color: var(--muted); font-size: .88rem; }
+    .extra { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; margin-top: 1rem; }
+    @media (max-width: 760px) { .extra { grid-template-columns: 1fr; } }
+    .extra h3 { font-size: .8rem; font-family: var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; margin-bottom: .9rem; font-weight: 500; }
+
+    /* Contact */
+    .contact {
+      position: relative; border-radius: 24px; padding: 3rem 2rem; text-align: center; overflow: hidden;
+      background: linear-gradient(var(--bg), var(--bg)) padding-box,
+                  linear-gradient(120deg, rgba(56,189,248,.6), rgba(167,139,250,.4), rgba(251,191,36,.5)) border-box;
+      border: 1px solid transparent;
+    }
+    .contact::before {
+      content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(500px 220px at 50% 0%, rgba(56, 189, 248, .16), transparent 70%);
+    }
+    .contact > * { position: relative; z-index: 1; }
+    .contact h2 { margin-bottom: .6rem; }
+    .contact p { color: var(--muted); max-width: 32rem; margin: 0 auto 1.8rem; }
+    .contact .cta { justify-content: center; margin-top: 0; }
+    .socials { display: flex; justify-content: center; gap: .7rem; margin-top: 1.6rem; }
+    .socials a {
+      width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; color: var(--muted);
+      border: 1px solid var(--line2); background: rgba(15, 23, 38, .6); transition: .2s;
+    }
+    .socials a:hover { color: var(--cyan); border-color: var(--cyan); transform: translateY(-2px); }
+
+    footer { text-align: center; color: var(--dim); font-size: .84rem; padding: 2.5rem 0 3rem; font-family: var(--mono); }
+
+    .toast {
+      position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px); opacity: 0; z-index: 100;
+      background: var(--cyan); color: #04111d; font-weight: 600; font-size: .9rem; padding: .6rem 1.1rem; border-radius: 10px;
+      transition: .3s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    /* Reveal animations (only when JS is on) */
+    .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Harsh Bamniya</h1>
-      <div class="subtitle">PhD Scholar, Centre for Transportation Systems (CTRANS), IIT Roorkee</div>
-      <p class="bio">
-        Working where transportation and infrastructure engineering meet artificial intelligence. Civil engineer (B.E.) with an M.Tech in Infrastructure Systems from IIT Roorkee, hands-on site experience with the Public Works Department, and expertise in Python, YOLO computer vision, and voice-controlled AI systems.
-      </p>
-      <div class="links">
-        <a href="mailto:harsh_b@ct.iitr.ac.in">harsh_b@ct.iitr.ac.in</a>
-        <a href="mailto:hb8084@gmail.com">hb8084@gmail.com</a>
-        <a href="https://www.linkedin.com/in/harsh-bamniya-622303116" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://www.instagram.com/harsh_raja_/" target="_blank" rel="noopener">Instagram (@harsh_raja_)</a>
+  <!-- ================= NAV ================= -->
+  <nav class="nav">
+    <div class="wrap">
+      <a class="logo" href="#top"><span class="logo-mark">HB</span><span class="name">Harsh Bamniya</span></a>
+      <div class="nav-links">
+        <a href="#research">Research</a>
+        <a href="#publications">Publications</a>
+        <a href="#project">Project</a>
+        <a href="#journey">Journey</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <!-- ================= HERO ================= -->
+    <header class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="reveal">
+            <span class="eyebrow"><span class="pulse"></span>PhD Scholar · CTRANS, IIT Roorkee</span>
+            <h1>Harsh<br /><span class="grad">Bamniya</span></h1>
+            <p class="lede">
+              Where <span class="hl2">Transportation &amp; Infrastructure Engineering</span> meet
+              <span class="hl">Artificial Intelligence</span> and <span class="hl">Computer Vision</span>.
+            </p>
+            <p class="bio">
+              Civil engineer (B.E.) with an M.Tech in Infrastructure Systems from IIT Roorkee, hands-on site experience with the
+              Public Works Department, and expertise in Python, YOLO computer vision, and voice-controlled AI systems.
+            </p>
+            <div class="cta">
+              <a class="btn primary" href="mailto:harsh_b@ct.iitr.ac.in">
+                <svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                Email me
+              </a>
+              <a class="btn" href="https://www.researchgate.net/profile/Harsh-Bamniya-2" target="_blank" rel="noopener">
+                <svg class="i" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+                ResearchGate
+              </a>
+              <a class="btn" href="https://www.linkedin.com/in/harsh-bamniya-622303116" target="_blank" rel="noopener">
+                <svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V17M8 7.5v.01M12 17v-6.5M12 13.5a2.5 2.5 0 0 1 5 0V17"/></svg>
+                LinkedIn
+              </a>
+              <a class="btn" href="https://www.instagram.com/harsh_raja_/" target="_blank" rel="noopener">
+                <svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/></svg>
+                @harsh_raja_
+              </a>
+            </div>
+          </div>
+
+          <div class="reveal">
+            <div class="feed" aria-label="Animated, simulated traffic detection feed">
+              <canvas id="feed"></canvas>
+              <div class="hud top"><span class="rec">REC · CAM-01</span><span id="hud-clock">--:--:--</span></div>
+              <div class="hud bot"><span>YOLO · <b id="hud-fps">--</b> FPS · OBJ <b id="hud-obj">0</b></span><span>COUNTED <b id="hud-count">0000</b></span></div>
+            </div>
+            <p class="feed-caption">simulated feed · helmet detection · speed estimation · vehicle counting</p>
+          </div>
+        </div>
+
+        <div class="stats reveal">
+          <div class="stat" style="--c: var(--violet)"><div class="n" data-count="70">0<small>+</small></div><div class="l">tools integrated in CHOTU AI</div></div>
+          <div class="stat" style="--c: var(--amber)"><div class="n" data-count="9">0<small>mo</small></div><div class="l">on-site PWD &amp; RES experience</div></div>
+          <div class="stat" style="--c: var(--rose)"><div class="n" data-count="2">0<small>×</small></div><div class="l">national kickboxing championships</div></div>
+          <div class="stat" style="--c: var(--green)"><div class="n" data-count="3">0</div><div class="l">languages — Hindi, English, Gujarati</div></div>
+        </div>
       </div>
     </header>
 
-    <section>
-      <h2>Featured Project</h2>
-      <div class="item">
-        <div class="item-header">
-          <span class="item-title">CHOTU — Personal AI Voice Assistant for Windows</span>
-          <span class="item-date">Python • Google Gemini Live API • PyQt6</span>
+    <!-- ================= RESEARCH ================= -->
+    <section id="research">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div><div class="sec-label">Research focus</div><h2>Making roads smarter &amp; safer</h2></div>
         </div>
-        <ul>
-          <li>Designed and built a real-time Hinglish voice assistant that listens, talks back, and controls Windows PCs through 70+ integrated tools.</li>
-          <li>Trained a custom <strong>"Hey Chotu"</strong> wake-word model (ONNX) for hands-free activation.</li>
-          <li>Supports study assistance (PDF Q&amp;A, flashcards, deadlines), system control (apps, display, audio, Wi-Fi, power), file management, music, reminders, and image generation.</li>
-          <li>Features a holographic desktop UI in PyQt6, a one-click Windows installer, and safety confirmations before irreversible actions.</li>
-        </ul>
+        <div class="focus">
+          <div class="card reveal" style="--c: var(--amber)">
+            <div class="icon-box"><svg class="i" viewBox="0 0 24 24"><path d="M4 21 9 3M20 21 15 3M12 5v2M12 10v3M12 16v3"/></svg></div>
+            <h3>Transportation Systems</h3>
+            <p>Applying AI to road safety and traffic — rider safety, traffic monitoring and connected-vehicle systems.</p>
+          </div>
+          <div class="card reveal" style="--c: var(--cyan)">
+            <div class="icon-box"><svg class="i" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
+            <h3>Computer Vision · YOLO</h3>
+            <p>Real-time object detection pipelines in Python, from helmet detection to road-user analysis.</p>
+          </div>
+          <div class="card reveal" style="--c: var(--green)">
+            <div class="icon-box"><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg></div>
+            <h3>Infrastructure Systems</h3>
+            <p>M.Tech grounding plus field work, from drawings, surveying and estimation to construction supervision.</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section>
-      <h2>Education</h2>
-      <div class="item">
-        <div class="item-header">
-          <span class="item-title">PhD, Centre for Transportation Systems (CTRANS)</span>
-          <span class="item-date">Ongoing</span>
+    <!-- ================= PUBLICATIONS ================= -->
+    <section id="publications">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div><div class="sec-label">Publications</div><h2>Published work</h2></div>
         </div>
-        <div class="item-sub">Indian Institute of Technology (IIT) Roorkee</div>
-      </div>
-      <div class="item">
-        <div class="item-header">
-          <span class="item-title">M.Tech, Infrastructure Systems</span>
-          <span class="item-date">From 2022</span>
-        </div>
-        <div class="item-sub">Indian Institute of Technology (IIT) Roorkee</div>
-      </div>
-      <div class="item">
-        <div class="item-header">
-          <span class="item-title">B.E., Civil Engineering</span>
-          <span class="item-date">2021</span>
-        </div>
-        <div class="item-sub">Institute of Engineering and Technology (IET), DAVV Indore, M.P.</div>
-      </div>
-      <div class="item">
-        <div class="item-header">
-          <span class="item-title">Class XII &amp; Class X (CBSE)</span>
-          <span class="item-date">2016 / 2013</span>
-        </div>
-        <div class="item-sub">M.P. State Open School Education Board, Bhopal • Kendriya Vidyalaya GAIL, Jhabua, M.P.</div>
+        <article class="card pub reveal">
+          <div class="pub-visual" aria-hidden="true">
+            <svg viewBox="0 0 200 200">
+              <defs>
+                <linearGradient id="rd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#111827"/><stop offset="1" stop-color="#1f2937"/></linearGradient>
+              </defs>
+              <path d="M80 40 L120 40 L190 200 L10 200 Z" fill="url(#rd)"/>
+              <path d="M100 48 L100 62 M100 78 L100 98 M100 118 L100 146 M100 168 L100 200" stroke="#fbbf24" stroke-width="3" stroke-dasharray="0" opacity=".7"/>
+              <!-- rider -->
+              <rect x="62" y="122" width="18" height="44" rx="6" fill="#334155"/>
+              <circle cx="71" cy="112" r="11" fill="#64748b"/>
+              <path d="M60 110a11 11 0 0 1 22 0z" fill="#38bdf8"/>
+              <rect x="56" y="98" width="30" height="72" fill="none" stroke="#fbbf24" stroke-width="2"/>
+              <rect x="56" y="86" width="56" height="12" fill="#fbbf24"/>
+              <text x="59" y="95" font-family="monospace" font-size="8" fill="#04111d">helmet ✓ 0.94</text>
+              <!-- car -->
+              <rect x="118" y="132" width="50" height="34" rx="6" fill="#475569"/>
+              <rect x="124" y="138" width="38" height="11" rx="3" fill="#0f172a"/>
+              <circle cx="125" cy="158" r="3" fill="#fde68a"/><circle cx="161" cy="158" r="3" fill="#fde68a"/>
+              <rect x="114" y="128" width="58" height="42" fill="none" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="114" y="116" width="44" height="12" fill="#38bdf8"/>
+              <text x="117" y="125" font-family="monospace" font-size="8" fill="#04111d">car 0.91</text>
+              <!-- V2X waves -->
+              <path d="M143 104a10 10 0 0 1 0-14M151 108a20 20 0 0 1 0-22" stroke="#a78bfa" stroke-width="2" fill="none" stroke-linecap="round" transform="rotate(90 147 97)"/>
+            </svg>
+          </div>
+          <div>
+            <div class="pub-meta"><span class="badge a">CONFERENCE · 2026</span><span class="badge c">ROAD SAFETY</span></div>
+            <h3>Enhancing Road Safety Through AI-Powered Helmet Detection and Connected Vehicle Systems</h3>
+            <p class="venue">Proceedings of the 30th International Conference on IT Applications and Management</p>
+            <div class="chips">
+              <span class="chip" style="--c: var(--amber)">Helmet Detection</span>
+              <span class="chip" style="--c: var(--cyan)">Computer Vision</span>
+              <span class="chip" style="--c: var(--violet)">Connected Vehicles</span>
+            </div>
+            <a class="btn" href="https://www.researchgate.net/profile/Harsh-Bamniya-2" target="_blank" rel="noopener">
+              View on ResearchGate
+              <svg class="i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </a>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section>
-      <h2>Experience</h2>
-      <div class="item">
-        <div class="item-header">
-          <span class="item-title">Assistant Supervisor (Intern) — Public Works Department (PWD)</span>
-          <span class="item-date">Mar 2021 – Sep 2021</span>
+    <!-- ================= PROJECT ================= -->
+    <section id="project">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div><div class="sec-label">Featured project</div><h2>A voice assistant built from scratch</h2></div>
         </div>
-        <div class="item-sub">Sub-Division Neemuch, M.P.</div>
-        <ul>
-          <li>Assisted the supervisor and sub-engineer on the under-construction Janpad Bhawan building, Neemuch.</li>
-          <li>Monitored daily construction activities, verified site work against drawings, and coordinated labour.</li>
-        </ul>
-      </div>
-      <div class="item">
-        <div class="item-header">
-          <span class="item-title">Assistant Supervisor (Intern) — Rural Engineering Services (RES)</span>
-          <span class="item-date">Dec 2020 – Mar 2021</span>
+        <div class="project">
+          <div class="card reveal">
+            <h3>CHOTU <span>— Personal AI Voice Assistant for Windows</span></h3>
+            <p class="desc">A real-time Hinglish voice assistant that listens, talks back, and controls Windows PCs through 70+ integrated tools, activated hands-free by a custom-trained <strong>"Hey Chotu"</strong> wake-word model (ONNX).</p>
+            <div class="chips">
+              <span class="chip" style="--c: var(--cyan)">Python</span>
+              <span class="chip" style="--c: var(--violet)">Google Gemini Live API</span>
+              <span class="chip" style="--c: var(--green)">PyQt6</span>
+              <span class="chip" style="--c: var(--amber)">ONNX wake-word</span>
+            </div>
+            <div class="features">
+              <div class="feat" style="--c: var(--cyan)">
+                <div class="ft"><svg class="i" viewBox="0 0 24 24"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg>Study assistance</div>
+                <p>PDF Q&amp;A, flashcards and deadline tracking.</p>
+              </div>
+              <div class="feat" style="--c: var(--violet)">
+                <div class="ft"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>System control</div>
+                <p>Apps, display, audio, Wi-Fi and power.</p>
+              </div>
+              <div class="feat" style="--c: var(--amber)">
+                <div class="ft"><svg class="i" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Files &amp; media</div>
+                <p>File management, music, reminders and image generation.</p>
+              </div>
+              <div class="feat" style="--c: var(--green)">
+                <div class="ft"><svg class="i" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>Safe by design</div>
+                <p>Holographic PyQt6 UI, one-click installer, confirmations before irreversible actions.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card orb-card reveal">
+            <div class="orb">
+              <span class="ring"></span><span class="ring r2"></span><span class="ring r3"></span>
+              <div class="orb-core"><svg class="i" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div>
+            </div>
+            <div class="wave" id="wave"></div>
+            <div class="wake">&gt; <b>"Hey Chotu"</b> · listening…</div>
+            <div>
+              <div class="big-num grad">70+</div>
+              <div class="l">integrated tools</div>
+            </div>
+          </div>
         </div>
-        <div class="item-sub">Jhabua, M.P.</div>
-        <ul>
-          <li>Supported site supervision of government construction works, including surveying and quantity estimation in Excel.</li>
-        </ul>
       </div>
     </section>
 
-    <section>
-      <h2>Technical &amp; Engineering Skills</h2>
-      <div class="tags">
-        <span class="tag">Python</span>
-        <span class="tag">AI / Machine Learning</span>
-        <span class="tag">Computer Vision (YOLO)</span>
-        <span class="tag">C / C++</span>
-        <span class="tag">HTML</span>
-        <span class="tag">AutoCAD (2D &amp; 3D)</span>
-        <span class="tag">STAAD.Pro</span>
-        <span class="tag">Revit (Architecture &amp; Structure)</span>
-        <span class="tag">SketchUp + V-Ray &amp; Lumion</span>
-        <span class="tag">Surveying &amp; Estimation</span>
-        <span class="tag">Adobe Photoshop &amp; Lightroom</span>
+    <!-- ================= JOURNEY ================= -->
+    <section id="journey">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div><div class="sec-label">Journey</div><h2>Education &amp; experience</h2></div>
+          <div class="filters" role="tablist">
+            <button class="on" data-f="all">All</button>
+            <button data-f="edu">Education</button>
+            <button data-f="work">Experience</button>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="t-item now reveal" data-type="edu" style="--c: var(--cyan)">
+            <span class="t-dot"></span>
+            <div class="card">
+              <div class="t-top"><span class="t-title">PhD, Centre for Transportation Systems (CTRANS)</span><span class="t-date">ONGOING</span></div>
+              <div class="t-org"><svg class="i" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>Indian Institute of Technology (IIT) Roorkee</div>
+            </div>
+          </div>
+
+          <div class="t-item reveal" data-type="edu" style="--c: var(--cyan)">
+            <span class="t-dot"></span>
+            <div class="card">
+              <div class="t-top"><span class="t-title">M.Tech, Infrastructure Systems</span><span class="t-date">FROM 2022</span></div>
+              <div class="t-org"><svg class="i" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>Indian Institute of Technology (IIT) Roorkee</div>
+            </div>
+          </div>
+
+          <div class="t-item reveal" data-type="work" style="--c: var(--amber)">
+            <span class="t-dot"></span>
+            <div class="card">
+              <div class="t-top"><span class="t-title">Assistant Supervisor (Intern) — Public Works Department (PWD)</span><span class="t-date">MAR 2021 – SEP 2021</span></div>
+              <div class="t-org"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>Sub-Division Neemuch, M.P.</div>
+              <ul>
+                <li>Assisted the supervisor and sub-engineer on the under-construction Janpad Bhawan building, Neemuch.</li>
+                <li>Monitored daily construction activities, verified site work against drawings, and coordinated labour.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="t-item reveal" data-type="edu" style="--c: var(--cyan)">
+            <span class="t-dot"></span>
+            <div class="card">
+              <div class="t-top"><span class="t-title">B.E., Civil Engineering</span><span class="t-date">2021</span></div>
+              <div class="t-org"><svg class="i" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>Institute of Engineering and Technology (IET), DAVV Indore, M.P.</div>
+            </div>
+          </div>
+
+          <div class="t-item reveal" data-type="work" style="--c: var(--amber)">
+            <span class="t-dot"></span>
+            <div class="card">
+              <div class="t-top"><span class="t-title">Assistant Supervisor (Intern) — Rural Engineering Services (RES)</span><span class="t-date">DEC 2020 – MAR 2021</span></div>
+              <div class="t-org"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>Jhabua, M.P.</div>
+              <ul>
+                <li>Supported site supervision of government construction works, including surveying and quantity estimation in Excel.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="t-item reveal" data-type="edu" style="--c: var(--cyan)">
+            <span class="t-dot"></span>
+            <div class="card">
+              <div class="t-top"><span class="t-title">Class XII</span><span class="t-date">2016</span></div>
+              <div class="t-org"><svg class="i" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>M.P. State Open School Education Board, Bhopal</div>
+            </div>
+          </div>
+
+          <div class="t-item reveal" data-type="edu" style="--c: var(--cyan)">
+            <span class="t-dot"></span>
+            <div class="card">
+              <div class="t-top"><span class="t-title">Class X (CBSE)</span><span class="t-date">2013</span></div>
+              <div class="t-org"><svg class="i" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>Kendriya Vidyalaya GAIL, Jhabua, M.P.</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section>
-      <h2>Achievements &amp; Interests</h2>
-      <ul>
-        <li>Selected for the KVS National-Level 40th Jawaharlal Nehru Science and Environment Exhibition (2012–13) &amp; 2nd Position at KVS Regional Level (2012).</li>
-        <li>National Participant — WAKO India Senior National Kickboxing Championship (2016) &amp; Cadet/Senior National Kickboxing Championship (2015).</li>
-        <li><strong>Languages:</strong> Hindi, English, Gujarati • <strong>Interests:</strong> Transportation &amp; Infrastructure Planning, GIS, Real-Estate &amp; Construction Management, Kickboxing, Gaming.</li>
-      </ul>
+    <!-- ================= SKILLS ================= -->
+    <section id="skills">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div><div class="sec-label">Toolkit</div><h2>Technical &amp; engineering skills</h2></div>
+        </div>
+        <div class="skills">
+          <div class="card reveal" style="--c: var(--cyan)">
+            <h3><svg class="i" viewBox="0 0 24 24"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M13.5 5l-3 14"/></svg>AI &amp; Programming</h3>
+            <div class="chips">
+              <span class="chip">Python</span>
+              <span class="chip">AI / Machine Learning</span>
+              <span class="chip">Computer Vision (YOLO)</span>
+              <span class="chip">C / C++</span>
+              <span class="chip">HTML</span>
+            </div>
+          </div>
+          <div class="card reveal" style="--c: var(--amber)">
+            <h3><svg class="i" viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg>Civil &amp; Design</h3>
+            <div class="chips" style="--c: var(--amber)">
+              <span class="chip">AutoCAD (2D &amp; 3D)</span>
+              <span class="chip">STAAD.Pro</span>
+              <span class="chip">Revit (Architecture &amp; Structure)</span>
+              <span class="chip">SketchUp + V-Ray &amp; Lumion</span>
+              <span class="chip">Surveying &amp; Estimation</span>
+            </div>
+          </div>
+          <div class="card reveal" style="--c: var(--violet)">
+            <h3><svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>Creative</h3>
+            <div class="chips" style="--c: var(--violet)">
+              <span class="chip">Adobe Photoshop</span>
+              <span class="chip">Adobe Lightroom</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <footer>
-      Roorkee, Uttarakhand, India • © 2026 Harsh Bamniya
-    </footer>
-  </div>
+    <!-- ================= ACHIEVEMENTS ================= -->
+    <section id="achievements">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div><div class="sec-label">Beyond research</div><h2>Achievements &amp; interests</h2></div>
+        </div>
+        <div class="ach">
+          <div class="card reveal" style="--c: var(--cyan)">
+            <div class="icon-box"><svg class="i" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7 15h10"/></svg></div>
+            <div class="yr">2012–13 · NATIONAL</div>
+            <h3>KVS 40th Jawaharlal Nehru Science &amp; Environment Exhibition</h3>
+            <p>Selected for the national level.</p>
+          </div>
+          <div class="card reveal" style="--c: var(--amber)">
+            <div class="icon-box"><svg class="i" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></svg></div>
+            <div class="yr">2012 · REGIONAL</div>
+            <h3>2nd Position — KVS Regional Level</h3>
+            <p>Science exhibition, regional round.</p>
+          </div>
+          <div class="card reveal" style="--c: var(--rose)">
+            <div class="icon-box"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><path d="M8.5 10 6 3h4l2 4 2-4h4l-2.5 7"/></svg></div>
+            <div class="yr">2016 · NATIONAL</div>
+            <h3>WAKO India Senior National Kickboxing Championship</h3>
+            <p>National participant.</p>
+          </div>
+          <div class="card reveal" style="--c: var(--rose)">
+            <div class="icon-box"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><path d="M8.5 10 6 3h4l2 4 2-4h4l-2.5 7"/></svg></div>
+            <div class="yr">2015 · NATIONAL</div>
+            <h3>Cadet / Senior National Kickboxing Championship</h3>
+            <p>National participant.</p>
+          </div>
+        </div>
+
+        <div class="extra">
+          <div class="card reveal">
+            <h3>Languages</h3>
+            <div class="chips">
+              <span class="chip" style="--c: var(--green)">Hindi</span>
+              <span class="chip" style="--c: var(--green)">English</span>
+              <span class="chip" style="--c: var(--green)">Gujarati</span>
+            </div>
+          </div>
+          <div class="card reveal">
+            <h3>Interests</h3>
+            <div class="chips">
+              <span class="chip" style="--c: var(--amber)">Transportation &amp; Infrastructure Planning</span>
+              <span class="chip" style="--c: var(--cyan)">GIS</span>
+              <span class="chip" style="--c: var(--green)">Real-Estate &amp; Construction Management</span>
+              <span class="chip" style="--c: var(--rose)">Kickboxing</span>
+              <span class="chip" style="--c: var(--violet)">Gaming</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section id="contact">
+      <div class="wrap">
+        <div class="contact reveal">
+          <div class="sec-label">Contact</div>
+          <h2>Let's talk AI, roads &amp; research</h2>
+          <p>Reach out for research, collaboration, or anything at the intersection of transportation and computer vision.</p>
+          <div class="cta">
+            <a class="btn primary" href="mailto:harsh_b@ct.iitr.ac.in">
+              <svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              harsh_b@ct.iitr.ac.in
+            </a>
+            <button class="btn" id="copy-email" data-email="harsh_b@ct.iitr.ac.in" type="button">
+              <svg class="i" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              Copy email
+            </button>
+            <a class="btn" href="mailto:hb8084@gmail.com">
+              <svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              hb8084@gmail.com
+            </a>
+          </div>
+          <div class="socials">
+            <a href="https://www.linkedin.com/in/harsh-bamniya-622303116" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+              <svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V17M8 7.5v.01M12 17v-6.5M12 13.5a2.5 2.5 0 0 1 5 0V17"/></svg>
+            </a>
+            <a href="https://www.researchgate.net/profile/Harsh-Bamniya-2" target="_blank" rel="noopener" aria-label="ResearchGate" title="ResearchGate">
+              <svg class="i" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+            </a>
+            <a href="https://www.instagram.com/harsh_raja_/" target="_blank" rel="noopener" aria-label="Instagram @harsh_raja_" title="Instagram @harsh_raja_">
+              <svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Roorkee, Uttarakhand, India · © 2026 Harsh Bamniya</footer>
+  <div class="toast" id="toast">Email copied ✓</div>
+
+  <script>
+  document.documentElement.classList.add('js');
+  const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Reveal on scroll ---------- */
+  (() => {
+    const els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(e => io.observe(e));
+  })();
+
+  /* ---------- Animated counters ---------- */
+  (() => {
+    const els = document.querySelectorAll('[data-count]');
+    const run = el => {
+      const target = +el.dataset.count, suffix = el.querySelector('small');
+      const sfx = suffix ? suffix.outerHTML : '';
+      if (REDUCE) { el.innerHTML = target + sfx; return; }
+      const t0 = performance.now(), dur = 1400;
+      const tick = now => {
+        const k = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - k, 3);
+        el.innerHTML = Math.round(target * e) + sfx;
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    if (!('IntersectionObserver' in window)) { els.forEach(run); return; }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { run(en.target); io.unobserve(en.target); } });
+    }, { threshold: 0.5 });
+    els.forEach(e => io.observe(e));
+  })();
+
+  /* ---------- Active nav link ---------- */
+  (() => {
+    const links = [...document.querySelectorAll('.nav-links a')];
+    const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          links.forEach(a => a.classList.remove('active'));
+          const a = map.get(en.target.id); if (a) a.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+  })();
+
+  /* ---------- Timeline filter ---------- */
+  (() => {
+    const btns = document.querySelectorAll('.filters button');
+    const items = document.querySelectorAll('.t-item');
+    btns.forEach(b => b.addEventListener('click', () => {
+      btns.forEach(x => x.classList.toggle('on', x === b));
+      const f = b.dataset.f;
+      items.forEach(it => {
+        it.classList.toggle('hide', f !== 'all' && it.dataset.type !== f);
+        it.classList.add('in');
+      });
+    }));
+  })();
+
+  /* ---------- Copy email ---------- */
+  (() => {
+    const btn = document.getElementById('copy-email'), toast = document.getElementById('toast');
+    btn.addEventListener('click', async () => {
+      const email = btn.dataset.email;
+      try { await navigator.clipboard.writeText(email); }
+      catch (e) {
+        const ta = document.createElement('textarea'); ta.value = email; document.body.appendChild(ta);
+        ta.select(); try { document.execCommand('copy'); } catch (_) {} ta.remove();
+      }
+      toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1800);
+    });
+  })();
+
+  /* ---------- CHOTU waveform ---------- */
+  (() => {
+    const w = document.getElementById('wave');
+    for (let i = 0; i < 26; i++) {
+      const s = document.createElement('span');
+      const h = 30 + Math.round(Math.abs(Math.sin(i * 0.55)) * 70);
+      s.style.setProperty('--h', h + '%');
+      s.style.setProperty('--d', (i * 0.06).toFixed(2) + 's');
+      w.appendChild(s);
+    }
+  })();
+
+  /* ---------- Simulated YOLO detection feed ---------- */
+  (() => {
+    const cv = document.getElementById('feed');
+    const ctx = cv.getContext('2d');
+    const fpsEl = document.getElementById('hud-fps');
+    const objEl = document.getElementById('hud-obj');
+    const cntEl = document.getElementById('hud-count');
+    const clockEl = document.getElementById('hud-clock');
+
+    const LANES = 4, COUNT_LINE = 0.72;
+    const CLASSES = [
+      { name: 'car',       color: '#38bdf8', w: .64, h: .50, p: .46, body: ['#64748b', '#475569', '#94a3b8', '#7f1d1d', '#1e3a8a'] },
+      { name: 'motorbike', color: '#fbbf24', w: .24, h: .52, p: .30, body: ['#334155'], bike: true },
+      { name: 'truck',     color: '#a78bfa', w: .78, h: .82, p: .11, body: ['#78350f', '#365314', '#334155'] },
+      { name: 'bus',       color: '#34d399', w: .80, h: .86, p: .13, body: ['#b45309', '#1d4ed8', '#be123c'] }
+    ];
+
+    let W = 0, H = 0, vehicles = [], counted = 0, dash = 0, spawnT = 0, last = performance.now();
+    let running = true, raf = null, fpsSmooth = 60;
+
+    const horizon = () => H * 0.30;
+    const P = z => Math.pow(z, 1.8);                      // perspective curve (0 far → 1 near)
+    const yAt = p => horizon() + (H - horizon()) * p;
+    const halfW = p => W * 0.045 + (W * 0.6 - W * 0.045) * p;
+    const laneX = (lane, p) => W / 2 + (((lane + 0.5) / LANES) * 2 - 1) * halfW(p);
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const pickClass = () => { let r = Math.random(), a = 0; for (const c of CLASSES) { a += c.p; if (r <= a) return c; } return CLASSES[0]; };
+
+    function rr(x, y, w, h, r) {
+      r = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+    }
+
+    function makeVehicle(lane, z) {
+      const c = pickClass();
+      const noHelmet = c.bike && Math.random() < 0.22;
+      return {
+        lane, z, c, noHelmet,
+        speed: rnd(0.09, 0.17),
+        conf: rnd(0.81, 0.98).toFixed(2),
+        kmh: 0, body: c.body[Math.floor(Math.random() * c.body.length)],
+        jitter: rnd(-0.12, 0.12), counted: false
+      };
+    }
+
+    function spawn() {
+      const lane = Math.floor(Math.random() * LANES);
+      if (vehicles.some(v => v.lane === lane && v.z < 0.22)) return;
+      vehicles.push(makeVehicle(lane, 0));
+    }
+
+    function resize() {
+      const r = cv.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (REDUCE) draw();
+    }
+
+    function drawScene() {
+      const hz = horizon();
+      // sky
+      const sky = ctx.createLinearGradient(0, 0, 0, hz);
+      sky.addColorStop(0, '#04070d'); sky.addColorStop(1, '#0b1526');
+      ctx.fillStyle = sky; ctx.fillRect(0, 0, W, hz);
+      // horizon glow
+      const g = ctx.createRadialGradient(W / 2, hz, 0, W / 2, hz, W * 0.5);
+      g.addColorStop(0, 'rgba(56,189,248,.22)'); g.addColorStop(1, 'rgba(56,189,248,0)');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      // ground
+      ctx.fillStyle = '#060a12'; ctx.fillRect(0, hz, W, H - hz);
+      // ground grid lines
+      ctx.strokeStyle = 'rgba(56,189,248,.07)'; ctx.lineWidth = 1;
+      for (let k = 0; k < 14; k++) {
+        const p = P(((k / 14) + dash / 14) % 1); const y = yAt(p);
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      }
+      // road surface
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - halfW(0), hz); ctx.lineTo(W / 2 + halfW(0), hz);
+      ctx.lineTo(W / 2 + halfW(1.15), yAt(1.15)); ctx.lineTo(W / 2 - halfW(1.15), yAt(1.15)); ctx.closePath();
+      const road = ctx.createLinearGradient(0, hz, 0, H);
+      road.addColorStop(0, '#111827'); road.addColorStop(1, '#1c2433');
+      ctx.fillStyle = road; ctx.fill();
+      // road edges
+      ctx.strokeStyle = 'rgba(226,232,240,.55)'; ctx.lineWidth = 2;
+      [-1, 1].forEach(s => {
+        ctx.beginPath(); ctx.moveTo(W / 2 + s * halfW(0), hz); ctx.lineTo(W / 2 + s * halfW(1.15), yAt(1.15)); ctx.stroke();
+      });
+      // moving lane dashes
+      const N = 9;
+      for (let i = 1; i < LANES; i++) {
+        const u = (i / LANES) * 2 - 1;
+        for (let k = 0; k < N; k++) {
+          const z0 = ((k + dash) / N) % 1, z1 = Math.min(z0 + 0.45 / N, 1);
+          const p0 = P(z0), p1 = P(z1);
+          ctx.strokeStyle = 'rgba(251,191,36,.75)';
+          ctx.lineWidth = 1 + 3 * p1;
+          ctx.beginPath();
+          ctx.moveTo(W / 2 + u * halfW(p0), yAt(p0)); ctx.lineTo(W / 2 + u * halfW(p1), yAt(p1)); ctx.stroke();
+        }
+      }
+      // counting line
+      const cy = yAt(COUNT_LINE);
+      ctx.setLineDash([8, 6]); ctx.strokeStyle = 'rgba(251,113,133,.8)'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(W / 2 - halfW(COUNT_LINE), cy); ctx.lineTo(W / 2 + halfW(COUNT_LINE), cy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font = '500 9px "JetBrains Mono", monospace'; ctx.fillStyle = 'rgba(251,113,133,.9)';
+      ctx.fillText('COUNT LINE', W / 2 - halfW(COUNT_LINE) + 4, cy - 5);
+    }
+
+    function drawVehicle(v) {
+      const p = P(v.z);
+      const lw = (2 * halfW(p)) / LANES;
+      const w = lw * v.c.w, h = lw * v.c.h;
+      const x = laneX(v.lane + v.jitter, p), y = yAt(p);
+      const L = x - w / 2, T = y - h;
+      if (w < 2) return;
+
+      // shadow
+      ctx.fillStyle = 'rgba(0,0,0,.45)';
+      ctx.beginPath(); ctx.ellipse(x, y, w * 0.6, h * 0.08 + 1, 0, 0, Math.PI * 2); ctx.fill();
+
+      if (v.c.bike) {
+        ctx.fillStyle = '#1f2937'; rr(x - w * 0.18, y - h * 0.38, w * 0.36, h * 0.38, w * 0.15); ctx.fill(); // wheel/body
+        ctx.fillStyle = v.body; rr(x - w * 0.4, y - h * 0.8, w * 0.8, h * 0.48, w * 0.3); ctx.fill();   // rider torso
+        ctx.fillStyle = v.noHelmet ? '#a16207' : '#e2e8f0';                                           // head / helmet
+        ctx.beginPath(); ctx.arc(x, y - h * 0.86, w * 0.3, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(254,240,138,.95)';
+        ctx.beginPath(); ctx.arc(x, y - h * 0.22, Math.max(1.2, w * 0.1), 0, Math.PI * 2); ctx.fill();
+      } else {
+        ctx.fillStyle = v.body; rr(L, T, w, h, w * 0.12); ctx.fill();
+        ctx.fillStyle = 'rgba(2,6,23,.85)'; rr(L + w * 0.1, T + h * 0.14, w * 0.8, h * 0.32, w * 0.06); ctx.fill(); // windshield
+        if (v.c.name !== 'car') { ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.fillRect(L + w * 0.08, T + h * 0.56, w * 0.84, h * 0.12); }
+        // headlights with glow
+        const hr = Math.max(1.2, w * 0.06);
+        [L + w * 0.18, L + w * 0.82].forEach(hx => {
+          const gl = ctx.createRadialGradient(hx, y - h * 0.2, 0, hx, y - h * 0.2, hr * 5);
+          gl.addColorStop(0, 'rgba(254,240,138,.5)'); gl.addColorStop(1, 'rgba(254,240,138,0)');
+          ctx.fillStyle = gl; ctx.fillRect(hx - hr * 5, y - h * 0.2 - hr * 5, hr * 10, hr * 10);
+          ctx.fillStyle = '#fef9c3'; ctx.beginPath(); ctx.arc(hx, y - h * 0.2, hr, 0, Math.PI * 2); ctx.fill();
+        });
+      }
+
+      // ---- bounding box ----
+      const pad = 3 + 3 * p;
+      const bx = L - pad, by = (v.c.bike ? y - h * 1.2 : T) - pad, bw = w + pad * 2, bh = (v.c.bike ? h * 1.2 : h) + pad * 2;
+      const col = v.noHelmet ? '#fb7185' : v.c.color;
+      ctx.strokeStyle = col; ctx.lineWidth = 1.2;
+      ctx.globalAlpha = 0.55; ctx.strokeRect(bx, by, bw, bh); ctx.globalAlpha = 1;
+      const cl = Math.min(bw, bh) * 0.25; ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(bx, by + cl); ctx.lineTo(bx, by); ctx.lineTo(bx + cl, by);
+      ctx.moveTo(bx + bw - cl, by); ctx.lineTo(bx + bw, by); ctx.lineTo(bx + bw, by + cl);
+      ctx.moveTo(bx + bw, by + bh - cl); ctx.lineTo(bx + bw, by + bh); ctx.lineTo(bx + bw - cl, by + bh);
+      ctx.moveTo(bx + cl, by + bh); ctx.lineTo(bx, by + bh); ctx.lineTo(bx, by + bh - cl);
+      ctx.stroke();
+
+      // ---- label ----
+      if (p > 0.1) {
+        const fs = Math.round(8 + 3.5 * p);
+        ctx.font = `500 ${fs}px "JetBrains Mono", monospace`;
+        let label = `${v.c.name} ${v.conf}`;
+        if (v.c.bike && p > 0.22) label = v.noHelmet ? `no-helmet ${v.conf}` : `helmet ✓ ${v.conf}`;
+        const tw = ctx.measureText(label).width + 8, th = fs + 5;
+        ctx.fillStyle = col; ctx.fillRect(bx, by - th, tw, th);
+        ctx.fillStyle = '#04111d'; ctx.fillText(label, bx + 4, by - 4);
+        if (p > 0.35) {
+          const sp = `${v.kmh} km/h`;
+          ctx.font = `500 ${fs - 1}px "JetBrains Mono", monospace`;
+          const sw = ctx.measureText(sp).width + 8;
+          ctx.fillStyle = 'rgba(4,8,15,.8)'; ctx.fillRect(bx, by + bh, sw, th - 1);
+          ctx.fillStyle = v.kmh > 60 ? '#fb7185' : '#e2e8f0'; ctx.fillText(sp, bx + 4, by + bh + th - 5);
+        }
+      }
+    }
+
+    function update(dt) {
+      dash = (dash + dt * 0.9) % 1;
+      spawnT -= dt;
+      if (spawnT <= 0) { spawn(); spawnT = rnd(0.35, 0.9); }
+      vehicles.forEach(v => {
+        // keep a safe gap: never drive into the vehicle ahead in the same lane
+        const ahead = vehicles.filter(o => o !== v && o.lane === v.lane && o.z > v.z).sort((a, b) => a.z - b.z)[0];
+        if (ahead && ahead.z - v.z < 0.2) v.speed = Math.min(v.speed, ahead.speed);
+        v.z += v.speed * dt;
+        v.kmh = Math.round(v.speed * 420 + Math.sin(v.z * 20) * 1.5);
+        if (!v.counted && P(v.z) >= COUNT_LINE) { v.counted = true; counted++; }
+      });
+      vehicles = vehicles.filter(v => P(v.z) < 1.35);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      drawScene();
+      vehicles.slice().sort((a, b) => a.z - b.z).forEach(drawVehicle);
+      // scan beam
+      if (!REDUCE) {
+        const sy = (performance.now() / 18) % (H + 80) - 40;
+        const sg = ctx.createLinearGradient(0, sy - 40, 0, sy + 2);
+        sg.addColorStop(0, 'rgba(56,189,248,0)'); sg.addColorStop(1, 'rgba(56,189,248,.10)');
+        ctx.fillStyle = sg; ctx.fillRect(0, sy - 40, W, 42);
+      }
+      objEl.textContent = vehicles.filter(v => P(v.z) > 0.03 && P(v.z) < 1.05).length;
+      cntEl.textContent = String(counted).padStart(4, '0');
+    }
+
+    function loop(now) {
+      const dt = Math.min((now - last) / 1000, 0.05); last = now;
+      if (dt > 0) fpsSmooth = fpsSmooth * 0.92 + (1 / dt) * 0.08;
+      if (running) { update(dt); draw(); fpsEl.textContent = Math.round(fpsSmooth); }
+      raf = requestAnimationFrame(loop);
+    }
+
+    function clock() { clockEl.textContent = new Date().toLocaleTimeString('en-GB', { hour12: false }); }
+    clock(); setInterval(clock, 1000);
+
+    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(cv); else window.addEventListener('resize', resize);
+    resize();
+
+    if (REDUCE) {
+      [[0, .55], [1, .8], [2, .35], [3, .65], [1, .3], [2, .9]].forEach(([l, z]) => vehicles.push(makeVehicle(l, z)));
+      vehicles.forEach(v => v.kmh = Math.round(v.speed * 420));
+      counted = 42; fpsEl.textContent = '30'; draw();
+      return;
+    }
+
+    // warm start so the road is not empty on load
+    for (let i = 0; i < 7; i++) { const v = makeVehicle(i % LANES, rnd(0.1, 0.85)); v.counted = P(v.z) >= COUNT_LINE; vehicles.push(v); }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => { running = e.isIntersecting && !document.hidden; last = performance.now(); }).observe(cv);
+    }
+    document.addEventListener('visibilitychange', () => { running = !document.hidden; last = performance.now(); });
+    raf = requestAnimationFrame(loop);
+  })();
+  </script>
 </body>
 </html>
