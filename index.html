@@ -363,18 +363,6 @@
     .big-num { font-size: 3rem; font-weight: 700; letter-spacing: -.04em; line-height: 1; }
     .big-num + .l { color: var(--muted); font-size: .85rem; margin-top: .25rem; }
 
-    /* Now status */
-    .now {
-      display: flex; align-items: center; gap: .6rem; margin-top: .8rem; max-width: 34rem;
-      font-size: .88rem; color: var(--soft);
-    }
-    .now-tag {
-      font-family: var(--mono); font-size: .68rem; letter-spacing: .12em; color: #04111d; background: var(--amber);
-      padding: .12rem .45rem; border-radius: 5px; box-shadow: 0 0 12px rgba(251, 191, 36, .45); flex-shrink: 0;
-    }
-    #now-text { transition: opacity .35s, transform .35s; }
-    #now-text.out { opacity: 0; transform: translateY(6px); }
-
     /* Research projects */
     .sub-head { margin: 2.6rem 0 1rem; }
     .rprojects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
@@ -530,7 +518,6 @@
         <div class="hero-grid">
           <div class="reveal">
             <span class="eyebrow"><span class="pulse"></span>PhD Scholar · CTRANS, IIT Roorkee</span>
-            <div class="now" aria-live="polite"><span class="now-tag">NOW</span><span id="now-text">Writing a literature review on bus ETA prediction &amp; travel mode choice</span></div>
             <h1>Harsh<br /><span class="grad">Bamniya</span></h1>
             <p class="lede">
               Where <span class="hl2">Transportation &amp; Infrastructure Engineering</span> meet
@@ -1361,20 +1348,6 @@
     requestAnimationFrame(frame);
   })();
 
-  /* ---------- "Now" status rotation ---------- */
-  (() => {
-    const el = document.getElementById('now-text');
-    const items = [
-      'Writing a literature review on bus ETA prediction & travel mode choice',
-      'Next up: a literature review on traffic sign detection & recognition'
-    ];
-    if (REDUCE) return;
-    let k = 0;
-    setInterval(() => {
-      el.classList.add('out');
-      setTimeout(() => { k = (k + 1) % items.length; el.textContent = items[k]; el.classList.remove('out'); }, 350);
-    }, 4200);
-  })();
   </script>
 </body>
 </html>
