@@ -481,6 +481,19 @@
     .t-item li { margin-bottom: .25rem; }
     .t-item li::marker { color: var(--c); }
 
+    /* Diplomas & certificates */
+    .certs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    @media (max-width: 760px) { .certs { grid-template-columns: 1fr; } }
+    .cert { display: flex; align-items: center; gap: 1.1rem; }
+    .cert:hover { transform: translateY(-3px); }
+    .cert .icon-box { margin-bottom: 0; width: 52px; height: 52px; flex-shrink: 0; }
+    .cert-type { font: .7rem var(--mono); letter-spacing: .12em; color: var(--c); }
+    .cert h3 { font-size: 1.1rem; margin: .1rem 0 .15rem; }
+    .cert p { color: var(--muted); font-size: .9rem; }
+    .cert { align-items: flex-start; }
+    .cert-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .6rem; }
+    .cert-tags span { font: .7rem var(--mono); color: var(--soft); padding: .18rem .5rem; border-radius: 6px; border: 1px solid var(--glass-border); background: rgba(255,255,255,.03); }
+
     /* Skills */
     .skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
     @media (max-width: 860px) { .skills { grid-template-columns: 1fr; } }
@@ -1020,7 +1033,7 @@
           </div>
         </div>
 
-                <div class="road-legend reveal" aria-hidden="true"><span style="--c: var(--cyan)"><i></i>Education</span><span style="--c: var(--amber)"><i></i>Experience</span><span>Scroll to drive ↓</span></div>
+                <div class="road-legend reveal" aria-hidden="true"><span style="--c: var(--cyan)"><i></i>Education</span><span style="--c: var(--amber)"><i></i>Experience</span><span style="--c: var(--green)"><i></i>Diploma / certificate</span><span>Scroll to drive ↓</span></div>
         <div class="timeline">
           <div class="road-car" aria-hidden="true">
             <svg viewBox="0 0 28 50">
@@ -1040,6 +1053,14 @@
             <div class="card">
               <div class="t-top"><span class="t-title">PhD, Centre for Transportation Systems (CTRANS)</span><span class="t-date">ONGOING</span></div>
               <div class="t-org"><svg class="i" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>Indian Institute of Technology (IIT) Roorkee</div>
+            </div>
+          </div>
+
+          <div class="t-item reveal" data-type="edu" style="--c: var(--green)">
+            <span class="t-dot" aria-hidden="true"><b>PGDCA</b></span>
+            <div class="card">
+              <div class="t-top"><span class="t-title">PGDCA — Post Graduate Diploma in Computer Applications</span><span class="t-date">2023 – 2024</span></div>
+              <div class="t-org"><svg class="i" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>Makhanlal Chaturvedi National University of Journalism and Communication, Bhopal · First Division</div>
             </div>
           </div>
 
@@ -1082,6 +1103,14 @@
             </div>
           </div>
 
+          <div class="t-item reveal" data-type="edu" style="--c: var(--green)">
+            <span class="t-dot" aria-hidden="true"><b>SURV</b></span>
+            <div class="card">
+              <div class="t-top"><span class="t-title">Assistant Surveyor Certificate (NSQF Level 2)</span><span class="t-date">JAN 2020</span></div>
+              <div class="t-org"><svg class="i" viewBox="0 0 24 24"><path d="M12 3v6M8 21l4-12 4 12M6 15h12"/></svg>Skill India · NSDC · Construction Skill Development Council of India</div>
+            </div>
+          </div>
+
           <div class="t-item reveal" data-type="edu" style="--c: var(--cyan)">
             <span class="t-dot" aria-hidden="true"><b>XII</b></span>
             <div class="card">
@@ -1097,6 +1126,28 @@
               <div class="t-org"><svg class="i" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>Kendriya Vidyalaya GAIL, Jhabua, M.P.</div>
             </div>
           </div>
+        </div>
+
+        <div class="sub-head reveal"><span class="sec-label">Diplomas &amp; certificates</span></div>
+        <div class="certs">
+          <article class="card cert reveal" style="--c: var(--cyan)">
+            <div class="icon-box"><svg class="i" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h4M7 12h7"/></svg></div>
+            <div>
+              <div class="cert-type">DIPLOMA · 2023–24 · FIRST DIVISION</div>
+              <h3>PGDCA — Post Graduate Diploma in Computer Applications</h3>
+              <p>Makhanlal Chaturvedi National University of Journalism and Communication, Bhopal</p>
+              <div class="cert-tags"><span>IT Trends &amp; Technologies</span><span>Internet &amp; Web Designing</span><span>Financial Accounting with Tally</span><span>Multimedia (CorelDRAW, Premiere, Sound Forge)</span></div>
+            </div>
+          </article>
+          <article class="card cert reveal" style="--c: var(--amber)">
+            <div class="icon-box"><svg class="i" viewBox="0 0 24 24"><path d="M12 3v6M8 21l4-12 4 12M6 15h12"/><circle cx="12" cy="3" r="1.2"/></svg></div>
+            <div>
+              <div class="cert-type">CERTIFICATE · JAN 2020 · NSQF LEVEL 2</div>
+              <h3>Assistant Surveyor (QP: CON/Q0901)</h3>
+              <p>Skill India · NSDC · Ministry of Skill Development &amp; Entrepreneurship, Govt. of India — assessed by the Construction Skill Development Council of India</p>
+              <div class="cert-tags"><span>Surveying</span><span>Construction</span><span>NSQF Level 2</span></div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -1691,7 +1742,7 @@
     }
 
     function loop(now) {
-      const dt = Math.min((now - last) / 1000, 0.05); last = now;
+      const dt = Math.max(0, Math.min((now - last) / 1000, 0.05)); last = now;
       if (dt > 0) fpsSmooth = fpsSmooth * 0.92 + (1 / dt) * 0.08;
       if (running) { update(dt); draw(); fpsEl.textContent = Math.round(fpsSmooth); }
       raf = requestAnimationFrame(loop);
@@ -1868,7 +1919,8 @@
       { k: ['project', 'projects', 'built', 'build', 'made', 'portfolio'], a: 'Projects: <b>CHOTU</b> (AI voice assistant), a <b>Vision-Based Speed Enforcement System</b> (YOLOv11 + VBOX GPS validation) and a <b>Vehicle Classification &amp; Counting</b> tool.', go: ['project', 'See projects'] },
       { k: ['speed', 'enforcement', 'vbox', 'overspeed'], a: 'The Speed Enforcement System estimates vehicle speed from video using YOLOv11 and multi-line speed traps, validated against VBOX GPS ground truth. A paper is in progress.', go: ['project', 'See project'] },
       { k: ['count', 'counting', 'classification', 'lane'], a: 'The Vehicle Classification &amp; Counting tool counts vehicles lane-wise from side-view video, with ROI lane detection and automatic Excel reports.', go: ['project', 'See project'] },
-      { k: ['education', 'degree', 'college', 'university', 'mtech', 'm.tech', 'btech', 'b.e', 'school', 'qualification', 'iit'], a: 'PhD (ongoing) — CTRANS, IIT Roorkee · M.Tech, Infrastructure Systems — IIT Roorkee · B.E. Civil Engineering (2021) — IET, DAVV Indore.', go: ['journey', 'See journey'] },
+      { k: ['education', 'degree', 'college', 'university', 'mtech', 'm.tech', 'btech', 'b.e', 'school', 'qualification', 'iit'], a: 'PhD (ongoing) — CTRANS, IIT Roorkee · M.Tech, Infrastructure Systems — IIT Roorkee · B.E. Civil Engineering (2021) — IET, DAVV Indore · plus a PGDCA diploma and an Assistant Surveyor certificate.', go: ['journey', 'See journey'] },
+      { k: ['pgdca', 'diploma', 'certificate', 'certification', 'surveyor', 'survey', 'computer applications'], a: '<b>PGDCA</b> (2023–24, First Division) — Makhanlal Chaturvedi National University of Journalism and Communication, Bhopal. <b>Assistant Surveyor</b> certificate (Jan 2020, NSQF Level 2) — Skill India / NSDC, Construction Skill Development Council of India.', go: ['journey', 'See certificates'] },
       { k: ['experience', 'internship', 'intern', 'job', 'pwd', 'res', 'site', 'worked'], a: 'Site experience: Assistant Supervisor (Intern) at PWD, Neemuch (Mar–Sep 2021) and at Rural Engineering Services, Jhabua (Dec 2020–Mar 2021).', go: ['journey', 'See experience'] },
       { k: ['skill', 'skills', 'python', 'tools', 'software', 'autocad', 'tech stack', 'stack'], a: 'Skills: Python, AI/ML, Computer Vision (YOLO), C/C++, HTML · AutoCAD, STAAD.Pro, Revit, SketchUp + V-Ray &amp; Lumion, surveying &amp; estimation · Photoshop &amp; Lightroom.', go: ['skills', 'See skills'] },
       { k: ['contact', 'email', 'mail', 'reach', 'hire', 'collab', 'collaborate', 'message', 'connect'], a: 'Email <a href="mailto:harsh_b@ct.iitr.ac.in">harsh_b@ct.iitr.ac.in</a> or <a href="mailto:harshbamniya1997@gmail.com">harshbamniya1997@gmail.com</a>, or use the contact form — it goes straight to his inbox.', go: ['contact', 'Open contact form'] },
@@ -2020,7 +2072,7 @@
   };
   const runWhenVisible = (cv, frame) => {
     let on = false, last = performance.now();
-    const loop = now => { const dt = Math.min((now - last) / 1000, 0.05); last = now; if (on) frame(dt); requestAnimationFrame(loop); };
+    const loop = now => { const dt = Math.max(0, Math.min((now - last) / 1000, 0.05)); last = now; if (on) frame(dt); requestAnimationFrame(loop); };
     new IntersectionObserver(([e]) => { on = e.isIntersecting; last = performance.now(); }).observe(cv);
     requestAnimationFrame(loop);
   };
