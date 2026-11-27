@@ -57,6 +57,7 @@
     "sameAs": [
       "https://www.linkedin.com/in/harsh-bamniya-622303116",
       "https://www.instagram.com/harsh_raja_/",
+      "https://www.instagram.com/_the.artsy.lens_/",
       "https://www.researchgate.net/profile/Harsh-Bamniya-2",
       "https://scholar.google.com/citations?user=6Pl8qQ8AAAAJ&hl=en"
     ]
@@ -481,6 +482,62 @@
     .t-item li { margin-bottom: .25rem; }
     .t-item li::marker { color: var(--c); }
 
+    /* Tikku Run */
+    .tikku { display: grid; grid-template-columns: 300px 1fr; gap: 1.8rem; align-items: center; margin-top: 1rem; }
+    @media (max-width: 760px) { .tikku { grid-template-columns: 1fr; } }
+    .tk-stage { position: relative; height: 170px; border-radius: 14px; overflow: hidden; border: 1px solid var(--glass-border); background: linear-gradient(#0c1d33, #13263f 60%, #1b2a20); }
+    .tk-sky { position: absolute; inset: 0; }
+    .tk-star { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #e2e8f0; animation: blink 1.6s steps(2) infinite; }
+    .tk-star.s1 { left: 18%; top: 18%; } .tk-star.s2 { left: 62%; top: 12%; animation-delay: .5s; } .tk-star.s3 { left: 84%; top: 30%; animation-delay: 1s; }
+    .tk-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; background: repeating-linear-gradient(90deg, #2f4a2c 0 22px, #375633 22px 44px); border-top: 3px solid #4ade80; animation: tk-scroll .6s linear infinite; }
+    @keyframes tk-scroll { to { background-position: -44px 0; } }
+    .tk-runner { position: absolute; left: 22%; bottom: 34px; width: 26px; height: 44px; animation: tk-jump 1.8s ease-in-out infinite; }
+    .tk-head { position: absolute; left: 6px; top: 0; width: 16px; height: 16px; border-radius: 5px; background: #fbbf24; box-shadow: inset -3px 0 0 #f59e0b; }
+    .tk-head::after { content: ""; position: absolute; right: 3px; top: 5px; width: 3px; height: 3px; background: #0b1220; }
+    .tk-body { position: absolute; left: 5px; top: 16px; width: 16px; height: 16px; border-radius: 3px; background: #38bdf8; }
+    .tk-leg { position: absolute; top: 32px; width: 5px; height: 12px; background: #1e293b; border-radius: 2px; transform-origin: top center; animation: tk-run .3s linear infinite alternate; }
+    .tk-leg.l1 { left: 7px; } .tk-leg.l2 { left: 14px; animation-direction: alternate-reverse; }
+    @keyframes tk-run { from { transform: rotate(25deg); } to { transform: rotate(-25deg); } }
+    @keyframes tk-jump { 0%, 30%, 62%, 100% { transform: translateY(0); } 44% { transform: translateY(-46px); } }
+    .tk-obs { position: absolute; bottom: 34px; width: 16px; height: 24px; border-radius: 3px 3px 0 0; background: #fb7185; box-shadow: 0 0 12px rgba(251,113,133,.5); animation: tk-obs 1.8s linear infinite; }
+    .tk-obs.o2 { height: 16px; animation-delay: .9s; background: #a3e635; box-shadow: 0 0 12px rgba(163,230,53,.4); }
+    @keyframes tk-obs { from { left: 105%; } to { left: -12%; } }
+    .tk-score { position: absolute; right: 10px; top: 8px; font-size: .7rem; color: #9fb3c8; letter-spacing: .1em; }
+    .tk-score b { color: #fff; }
+    .tk-info h3 { font-size: 1.4rem; margin: .2rem 0 .4rem; }
+    .tk-info p { color: var(--muted); margin-bottom: 1.1rem; }
+    .tk-actions { display: flex; flex-wrap: wrap; gap: .7rem; }
+    .tk-modal { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: 16px; background: rgba(3,6,12,.7); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    .tk-modal[hidden] { display: none; }
+    .tk-window { width: min(1100px, 100%); height: min(720px, calc(100vh - 32px)); display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; border: 1px solid var(--glass-border); background: #05080f; box-shadow: 0 30px 80px rgba(0,0,0,.7), 0 0 40px rgba(52,211,153,.15); }
+    .tk-bar { display: flex; align-items: center; justify-content: space-between; padding: .55rem .7rem .55rem 1rem; border-bottom: 1px solid var(--glass-border); background: linear-gradient(160deg, rgba(30,41,59,.9), rgba(7,11,20,.95)); }
+    .tk-bar .mono { display: inline-flex; align-items: center; gap: .5rem; font-size: .8rem; letter-spacing: .12em; color: var(--green); }
+    .tk-bar-btns { display: flex; gap: .4rem; }
+    .tk-bar-btns a { text-decoration: none; }
+    #tk-frame { flex: 1; width: 100%; border: 0; background: #000; }
+    @media (max-width: 520px) { .tk-modal { padding: 0; } .tk-window { height: 100vh; border-radius: 0; } }
+
+    /* Photography card */
+    .photo-card { display: flex; align-items: center; gap: 1.6rem; margin-top: 1rem; text-decoration: none; color: inherit; }
+    .photo-card:hover { transform: translateY(-3px); }
+    @media (max-width: 760px) { .photo-card { flex-direction: column; align-items: flex-start; } }
+    .pc-frames { position: relative; width: 150px; height: 104px; flex-shrink: 0; }
+    .pcf { position: absolute; width: 84px; height: 64px; border-radius: 6px; border: 3px solid #e5e7eb; box-shadow: 0 8px 20px rgba(0,0,0,.5); transition: transform .35s; }
+    .pcf.f1 { left: 0; top: 22px; transform: rotate(-9deg); background: linear-gradient(160deg, #f59e0b, #b45309 55%, #1e293b); }
+    .pcf.f2 { left: 34px; top: 8px; transform: rotate(4deg); background: linear-gradient(170deg, #7dd3fc, #0369a1 60%, #0b1220); z-index: 1; }
+    .pcf.f3 { left: 64px; top: 30px; transform: rotate(11deg); background: linear-gradient(150deg, #a7f3d0, #047857 60%, #0b1220); z-index: 2; }
+    .photo-card:hover .pcf.f1 { transform: rotate(-15deg) translateX(-6px); }
+    .photo-card:hover .pcf.f3 { transform: rotate(17deg) translateX(6px); }
+    .pc-shutter { position: absolute; right: -6px; bottom: -6px; z-index: 3; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--rose); color: #04111d; box-shadow: 0 0 16px rgba(251,113,133,.5); }
+    .pc-shutter svg.i { width: 18px; height: 18px; }
+    .pc-text { flex: 1; min-width: 0; }
+    .pc-text h3 { font-size: 1.15rem; margin: .15rem 0 .25rem; }
+    .pc-handle { color: var(--rose); }
+    .pc-text p { color: var(--muted); font-size: .92rem; }
+    .pc-btn { flex-shrink: 0; }
+    .skill-link { display: inline-block; margin-top: 1rem; font: .8rem var(--mono); color: var(--rose); text-decoration: none; }
+    .skill-link:hover { text-decoration: underline; }
+
     /* Diplomas & certificates */
     .certs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
     @media (max-width: 760px) { .certs { grid-template-columns: 1fr; } }
@@ -779,13 +836,6 @@
             </div>
             <p class="feed-caption">simulated feed · helmet detection · speed estimation · vehicle counting<br>day / night follows your local time · click the feed to switch</p>
           </div>
-        </div>
-
-        <div class="stats reveal">
-          <div class="stat" style="--c: var(--violet)"><div class="n" data-count="70">0<small>+</small></div><div class="l">tools integrated in CHOTU AI</div></div>
-          <div class="stat" style="--c: var(--amber)"><div class="n" data-count="9">0<small>mo</small></div><div class="l">on-site PWD &amp; RES experience</div></div>
-          <div class="stat" style="--c: var(--rose)"><div class="n" data-count="5">0</div><div class="l">AAA game series tested end-to-end</div></div>
-          <div class="stat" style="--c: var(--green)"><div class="n" data-count="3">0</div><div class="l">languages — Hindi, English, Gujarati</div></div>
         </div>
       </div>
     </header>
@@ -1185,6 +1235,7 @@
               <span class="chip">Adobe Photoshop</span>
               <span class="chip">Adobe Lightroom</span>
             </div>
+            <a class="skill-link" href="https://www.instagram.com/_the.artsy.lens_/" target="_blank" rel="noopener">See my photography → @_the.artsy.lens_</a>
           </div>
         </div>
       </div>
@@ -1229,6 +1280,44 @@
           </div>
         </div>
 
+        <div class="card neon tikku reveal" id="tikku">
+          <div class="tk-stage" aria-hidden="true">
+            <div class="tk-sky"><span class="tk-star s1"></span><span class="tk-star s2"></span><span class="tk-star s3"></span></div>
+            <div class="tk-runner"><span class="tk-head"></span><span class="tk-body"></span><span class="tk-leg l1"></span><span class="tk-leg l2"></span></div>
+            <div class="tk-obs o1"></div><div class="tk-obs o2"></div>
+            <div class="tk-ground"></div>
+            <div class="tk-score mono">SCORE <b>0420</b></div>
+          </div>
+          <div class="tk-info">
+            <div class="cert-type" style="--c: var(--green)">MY GAME · PLAY IN BROWSER</div>
+            <h3>Tikku Run</h3>
+            <p>My browser game. Play it right here on the page, or open it in its own tab for full screen.</p>
+            <div class="tk-actions">
+              <button class="btn primary" type="button" id="tk-play">
+                <svg class="i" viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>
+                Play here
+              </button>
+              <a class="btn" href="https://harshraja1234.github.io/harshbamniya.github.io/tikku-run/" target="_blank" rel="noopener">
+                Open in new tab
+                <svg class="i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <a class="card photo-card neon reveal" href="https://www.instagram.com/_the.artsy.lens_/" target="_blank" rel="noopener">
+          <div class="pc-frames" aria-hidden="true">
+            <span class="pcf f1"></span><span class="pcf f2"></span><span class="pcf f3"></span>
+            <span class="pc-shutter"><svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg></span>
+          </div>
+          <div class="pc-text">
+            <div class="cert-type" style="--c: var(--rose)">PHOTOGRAPHY · INSTAGRAM</div>
+            <h3>Through the lens — <span class="pc-handle">@_the.artsy.lens_</span></h3>
+            <p>My photography page on Instagram — follow along for my latest shots.</p>
+          </div>
+          <span class="btn pc-btn"><svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg> View photos <svg class="i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+        </a>
+
         <div class="extra">
           <div class="card reveal">
             <h3>Languages</h3>
@@ -1246,6 +1335,7 @@
               <span class="chip" style="--c: var(--green)">Real-Estate &amp; Construction Management</span>
               <span class="chip" style="--c: var(--rose)">Game Testing</span>
               <span class="chip" style="--c: var(--violet)">Gaming (BGMI)</span>
+              <span class="chip" style="--c: var(--amber)">Photography</span>
             </div>
           </div>
         </div>
@@ -1288,6 +1378,9 @@
                   </a>
                   <a href="https://www.instagram.com/harsh_raja_/" target="_blank" rel="noopener" aria-label="Instagram @harsh_raja_" title="Instagram @harsh_raja_">
                     <svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5v.01"/></svg>
+                  </a>
+                  <a href="https://www.instagram.com/_the.artsy.lens_/" target="_blank" rel="noopener" aria-label="Photography on Instagram @_the.artsy.lens_" title="Photography · @_the.artsy.lens_">
+                    <svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
                   </a>
                 </div>
               </div>
@@ -1365,6 +1458,20 @@
       <button class="send-btn" type="submit" aria-label="Send"><svg class="i" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
     </form>
   </section>
+
+  <!-- ================= TIKKU RUN PLAYER ================= -->
+  <div class="tk-modal" id="tk-modal" role="dialog" aria-modal="true" aria-label="Tikku Run game" hidden>
+    <div class="tk-window">
+      <div class="tk-bar">
+        <span class="mono"><span class="pulse"></span> TIKKU RUN</span>
+        <div class="tk-bar-btns">
+          <a class="cp-icon" href="https://harshraja1234.github.io/harshbamniya.github.io/tikku-run/" target="_blank" rel="noopener" aria-label="Open game in a new tab" title="Open in new tab"><svg class="i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <button class="cp-icon" type="button" id="tk-close" aria-label="Close game"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+      </div>
+      <iframe id="tk-frame" title="Tikku Run" allow="fullscreen; autoplay; gamepad" allowfullscreen></iframe>
+    </div>
+  </div>
 
   <div class="toast" id="toast">Email copied ✓</div>
 
@@ -1926,10 +2033,12 @@
       { k: ['contact', 'email', 'mail', 'reach', 'hire', 'collab', 'collaborate', 'message', 'connect'], a: 'Email <a href="mailto:harsh_b@ct.iitr.ac.in">harsh_b@ct.iitr.ac.in</a> or <a href="mailto:harshbamniya1997@gmail.com">harshbamniya1997@gmail.com</a>, or use the contact form — it goes straight to his inbox.', go: ['contact', 'Open contact form'] },
       { k: ['phone', 'number', 'mobile', 'call', 'whatsapp'], a: 'The quickest way is the contact form — leave your number there and Harsh will get back to you.', go: ['contact', 'Open contact form'] },
       { k: ['game', 'games', 'gaming', 'bgmi', 'pubg', 'god of war', 'halo', 'spider', 'rdr', 'wukong', 'hobby', 'hobbies'], a: 'Gamer mode: Harsh has tested full series of God of War, Halo, Red Dead Redemption and Spider-Man, plus Black Myth: Wukong. Favourite to play: <b>BGMI</b>.', go: ['achievements', 'See gaming'] },
+      { k: ['tikku', 'tikku run', 'play', 'his game', 'own game', 'browser game'], a: 'Harsh made a browser game — <b>Tikku Run</b>! Play it right on this page or <a href="https://harshraja1234.github.io/harshbamniya.github.io/tikku-run/" target="_blank" rel="noopener">open it in a new tab</a>.', go: ['tikku', 'Play Tikku Run'] },
+      { k: ['photo', 'photos', 'photography', 'photographer', 'camera', 'lens', 'artsy', 'pictures'], a: 'Harsh is also into photography — check out his photography page on Instagram: <a href="https://www.instagram.com/_the.artsy.lens_/" target="_blank" rel="noopener">@_the.artsy.lens_</a>.', go: ['achievements', 'See photography'] },
       { k: ['achievement', 'award', 'prize', 'exhibition'], a: 'Selected for the KVS national-level 40th Jawaharlal Nehru Science &amp; Environment Exhibition (2012–13), and 2nd at KVS regional level (2012).', go: ['achievements', 'See achievements'] },
       { k: ['where', 'location', 'live', 'city', 'based'], a: 'Harsh is based in Roorkee, Uttarakhand, India.' },
       { k: ['language', 'languages', 'speak'], a: 'He speaks Hindi, English and Gujarati.' },
-      { k: ['linkedin', 'instagram', 'social', 'researchgate', 'scholar', 'google scholar', 'citations'], a: '<a href="https://scholar.google.com/citations?user=6Pl8qQ8AAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/harsh-bamniya-622303116" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Harsh-Bamniya-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://www.instagram.com/harsh_raja_/" target="_blank" rel="noopener">Instagram @harsh_raja_</a>' },
+      { k: ['linkedin', 'instagram', 'social', 'researchgate', 'scholar', 'google scholar', 'citations'], a: '<a href="https://scholar.google.com/citations?user=6Pl8qQ8AAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/harsh-bamniya-622303116" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Harsh-Bamniya-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://www.instagram.com/harsh_raja_/" target="_blank" rel="noopener">Instagram @harsh_raja_</a> · <a href="https://www.instagram.com/_the.artsy.lens_/" target="_blank" rel="noopener">Photography @_the.artsy.lens_</a>' },
       { k: ['thank', 'thanks', 'great', 'nice', 'cool', 'awesome'], a: 'Happy to help! Anything else you want to know?' },
       { k: ['bye', 'goodbye', 'see you'], a: 'Bye! Drop a message through the contact form anytime.' }
     ];
@@ -2326,6 +2435,28 @@
       ready = true; draw(); return;
     }
     runWhenVisible(cv, dt => { update(dt); draw(); });
+  })();
+
+  /* ---------- Tikku Run: play in a modal ---------- */
+  (() => {
+    const modal = document.getElementById('tk-modal'), frame = document.getElementById('tk-frame');
+    const openBtn = document.getElementById('tk-play'), closeBtn = document.getElementById('tk-close');
+    if (!modal || !openBtn) return;
+    const SRC = 'https://harshraja1234.github.io/harshbamniya.github.io/tikku-run/';
+    let lastFocus = null;
+    const open = () => {
+      lastFocus = document.activeElement;
+      frame.src = SRC; modal.hidden = false; document.body.style.overflow = 'hidden';
+      setTimeout(() => { try { frame.focus(); } catch (e) {} }, 300);
+    };
+    const close = () => {
+      modal.hidden = true; frame.src = 'about:blank'; document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    };
+    openBtn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    modal.addEventListener('click', e => { if (e.target === modal) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) close(); });
   })();
   </script>
 </body>
