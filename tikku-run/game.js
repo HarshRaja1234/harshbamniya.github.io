@@ -513,7 +513,17 @@ function loadLevel(i, keepLeaf = false, keepFire = false) {
   cam.x = Math.max(0, Math.min(player.x + player.w / 2 - W * 0.42, level.w * TILE - W));
 }
 
+// ---------- Visitor/khiladi ginti (GoatCounter) ----------
+// index.html mein GoatCounter script laga ho tabhi kaam karta hai, warna chupchaap kuch nahi karta
+function track(name, title) {
+  try {
+    if (window.goatcounter && window.goatcounter.count)
+      window.goatcounter.count({ path: 'tikku-run-' + name, title: title || name, event: true });
+  } catch (e) {}
+}
+
 function startGame() {
+  track('start', 'Game shuru kiya');
   score = 0; gemCount = 0; lives = 3; levelIndex = 0; checkpoint = null; newHigh = false;
   loadLevel(0);
   state = 'ready'; stateTimer = 0;
@@ -655,7 +665,7 @@ function update() {
     updateParticles();
     if (stateTimer > 150) {
       lives--;
-      if (lives <= 0) { state = 'gameover'; stateTimer = 0; saveHighScore(); }
+      if (lives <= 0) { state = 'gameover'; stateTimer = 0; saveHighScore(); track('gameover-world-' + (levelIndex + 1), 'Game over (World ' + (levelIndex + 1) + ')'); }
       else { loadLevel(levelIndex); state = 'ready'; stateTimer = 0; }
     }
   } else if (state === 'clear') {
@@ -664,8 +674,9 @@ function update() {
     if (timeLeft > 0) { const d = Math.min(timeLeft, 60 * 3); timeLeft -= d; score += Math.floor(d / 60) * 10; }
     updateParticles();
     if (stateTimer > 180) {
+      track('world-' + (levelIndex + 1) + '-clear', 'World ' + (levelIndex + 1) + ' paar kiya');
       levelIndex++; checkpoint = null; saveHighScore();
-      if (levelIndex >= LEVELS.length) { state = 'win'; stateTimer = 0; }
+      if (levelIndex >= LEVELS.length) { state = 'win'; stateTimer = 0; track('win', 'Poora game jeeta'); }
       else { loadLevel(levelIndex, player.leaf, player.fire); state = 'ready'; stateTimer = 0; }
     }
   }
