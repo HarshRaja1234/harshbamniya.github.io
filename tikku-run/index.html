@@ -97,6 +97,21 @@
     <button data-key="Space" class="big" aria-label="Jump">&#9650;</button>
   </div>
 </div>
+<script>
+  // ---- Visitor counter (GoatCounter) ----
+  // 'APNA-CODE' ki jagah apna GoatCounter code likho (jaise 'harshraja').
+  // Jab tak code nahi likha, counter band rahega aur game normal chalega.
+  var GC_CODE = 'harshbamniya1432';
+  if (GC_CODE !== 'APNA-CODE') {
+    var gc = document.createElement('script');
+    gc.async = true;
+    gc.src = 'https://gc.zgo.at/count.js';
+    gc.setAttribute('data-goatcounter', 'https://' + GC_CODE + '.goatcounter.com/count');
+    // profile page ke "Play here" (iframe) se khelne walon ko bhi gino
+    gc.setAttribute('data-goatcounter-settings', '{"allow_frame": true}');
+    document.head.appendChild(gc);
+  }
+</script>
 <script src="game.js"></script>
 </body>
 </html>
