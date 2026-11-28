@@ -1,6 +1,6 @@
 // Tikku Run - service worker: game ko phone pe app jaisa aur bina internet ke chalata hai.
 // Pehle internet se nayi file laata hai (taaki update turant mile), net na ho to saved copy chalata hai.
-const CACHE = 'tikku-run-v3';
+const CACHE = 'tikku-run-v4';
 const FILES = ['./', './index.html', './game.js', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

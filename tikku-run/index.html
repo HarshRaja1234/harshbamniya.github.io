@@ -119,8 +119,8 @@
 </div>
 <div id="touch">
   <div class="grp">
-    <button data-key="ArrowLeft" aria-label="Left">&#9664;</button>
-    <button data-key="ArrowRight" aria-label="Right">&#9654;</button>
+    <button data-key="TLeft" aria-label="Left">&#9664;</button>
+    <button data-key="TRight" aria-label="Right">&#9654;</button>
   </div>
   <div class="grp">
     <button data-key="KeyF" id="firebtn" class="fire off" aria-label="Fire">&#128293;</button>
@@ -147,6 +147,9 @@
     gc.setAttribute('data-goatcounter-settings', '{"allow_frame": true}');
     document.head.appendChild(gc);
   }
+  // ---- Online leaderboard + Cloud save (Firebase) ----
+  // Firebase project banane ke baad yahan apna projectId aur apiKey likho. Tab tak online wale features band rahenge.
+  window.FIREBASE_CONFIG = { projectId: 'APNA-PROJECT-ID', apiKey: 'APNI-API-KEY' };
   // ---- App (PWA): phone pe install + bina internet ke bhi chale ----
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });

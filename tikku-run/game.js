@@ -113,6 +113,7 @@ canvas.addEventListener('pointerdown', e => {
     const b = ui[i];
     if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) { b.act(x - b.x, b.w); return; }
   }
+  if (state === 'editor') { edPointer(x, y); return; }
   if (!isMenuState()) pressed.add('Enter');
 });
 
@@ -206,6 +207,21 @@ TRACKS.water = { bpm: 116, leadType: 'triangle', leadVol: 0.09, bassVol: 0.06,
              A4 - C5 E5 F5 - E5 C5  D5 - F5 A5 G5 - E5 -  F5 E5 D5 C5 D5 - G4 -  C5 - - - C5 - - -`),
   bass: seq(`C3 - G2 - C3 - G2 -  F2 - C3 - G2 - D3 -  A2 - E3 - F2 - C3 -  G2 - D3 - G2 - - -
              F2 - C3 - F2 - C3 -  D2 - A2 - G2 - D3 -  F2 - C3 - G2 - D3 -  C3 - G2 - C3 - - -`) };
+TRACKS.desert = { bpm: 120, leadType: 'square', leadVol: 0.032, bassVol: 0.065,
+  lead: seq(`E5 F5 G#5 A5 G#5 F5 E5 -  E5 F5 G#5 B5 A5 G#5 F5 -  A5 G#5 F5 E5 F5 E5 D5 C5  B4 C5 D5 E5 E5 - - -
+             E5 - D5 C5 B4 - C5 D5  E5 - F5 G#5 A5 - G#5 F5  E5 F5 G#5 A5 B5 A5 G#5 F5  E5 - B4 - E5 - - -`),
+  bass: seq(`E2 - B2 - E2 - B2 -  E2 - B2 - D2 - A2 -  F2 - C3 - F2 - C3 -  E2 - B2 - E2 - - -
+             E2 - B2 - E2 - B2 -  F2 - C3 - F2 - C3 -  E2 - B2 - D2 - A2 -  E2 - B2 - E2 - - -`) };
+TRACKS.temple = { bpm: 100, leadType: 'triangle', leadVol: 0.09, bassVol: 0.07,
+  lead: seq(`A4 - C5 - E5 - D5 C5  B4 - D5 - F5 - E5 D5  C5 - E5 - A5 - G5 F5  E5 - - - E4 - - -
+             F5 - E5 D5 C5 - B4 C5  D5 - C5 B4 A4 - G#4 A4  B4 - C5 D5 E5 - D5 B4  A4 - - - A3 - - -`),
+  bass: seq(`A2 - - - A2 - E2 -  G2 - - - G2 - D2 -  F2 - - - F2 - C3 -  E2 - - - E2 - - -
+             D2 - - - D2 - A2 -  F2 - - - E2 - - -  F2 - - - G2 - - -  A2 - - - A1 - - -`) };
+TRACKS.city = { bpm: 132, leadType: 'square', leadVol: 0.03, bassVol: 0.065,
+  lead: seq(`C5 - Eb5 F5 G5 - Bb5 G5  F5 - Eb5 C5 Eb5 - F5 -  G5 G5 Bb5 C6 Bb5 G5 F5 Eb5  F5 - C5 - - - - -
+             Ab4 C5 Eb5 G5 F5 Eb5 C5 -  Bb4 D5 F5 Ab5 G5 F5 D5 -  C5 Eb5 G5 Bb5 Ab5 G5 F5 Eb5  C5 - G4 - C5 - - -`),
+  bass: seq(`C3 - G2 - C3 - G2 -  F2 - C3 - F2 - C3 -  Eb2 - Bb2 - Eb2 - Bb2 -  F2 - C3 - G2 - D3 -
+             Ab2 - Eb3 - Ab2 - Eb3 -  Bb2 - F2 - Bb2 - F2 -  C3 - G2 - Eb3 - Bb2 -  C3 - G2 - C3 - - -`) };
 TRACKS.title = TRACKS.day;
 let musicOn = true, musicGain = null;
 const music = { track: null, step: 0, next: 0 };
@@ -260,6 +276,12 @@ const THEMES = {
           dirt: '#4a2a2a', dirtDark: '#341c1c', sun: '#ff7043', stars: false, embers: true },
   water: { top: '#7fd3ff', bot: '#1565c0', far: '#4aa3d8', near: '#2f86c0', grass: '#f2d38a', grassHi: '#fff0b8',
            dirt: '#c9a46a', dirtDark: '#a8834e', sun: '#fff6c0', stars: false, water: true },
+  desert: { top: '#4fb3e8', bot: '#ffe0b2', far: '#e8b46a', near: '#d59a52', grass: '#f2c46d', grassHi: '#ffe29a',
+            dirt: '#c98d4a', dirtDark: '#a66e33', sun: '#fff59d', stars: false, desert: true },
+  temple: { top: '#16301f', bot: '#3f6b3c', far: '#2a4d33', near: '#1d3a27', grass: '#5fa04a', grassHi: '#8bd46a',
+            dirt: '#7d7356', dirtDark: '#5e5640', sun: null, stars: false, temple: true },
+  city: { top: '#141a38', bot: '#4a3d6b', far: '#2a2d52', near: '#1e2142', grass: '#607d8b', grassHi: '#90a4ae',
+          dirt: '#4e4a66', dirtDark: '#3a3650', sun: '#f4f1d0', stars: true, city: true, rain: true },
 };
 
 // ---------- Levels (builder se banaye gaye) ----------
@@ -482,6 +504,90 @@ const LEVELS = [
     },
   },
   {
+    // registaan: cactus, garam ret, chalti platform
+    name: 'Sandy Dunes', theme: 'desert', w: 180,
+    build(L) {
+      L.ground(0, 30); L.set(3, 14, '@');
+      L.row(7, 11, 'CRC'); L.row(8, 8, 'G G');
+      L.set(14, 14, 'Y'); L.set(20, 14, 'S');
+      L.fill(24, 13, 25, 14, 'B'); L.row(24, 11, 'GG');
+      L.set(31, 12, 'h'); L.row(32, 10, 'GGG');
+      L.ground(37, 70);
+      L.set(42, 14, 'Y'); L.set(48, 14, 'H'); L.set(56, 14, 'S'); L.set(61, 14, 'Y');
+      L.row(45, 11, 'BWB'); L.set(46, 8, 'G');
+      L.row(52, 14, '^^^'); L.row(51, 11, '====='); L.row(52, 10, 'GGG');
+      L.set(65, 14, 'K');
+      L.fill(68, 12, 70, 14, 'B'); L.row(68, 10, 'GGG');
+      L.ground(75, 110);
+      L.set(77, 15, 'J'); L.fill(80, 8, 81, 14, 'B'); L.row(80, 6, 'GG');
+      L.set(86, 14, 'S'); L.set(92, 14, 'S'); L.set(97, 14, 'H'); L.set(102, 14, 'Y');
+      L.row(89, 11, 'CTC');
+      L.secret(105, 12, 110, 14); L.row(106, 14, 'GGGG'); L.row(106, 13, 'GGGG');
+      L.ground(115, 150);
+      L.set(118, 14, 'S'); L.set(124, 14, 'Y'); L.set(130, 14, 'H'); L.set(135, 14, 'S');
+      L.row(120, 10, 'GGGGG'); L.row(127, 11, 'CPC');
+      L.row(140, 14, '^^^^'); L.row(139, 11, '======'); L.row(140, 10, 'GGGG');
+      L.ground(155, 179);
+      L.set(160, 14, 'Y'); L.set(166, 14, 'S');
+      L.fill(168, 14, 168, 14, 'B'); L.fill(169, 13, 169, 14, 'B'); L.fill(170, 12, 171, 14, 'B'); L.row(169, 10, 'GGG');
+      L.set(175, 13, 'F');
+    },
+  },
+  {
+    // purana jungle mandir: chhat se girte patthar, aag ke chakkar, girti platform
+    name: 'Jungle Temple', theme: 'temple', w: 180,
+    build(L) {
+      L.ground(0, 26); L.set(3, 14, '@');
+      L.row(7, 11, 'CPC'); L.set(14, 14, 'S'); L.set(20, 14, 'H');
+      L.set(27, 12, 'd'); L.row(27, 10, 'GG');
+      L.ground(31, 64); L.fill(31, 0, 64, 2, 'B');
+      L.set(36, 3, 'r'); L.set(44, 3, 'r'); L.set(53, 3, 'r');
+      L.set(40, 14, 'S'); L.set(49, 14, 'S'); L.set(57, 14, 'H');
+      L.set(46, 11, 'O'); L.row(37, 12, 'GGG'); L.row(52, 12, 'GGG');
+      L.set(61, 14, 'K');
+      L.set(65, 12, 'd'); L.set(67, 12, 'd');
+      L.ground(69, 105);
+      L.fill(73, 13, 74, 14, 'B'); L.fill(80, 12, 81, 14, 'B'); L.fill(87, 11, 88, 14, 'B');
+      L.row(80, 10, 'GG'); L.row(87, 9, 'GG');
+      L.set(77, 14, 'S'); L.set(84, 14, 'S'); L.set(93, 14, 'H'); L.set(100, 14, 'S');
+      L.set(96, 7, 'V'); L.row(91, 11, 'CRC');
+      L.set(107, 12, 'v');
+      L.ground(111, 150); L.fill(111, 0, 150, 2, 'B');
+      L.set(116, 3, 'r'); L.set(127, 3, 'r'); L.set(141, 3, 'r');
+      L.set(121, 12, 'O');
+      L.set(131, 14, 'S'); L.set(137, 14, 'H'); L.set(146, 14, 'S');
+      L.row(133, 11, 'CTC'); L.row(115, 11, 'GGG');
+      L.ground(155, 179);
+      L.set(162, 9, 'V');
+      L.fill(168, 14, 168, 14, 'B'); L.fill(169, 13, 169, 14, 'B'); L.fill(170, 12, 171, 14, 'B'); L.row(169, 10, 'GGG');
+      L.set(175, 13, 'F');
+    },
+  },
+  {
+    // baarish wala sheher: chhaton pe kood-kood ke chalo
+    name: 'Rainy City', theme: 'city', w: 190,
+    build(L) {
+      const roof = (x1, x2, top) => L.fill(x1, top, x2, ROWS - 1, '#');
+      roof(0, 16, 13); L.set(3, 12, '@');
+      L.row(8, 9, 'CPC'); L.set(12, 12, 'S');
+      roof(20, 30, 11); L.set(25, 10, 'S'); L.row(22, 7, 'GGG');
+      L.set(33, 10, 'v'); L.row(33, 6, 'GGG');
+      roof(37, 50, 12); L.set(42, 11, 'H'); L.set(47, 11, 'S'); L.row(40, 8, 'CRC');
+      roof(53, 60, 10); L.set(56, 9, 'K'); L.set(58, 5, 'V');
+      roof(64, 75, 12); L.set(68, 11, 'S'); L.set(72, 11, 'Y'); L.row(66, 8, 'GGGG');
+      L.set(77, 11, 'h'); L.row(78, 8, 'GGG');
+      roof(84, 98, 11); L.set(88, 10, 'S'); L.set(94, 10, 'H'); L.row(89, 7, 'CWC');
+      L.set(101, 11, 'd'); L.set(103, 11, 'd'); L.row(101, 9, 'GGGG');
+      roof(106, 120, 12); L.set(110, 11, 'S'); L.row(107, 8, 'GGGG'); L.set(113, 6, 'V');
+      L.secret(116, 9, 120, 11); L.row(117, 11, 'GGG'); L.row(117, 10, 'GGG');
+      roof(124, 135, 10); L.set(128, 9, 'H'); L.set(133, 9, 'S'); L.row(129, 6, 'CTC');
+      roof(140, 150, 13); L.set(145, 12, 'Y'); L.row(142, 10, 'GGG');
+      L.set(153, 12, 'v'); L.row(153, 8, 'GGG');
+      roof(158, 189, 10); L.set(165, 9, 'S'); L.set(171, 9, 'H'); L.set(177, 9, 'S');
+      L.set(185, 8, 'F');
+    },
+  },
+  {
     // FINAL BOSS: tile 20 ke baad arena hai, wahan Magmo intezaar kar raha hai
     name: 'Magma Den', theme: 'lava', w: 50, boss: 'magmo',
     build(L) {
@@ -514,11 +620,13 @@ function buildGrid(def) {
 
 // ---------- Game state ----------
 let state = 'title';
-let levelIndex = 0, level, player, enemies, gems, items, particles, popups, bumps, portal, flags = [];
+let levelIndex = 0, level, player, players = [], enemies, gems, items, particles, popups, bumps, portal, flags = [];
 let hazards = [], plats = [], thorns = [], ui = [];
 let checkpoint = null; // { level, tx }
 let score = 0, gemCount = 0, lives = 3, timeLeft = 0, stateTimer = 0, frame = 0, paused = false;
 let levelGemsGot = 0, levelTotalGems = 0, levelDeaths = 0, clearStars = [true, false, false], starKills = 0;
+// gameMode: adv (kahani), duo (2 player), trial (time trial), endless, rush (boss rush), daily, custom (apna level)
+let gameMode = 'adv', curDef = null, runT = 0, rushIdx = 0;
 const cam = { x: 0 };
 
 const SOLID = new Set(['#', 'B', 'C', 'P', 'R', 'T', 'M', 'W', 'X', 'I', 'J']);
@@ -548,13 +656,18 @@ function inWater(x, y) {
 // ---------- Save: progress, stars, dukaan, achievements, settings (browser mein) ----------
 const SAVE_KEY = 'tikkuRunSave';
 const save = { unlocked: 0, stars: [], wallet: 0, owned: ['green'], scarf: 'green', ach: {},
-  stats: { gems: 0, kills: 0, fireKills: 0 }, set: { music: 8, sfx: 8, diff: 1 }, story: false, top: [], lastName: '' };
+  chars: ['fox'], char: 'fox',
+  stats: { gems: 0, kills: 0, fireKills: 0 }, set: { music: 8, sfx: 8, diff: 1, vib: true }, story: false,
+  top: [], tops: { adv: [], endless: [], rush: [], daily: [] }, best: { endless: 0, rush: 0 }, times: {},
+  daily: { date: '', best: 0, streak: 0, last: '' }, custom: null, cloud: '', lastName: '' };
 try {
   const s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
   if (s && typeof s === 'object') for (const k in save) if (k in s && s[k] !== null) {
     const d = save[k];
     if (d && typeof d === 'object' && !Array.isArray(d)) Object.assign(d, s[k]); else save[k] = s[k];
   }
+  if (save.top.length && !save.tops.adv.length) save.tops.adv = save.top; // purane version se
+  save.top = [];
 } catch (e) {}
 function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch (e) {} }
 // Easy / Normal / Hard
@@ -565,26 +678,34 @@ const DIFFS = [
 ];
 const diff = () => DIFFS[save.set.diff] || DIFFS[1];
 
-function newPlayer(x, y, leaf, fire = false, wing = false) {
-  return { x, y, w: 22, h: 28, vx: 0, vy: 0, facing: 1, onGround: false, coyote: 0, buffer: 0,
-           jumping: false, leaf, fire, wing, star: 0, magnet: 0, ride: null, gliding: false, wet: false,
-           fireCd: 0, sx: 1, sy: 1, wasGround: true, shootT: 0, canDouble: false, invuln: 0, anim: 0, dying: false, prevBottom: 0 };
-}
+// ---------- Kirdaar (characters): har ek ki apni khaasiyat ----------
+const CHARS = {
+  fox:   { name: 'Tikku', price: 0,   jump: 1,    speed: 1,    glide: false, tough: false },
+  bunny: { name: 'Bunty', price: 200, jump: 1.12, speed: 0.95, glide: false, tough: false },
+  panda: { name: 'Bholu', price: 400, jump: 0.95, speed: 0.95, glide: false, tough: true },
+  owl:   { name: 'Chiku', price: 700, jump: 1,    speed: 0.92, glide: true,  tough: false },
+};
+const CHAR_IDS = Object.keys(CHARS);
+const charName = (id = save.char) => (CHARS[id] || CHARS.fox).name;
+// 2 player mein doosra khiladi: koi aur kirdaar jo tumhare paas hai, warna Bunty
+function p2Char() { return save.chars.find(c => c !== save.char) || (save.char === 'bunny' ? 'fox' : 'bunny'); }
 
-function loadLevel(i, keep = {}) {
-  const def = LEVELS[i];
-  const grid = buildGrid(def);
-  level = { w: def.w, grid, theme: THEMES[def.theme], name: def.name,
-            secrets: grid.secrets.map(s => ({ ...s, found: false, a: 1 })),
-            water: def.water ? def.water.map(([x1, y1, x2, y2]) => ({ x1, y1, x2, y2 })) : null };
-  enemies = []; gems = []; items = []; particles = []; popups = []; bumps = []; portal = null; flags = []; fireballs = [];
-  hazards = []; plats = []; thorns = [];
+function newPlayer(x, y, keep = {}, idx = 0, ch = save.char) {
+  return { idx, ch, x, y, w: 22, h: 28, vx: 0, vy: 0, facing: 1, onGround: false, coyote: 0, buffer: 0,
+           jumping: false, leaf: !!keep.leaf, fire: !!keep.fire, wing: !!keep.wing, star: 0, magnet: 0, ride: null,
+           gliding: false, wet: false, fireCd: 0, sx: 1, sy: 1, wasGround: true, shootT: 0, canDouble: false,
+           invuln: idx ? 60 : 0, anim: 0, dying: false, deathT: 0, prevBottom: 0 };
+}
+const alivePlayers = () => players.filter(p => !p.dying);
+
+// tiles ko dushman / gems / platforms mein badalna (x0 se x1 tak ke columns)
+function spawnRange(x0, x1) {
   const spd = diff().spd;
-  let start = { x: 64, y: 400 }, crates = 0;
-  for (let ty = 0; ty < ROWS; ty++) for (let tx = 0; tx < level.w; tx++) {
+  let start = null;
+  for (let ty = 0; ty < ROWS; ty++) for (let tx = x0; tx < x1; tx++) {
     const c = level.grid[ty][tx];
     const px = tx * TILE, py = ty * TILE;
-    if (c === 'C') crates++;
+    if (c === 'C') levelTotalGems++;
     if (c === '@') start = { x: px + 5, y: py + TILE - 28 };
     else if (c === 'S') enemies.push({ type: 'slime', x: px + 2, y: py + 10, w: 28, h: 22, vx: -0.8 * spd, speed: 0.8 * spd, vy: 0 });
     else if (c === 'H') enemies.push({ type: 'hedge', x: px + 2, y: py + 10, w: 28, h: 22, vx: -1.1 * spd, speed: 1.1 * spd, vy: 0 });
@@ -593,7 +714,7 @@ function loadLevel(i, keep = {}) {
     else if (c === 'Q') enemies.push({ type: 'fish', x: px + 2, y: py + 7, w: 28, h: 18, ox: px + 2, oy: py + 7, range: 64,
                                        vx: -0.9 * spd, speed: 0.9 * spd, vy: 0, t: tx });
     else if (c === 'Y') enemies.push({ type: 'cactus', x: px + 4, y: py + 2, w: 24, h: 30, vx: 0, speed: 0, vy: 0, cd: 60 + (tx % 4) * 20, face: -1 });
-    else if (c === 'G') gems.push({ x: px + 8, y: py + 6, w: 16, h: 20, phase: tx * 0.7 });
+    else if (c === 'G') { gems.push({ x: px + 8, y: py + 6, w: 16, h: 20, phase: tx * 0.7 }); levelTotalGems++; }
     else if (c === 'F') portal = { x: px, y: py, w: 32, h: 64 };
     else if (c === 'K') flags.push({ x: px + 4, y: py - 52, w: 24, h: 84, tx, active: false, wave: 0 });
     else if (c === 'O') {
@@ -607,10 +728,22 @@ function loadLevel(i, keep = {}) {
     else continue;
     level.grid[ty][tx] = '.';
   }
-  levelTotalGems = gems.length + crates; levelGemsGot = 0; starKills = 0;
-  enemies.forEach(e => { e.active = false; e.dead = 0; e.anim = Math.random() * 6; });
+  for (const e of enemies) if (e.anim === undefined) { e.active = false; e.dead = 0; e.anim = Math.random() * 6; }
+  return start;
+}
+
+function loadLevel(i, keep = {}, def = LEVELS[i]) {
+  curDef = def;
+  const grid = buildGrid(def);
+  level = { w: def.w, grid, theme: THEMES[def.theme], themeName: def.theme, name: def.name,
+            secrets: grid.secrets.map(s => ({ ...s, found: false, a: 1 })),
+            water: def.water ? def.water.map(([x1, y1, x2, y2]) => ({ x1, y1, x2, y2 })) : null };
+  enemies = []; gems = []; items = []; particles = []; popups = []; bumps = []; portal = null; flags = []; fireballs = [];
+  hazards = []; plats = []; thorns = [];
+  levelTotalGems = 0; levelGemsGot = 0; starKills = 0;
+  let start = spawnRange(0, level.w) || { x: 64, y: 400 };
   // checkpoint mila hua hai to wahin se shuru karo
-  if (checkpoint && checkpoint.level === i) {
+  if (checkpoint && checkpoint.level === i && gameMode !== 'trial') {
     const f = flags.find(f => f.tx === checkpoint.tx);
     if (f) {
       f.active = true; f.wave = 1;
@@ -619,11 +752,14 @@ function loadLevel(i, keep = {}) {
       enemies = enemies.filter(e => Math.abs(e.x - start.x) > TILE * 5);
     }
   }
-  player = newPlayer(start.x, start.y, !!keep.leaf, !!keep.fire, !!keep.wing);
+  players = [newPlayer(start.x, start.y, keep, 0, save.char)];
+  if (gameMode === 'duo') players.push(newPlayer(start.x + 26, start.y, keep, 1, p2Char()));
+  player = players[0];
   boss = def.boss ? makeBoss(def.boss) : null;
   bossStarted = false; bossIntro = 0; waves = [];
   timeLeft = diff().time * 60;
   cam.x = Math.max(0, Math.min(player.x + player.w / 2 - W * 0.42, level.w * TILE - W));
+  ghostStart(i);
 }
 
 // ---------- Visitor/khiladi ginti (GoatCounter) ----------
@@ -635,26 +771,116 @@ function track(name, title) {
   } catch (e) {}
 }
 
-// kisi bhi world se naya game shuru (World map se)
+function resetRun(livesN) {
+  score = 0; gemCount = 0; lives = livesN; checkpoint = null; newHigh = false; levelDeaths = 0; runT = 0; paused = false;
+}
+// World map se shuru (kahani, 2 player ya time trial - jo mode chuna ho)
 function startFrom(i) {
-  track('start', 'Game shuru kiya');
-  score = 0; gemCount = 0; lives = diff().lives; levelIndex = i; checkpoint = null; newHigh = false; levelDeaths = 0;
-  paused = false;
+  if (gameMode !== 'duo' && gameMode !== 'trial') gameMode = 'adv';
+  track(gameMode === 'adv' ? 'start' : 'start-' + gameMode, 'Game shuru kiya (' + gameMode + ')');
+  resetRun(gameMode === 'trial' ? 1 : diff().lives + (gameMode === 'duo' ? 2 : 0));
+  levelIndex = i;
   loadLevel(i);
-  if (i === 0 && !save.story) startStory(INTRO, () => { save.story = true; persist(); state = 'ready'; stateTimer = 0; });
+  if (i === 0 && gameMode === 'adv' && !save.story) startStory(INTRO, () => { save.story = true; persist(); state = 'ready'; stateTimer = 0; });
   else { state = 'ready'; stateTimer = 0; }
 }
-function startGame() { startFrom(0); }
+function startGame() { gameMode = 'adv'; startFrom(0); }
+function startEndless() {
+  gameMode = 'endless'; track('start-endless', 'Endless shuru'); resetRun(1); levelIndex = -1;
+  loadLevel(-1, {}, endlessDef()); state = 'ready'; stateTimer = 0;
+}
+const RUSH = LEVELS.map((L, i) => L.boss ? i : -1).filter(i => i >= 0);
+function startRush() {
+  gameMode = 'rush'; track('start-rush', 'Boss Rush shuru'); resetRun(diff().lives); rushIdx = 0;
+  levelIndex = RUSH[0]; loadLevel(levelIndex); state = 'ready'; stateTimer = 0;
+}
+function startDaily() {
+  gameMode = 'daily'; track('start-daily', 'Daily challenge shuru'); resetRun(3); levelIndex = -1;
+  loadLevel(-1, {}, dailyDef()); state = 'ready'; stateTimer = 0;
+}
+function startCustom(def) {
+  gameMode = 'custom'; resetRun(3); levelIndex = -1;
+  loadLevel(-1, {}, def); state = 'ready'; stateTimer = 0;
+}
 
 // ---------- High score (browser mein save hota hai) ----------
 const HS_KEY = 'tikkuRunHighScore';
 let highScore = 0, newHigh = false;
 try { highScore = parseInt(localStorage.getItem(HS_KEY)) || 0; } catch (e) {}
 function saveHighScore() {
+  if (gameMode !== 'adv' && gameMode !== 'duo') return;
   if (score > highScore) {
     highScore = score; newHigh = true;
     try { localStorage.setItem(HS_KEY, String(highScore)); } catch (e) {}
   }
+}
+
+// ---------- Endless / Daily: apne aap banne wala level ----------
+function makeRng(seed) { // chhota sa seeded random (har baar same seed = same level)
+  let a = seed >>> 0;
+  return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+const ri = (r, a, b) => a + Math.floor(r() * (b - a + 1));
+const pickR = (r, arr) => arr[Math.floor(r() * arr.length)];
+function foe(L, x, y, r, d) { if (r() < 0.35 + d * 0.4) L.set(x, y, r() < 0.25 + d * 0.35 ? 'H' : 'S'); }
+// har chunk: kahan se shuru (x), kitna mushkil (d: 0..1); chaudai (width) wapas deta hai
+const CHUNKS = [
+  { min: 0, f(L, x, r, d) { L.ground(x, x + 13); foe(L, x + 5 + ri(r, 0, 5), 14, r, d); if (r() < 0.6) L.row(x + 3, 11, 'GGGG'); return 14; } },
+  { min: 0, f(L, x, r, d) { const g = 2 + ri(r, 0, d > 0.5 ? 2 : 1); L.ground(x, x + 5); L.ground(x + 6 + g, x + 11 + g); L.row(x + 6, 11, 'G'.repeat(g)); return 12 + g; } },
+  { min: 0, f(L, x, r, d) { L.ground(x, x + 3); L.row(x + 5, 12, '==='); L.row(x + 9, 11, '==='); L.row(x + 9, 9, 'GGG'); L.ground(x + 13, x + 16); return 17; } },
+  { min: 0.1, f(L, x, r, d) { L.ground(x, x + 3); L.set(x + 6, 12, 'h'); L.row(x + 6, 9, 'GGG'); L.ground(x + 12, x + 15); return 16; } },
+  { min: 0, f(L, x, r, d) { L.ground(x, x + 14); L.set(x + 3, 14, 'B'); L.fill(x + 4, 13, x + 4, 14, 'B'); L.fill(x + 5, 12, x + 6, 14, 'B'); L.fill(x + 7, 13, x + 7, 14, 'B'); L.row(x + 5, 10, 'GG'); foe(L, x + 11, 14, r, d); return 15; } },
+  { min: 0.05, f(L, x, r, d) { const n = 3 + ri(r, 0, 2); L.ground(x, x + 14); L.row(x + 5, 14, '^'.repeat(n)); L.row(x + 4, 11, '='.repeat(n + 2)); L.row(x + 5, 10, 'G'.repeat(n)); return 15; } },
+  { min: 0, f(L, x, r, d) { L.ground(x, x + 12); L.row(x + 4, 11, pickR(r, ['CPC', 'CRC', 'CCC', 'BCB', 'CTC', 'CMC', 'CWC', 'BCB'])); foe(L, x + 9, 14, r, d); return 13; } },
+  { min: 0.1, f(L, x, r, d) { L.ground(x, x + 12); L.set(x + 3, 15, 'J'); L.fill(x + 6, 9, x + 7, 14, 'B'); L.row(x + 6, 7, 'GG'); return 13; } },
+  { min: 0.2, f(L, x, r, d) { L.ground(x, x + 15); L.set(x + 6, 9, 'V'); if (d > 0.5) L.set(x + 12, 8, 'V'); L.row(x + 3, 12, 'GGG'); return 16; } },
+  { min: 0.15, f(L, x, r, d) { L.ground(x, x + 13); L.set(x + 9, 14, 'Y'); L.row(x + 3, 11, 'BCB'); return 14; } },
+  { min: 0.3, f(L, x, r, d) { L.ground(x, x + 3); L.set(x + 5, 12, 'd'); L.set(x + 8, 11, 'd'); L.row(x + 8, 9, 'GG'); L.ground(x + 12, x + 15); return 16; } },
+  { min: 0.45, f(L, x, r, d) { L.ground(x, x + 14); L.set(x + 7, 11, 'O'); foe(L, x + 12, 14, r, d); return 15; } },
+];
+function addChunk(L, x, r, d) {
+  const ok = CHUNKS.filter(c => c.min <= d);
+  return pickR(r, ok).f(L, x, r, d);
+}
+const ENDLESS_THEMES = ['day', 'sunset', 'night', 'desert', 'snow', 'sky', 'city', 'temple'];
+let gen = null;
+function endlessDef() {
+  gen = { r: makeRng((Math.random() * 1e9) | 0), x: 0, zones: [{ x: 0, th: 'day' }] };
+  return { name: 'Endless Run', theme: 'day', w: 31, endless: true,
+    build(L) { L.ground(0, 30); L.set(3, 14, '@'); L.row(8, 11, 'CPC'); L.row(16, 11, 'GGGG'); } };
+}
+// player aage badhe to aage naya raasta banta jaata hai
+function growEndless() {
+  if (!gen) return;
+  if (gen.x === 0) gen.x = level.w;
+  const L = {
+    set(x, y, c) { if (y < 0 || y >= ROWS) return; const row = level.grid[y]; while (row.length <= x) row.push('.'); row[x] = c; },
+    fill(x1, y1, x2, y2, c) { for (let y = y1; y <= y2; y++) for (let x = x1; x <= x2; x++) this.set(x, y, c); },
+    ground(x1, x2, top = 15) { this.fill(x1, top, x2, ROWS - 1, '#'); },
+    row(x, y, s) { for (let i = 0; i < s.length; i++) if (s[i] !== ' ') this.set(x + i, y, s[i]); },
+  };
+  while (gen.x - player.x / TILE < 70) {
+    const d = Math.min(1, gen.x / 1400);
+    const x0 = gen.x, w = addChunk(L, x0, gen.r, d);
+    for (const row of level.grid) while (row.length < x0 + w) row.push('.');
+    level.w = x0 + w;
+    spawnRange(x0, x0 + w);
+    gen.x = x0 + w;
+    if (Math.floor(x0 / 150) !== Math.floor(gen.x / 150))
+      gen.zones.push({ x: Math.floor(gen.x / 150) * 150, th: ENDLESS_THEMES[Math.floor(gen.x / 150) % ENDLESS_THEMES.length] });
+  }
+}
+const todayKey = () => { const d = new Date(); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); };
+function dailyDef() {
+  const key = todayKey(), r = makeRng(key * 7919);
+  const dayNo = Math.floor(Date.now() / 864e5);
+  return { name: 'Daily ' + String(key).slice(6) + '/' + String(key).slice(4, 6), theme: ENDLESS_THEMES[dayNo % ENDLESS_THEMES.length], w: 240, daily: true,
+    build(L) {
+      L.ground(0, 24); L.set(3, 14, '@'); L.row(8, 11, pickR(r, ['CPC', 'CRC', 'CWC']));
+      let x = 25;
+      while (x < 205) x += addChunk(L, x, r, Math.min(0.85, 0.25 + (x / 205) * 0.6));
+      L.ground(x, 239); L.set(x + 2, 14, 'K'); L.set(x + 8, 13, 'F');
+    } };
 }
 
 // ---------- Physics helpers ----------
@@ -722,6 +948,9 @@ function addGem() {
   if (save.stats.gems % 10 === 0) persist();
 }
 
+// phone halka sa kaanpe (sirf Android phones pe; iPhone mein ye suvidha nahi hai)
+function buzz(ms) { if (save.set.vib && navigator.vibrate) { try { navigator.vibrate(ms); } catch (e) {} } }
+
 const ENEMY_COL = { slime: '#b06cff', hedge: '#8d6e63', bat: '#7e57c2', fish: '#ff8a65', cactus: '#7cb342' };
 function killEnemy(e, flip) {
   e.dead = 1; e.flip = !!flip;
@@ -729,7 +958,7 @@ function killEnemy(e, flip) {
   score += 200;
   save.stats.kills++;
   if (save.stats.kills >= 50) unlock('stomp50');
-  SFX.stomp();
+  SFX.stomp(); buzz(15);
   floatText(e.x + e.w / 2, e.y - 6, '+200', '#fff59d');
   puff(e.x + e.w / 2, e.y + e.h, 5, e.type === 'slime' ? 'rgba(186,140,255,0.85)' : 'rgba(200,180,160,0.85)');
   for (let i = 0; i < 8; i++) particles.push({
@@ -737,44 +966,48 @@ function killEnemy(e, flip) {
     life: 30, color: ENEMY_COL[e.type] || '#fff' });
 }
 
-function hurtPlayer() {
-  if (player.invuln > 0 || player.dying || player.star > 0) return;
+function hurtPlayer(p = player) {
+  if (p.invuln > 0 || p.dying || p.star > 0) return;
   const lose = col => {
-    player.invuln = 110; SFX.hurt();
-    for (let i = 0; i < 10; i++) particles.push({ x: player.x + 11, y: player.y, vx: (Math.random() - 0.5) * 6,
+    p.invuln = 110; SFX.hurt(); buzz(80);
+    for (let i = 0; i < 10; i++) particles.push({ x: p.x + 11, y: p.y, vx: (Math.random() - 0.5) * 6,
       vy: -Math.random() * 5, life: 40, color: col });
   };
   // pehle aag jaati hai, phir pankh, phir patta, phir jaan
-  if (player.fire) { player.fire = false; lose('#ff7043'); }
-  else if (player.wing) { player.wing = false; lose('#ffffff'); }
-  else if (player.leaf) { player.leaf = false; lose('#66bb6a'); }
-  else killPlayer(false);
+  if (p.fire) { p.fire = false; lose('#ff7043'); }
+  else if (p.wing) { p.wing = false; lose('#ffffff'); }
+  else if (p.leaf) { p.leaf = false; lose('#66bb6a'); }
+  else killPlayer(false, p);
 }
 
-function killPlayer(fell) {
-  if (player.dying) return;
-  player.dying = true; player.vx = 0; player.vy = fell ? 0 : -10; player.star = 0;
-  levelDeaths++;
-  state = 'dying'; stateTimer = 0; SFX.die();
+function killPlayer(fell, p = player) {
+  if (p.dying) return;
+  p.dying = true; p.vx = 0; p.vy = fell ? 0 : -10; p.star = 0; p.deathT = 0; p.ride = null;
+  levelDeaths++; SFX.die(); buzz(250);
+  // 2 player: dost zinda hai to game chalta rehta hai, ye thodi der baad wapas aayega
+  if (alivePlayers().length > 0) return;
+  player = p;
+  state = 'dying'; stateTimer = 0;
 }
 
 // ---------- Update ----------
-const MENU_STATES = new Set(['title', 'settings', 'shop', 'achievements', 'scores', 'help', 'gameover', 'win']);
+const MENU_STATES = new Set(['title', 'settings', 'shop', 'achievements', 'scores', 'help', 'gameover', 'win',
+                             'result', 'modes', 'chars', 'cloud']);
 const OK_KEYS = ['Enter', 'Space', 'KeyZ', 'PadStart'];
-function isMenuState() { return MENU_STATES.has(state) || state === 'map' || (state === 'playing' && paused); }
+function isMenuState() { return MENU_STATES.has(state) || state === 'map' || state === 'editor' || (state === 'playing' && paused); }
 
 function update() {
   frame++;
   pollPad();
-  if (nameOpen) { pressed.clear(); return; } // naam likh rahe ho to game ruka rahe
+  if (textOpen) { pressed.clear(); return; } // naam/code likh rahe ho to game ruka rahe
   if (hit('KeyM')) muted = !muted;
   if (hit('KeyN')) musicOn = !musicOn;
-  if (hit('KeyL')) setLang(lang === 'hi' ? 'en' : 'hi');
+  if (hit('KeyL') && state !== 'editor') setLang(lang === 'hi' ? 'en' : 'hi');
   if (shake > 0) shake *= 0.85;
   if (shake < 0.5) shake = 0;
   // kis screen pe kaunsa gaana
-  if (state === 'ready' || state === 'playing') setMusic(boss && bossStarted && !boss.dead ? 'boss' : LEVELS[levelIndex].theme);
-  else if (state === 'dying' || state === 'clear' || state === 'gameover') setMusic(null);
+  if (state === 'ready' || state === 'playing') setMusic(boss && bossStarted && !boss.dead ? 'boss' : level.themeName);
+  else if (state === 'dying' || state === 'clear' || state === 'gameover' || state === 'result') setMusic(null);
   else if (state === 'story') setMusic('sunset');
   else setMusic('title');
   syncBodyClass();
@@ -782,13 +1015,14 @@ function update() {
   toasts = toasts.filter(ts => ts.t > 0);
 
   // title / menu ke peeche background dheere-dheere sarakta hai
-  if ((state === 'title' || SUB_SCREENS[state]) && level) cam.x = (0.5 - 0.5 * Math.cos(frame * 0.0015)) * (level.w * TILE - W);
+  if ((state === 'title' || SUB_SCREENS[state]) && level) cam.x = (0.5 - 0.5 * Math.cos(frame * 0.0015)) * Math.max(0, level.w * TILE - W);
 
   if (MENU_STATES.has(state)) {
     if (state !== 'title' && hit('Escape', 'PadBack')) menuBack();
     else menuUpdate(menuItems());
   } else if (state === 'map') updateMap();
   else if (state === 'story') updateStory();
+  else if (state === 'editor') updateEditor();
   else if (state === 'ready') {
     stateTimer++;
     if (stateTimer > 90 || (stateTimer > 20 && hit('Enter', 'PadStart', ...JUMP_KEYS))) state = 'playing';
@@ -801,35 +1035,94 @@ function update() {
     if (stateTimer > 25) { player.vy = Math.min(player.vy + GRAV, MAX_FALL); player.y += player.vy; }
     updateParticles();
     if (stateTimer > 150) {
-      lives--;
-      if (lives <= 0) {
-        state = 'gameover'; stateTimer = 0;
-        track('gameover-world-' + (levelIndex + 1), 'Game over (World ' + (levelIndex + 1) + ')');
-        endRun(false);
+      if (gameMode === 'trial') { loadLevel(levelIndex); runT = 0; state = 'ready'; stateTimer = 0; } // time trial: turant dobara
+      else {
+        lives--;
+        if (lives <= 0) runOver(false);
+        else { loadLevel(levelIndex, {}, curDef); state = 'ready'; stateTimer = 0; }
       }
-      else { loadLevel(levelIndex); state = 'ready'; stateTimer = 0; }
     }
   } else if (state === 'clear') {
     stateTimer++;
-    for (let k = 0; k < 3; k++) if (stateTimer === 30 + k * 25 && clearStars[k]) beep(660 + k * 220, 990 + k * 330, 0.18, 'triangle', 0.08);
+    if (gameMode !== 'trial') for (let k = 0; k < 3; k++) if (stateTimer === 30 + k * 25 && clearStars[k]) beep(660 + k * 220, 990 + k * 330, 0.18, 'triangle', 0.08);
     // bacha hua time score mein convert hota hai
-    if (timeLeft > 0) { const d = Math.min(timeLeft, 60 * 3); timeLeft -= d; score += Math.floor(d / 60) * 10; }
+    if (timeLeft > 0 && gameMode !== 'trial') { const d = Math.min(timeLeft, 60 * 3); timeLeft -= d; score += Math.floor(d / 60) * 10; }
     updateParticles();
-    if (stateTimer > 200) {
-      track('world-' + (levelIndex + 1) + '-clear', 'World ' + (levelIndex + 1) + ' paar kiya');
-      levelIndex++; checkpoint = null; levelDeaths = 0; saveHighScore();
-      if (levelIndex >= LEVELS.length) {
-        levelIndex = LEVELS.length - 1;
-        track('win', 'Poora game jeeta');
-        if (save.set.diff === 2) unlock('hard');
-        startStory(ENDING, () => { state = 'win'; stateTimer = 0; endRun(true); });
-      } else {
-        loadLevel(levelIndex, { leaf: player.leaf, fire: player.fire, wing: player.wing });
-        state = 'ready'; stateTimer = 0;
-      }
-    }
+    if (stateTimer > 200) afterClear();
   }
   pressed.clear();
+}
+
+// level paar hone ke baad kahan jaana hai (mode ke hisaab se)
+function afterClear() {
+  const i = levelIndex;
+  if (gameMode === 'trial') { openMap(); return; }
+  if (gameMode === 'daily' || gameMode === 'custom') { runOver(true); return; }
+  if (gameMode === 'rush') {
+    rushIdx++;
+    if (rushIdx >= RUSH.length) { runOver(true); return; }
+    levelIndex = RUSH[rushIdx]; checkpoint = null; levelDeaths = 0;
+    loadLevel(levelIndex, { leaf: player.leaf, fire: player.fire, wing: player.wing }); state = 'ready'; stateTimer = 0;
+    return;
+  }
+  track('world-' + (i + 1) + '-clear', 'World ' + (i + 1) + ' paar kiya');
+  levelIndex++; checkpoint = null; levelDeaths = 0; saveHighScore();
+  if (levelIndex >= LEVELS.length) {
+    levelIndex = LEVELS.length - 1;
+    track('win', 'Poora game jeeta');
+    if (save.set.diff === 2) unlock('hard');
+    startStory(ENDING, () => { state = 'win'; stateTimer = 0; endRun('adv', true); });
+  } else {
+    loadLevel(levelIndex, { leaf: player.leaf, fire: player.fire, wing: player.wing });
+    state = 'ready'; stateTimer = 0;
+  }
+}
+
+// game khatam (haare ya mode poora hua)
+function runOver(won) {
+  stateTimer = 0;
+  if (gameMode === 'adv' || gameMode === 'duo') {
+    state = 'gameover';
+    track('gameover-world-' + (levelIndex + 1), 'Game over (World ' + (levelIndex + 1) + ')');
+    endRun('adv', false);
+    return;
+  }
+  const R = { won, lines: [] };
+  if (gameMode === 'endless') {
+    const dist = Math.floor(player.x / TILE);
+    score += dist * 10;
+    R.title = t('endlessOver'); R.lines = [`${t('distance')}: ${dist} m`, `${t('score')}: ${score}`];
+    if (dist > save.best.endless) { save.best.endless = dist; R.lines.push(t('newBest')); }
+    R.lines.push(`${t('best')}: ${save.best.endless} m`);
+    if (dist >= 500) unlock('endless500');
+    track('endless-over', 'Endless khatam');
+    endRun('endless', false);
+  } else if (gameMode === 'rush') {
+    R.title = won ? t('rushWin') : t('gameOver');
+    if (won) { score += Math.max(0, 20000 - Math.floor(runT / 6)); unlock('rush'); }
+    R.lines = [`${t('time')}: ${fmtTime(runT)}`, `${t('score')}: ${score}`];
+    if (won && score > save.best.rush) { save.best.rush = score; R.lines.push(t('newBest')); }
+    endRun('rush', won);
+  } else if (gameMode === 'daily') {
+    const k = String(todayKey()), D = save.daily;
+    R.title = won ? t('dailyWin') : t('gameOver');
+    if (won) {
+      unlock('daily');
+      if (D.date !== k) { // aaj pehli baar paar kiya: streak badhao
+        const y = new Date(Date.now() - 864e5), yk = String(y.getFullYear() * 10000 + (y.getMonth() + 1) * 100 + y.getDate());
+        D.streak = D.last === yk ? D.streak + 1 : 1; D.last = k; D.date = k; D.best = 0;
+      }
+      if (score > D.best) { D.best = score; R.lines.push(t('newBest')); }
+      R.lines.unshift(`${t('score')}: ${score}`, `${t('streak')}: ${D.streak} 🔥`);
+      endRun('daily', true);
+    } else R.lines = [`${t('score')}: ${score}`, t('dailyRetry')];
+  } else if (gameMode === 'custom') {
+    R.title = won ? t('levelClear') : t('gameOver');
+    R.lines = [`${t('score')}: ${score}`];
+    if (won && curDef && curDef.mine) unlock('creator');
+  }
+  persist();
+  resultInfo = R; goState('result');
 }
 
 // level khatam: stars ginna aur progress save karna
@@ -837,43 +1130,52 @@ function onLevelClear() {
   const i = levelIndex;
   const gemsOk = levelTotalGems === 0 || levelGemsGot >= Math.ceil(levelTotalGems * 0.8);
   clearStars = [true, gemsOk, levelDeaths === 0];
-  const n = clearStars.filter(Boolean).length;
-  save.stars[i] = Math.max(save.stars[i] || 0, n);
-  save.unlocked = Math.max(save.unlocked, Math.min(i + 1, LEVELS.length - 1));
-  if (i === 0) unlock('w1');
   if (levelDeaths === 0) unlock('nodeath');
-  if (n === 3) unlock('stars3');
-  if (LEVELS[i].water) unlock('swim');
-  if (LEVELS.every((_, k) => save.stars[k] === 3)) unlock('allstars');
+  if (curDef.water) unlock('swim');
+  if (gameMode === 'duo') unlock('duo');
+  if (gameMode === 'trial') {
+    trialNew = !save.times[i] || runT < save.times[i];
+    if (trialNew) { save.times[i] = runT; ghostSave(i); }
+  }
+  if (gameMode === 'adv' || gameMode === 'duo') {
+    const n = clearStars.filter(Boolean).length;
+    save.stars[i] = Math.max(save.stars[i] || 0, n);
+    save.unlocked = Math.max(save.unlocked, Math.min(i + 1, LEVELS.length - 1));
+    if (i === 0) unlock('w1');
+    if (n === 3) unlock('stars3');
+    if (LEVELS.every((_, k) => save.stars[k] === 3)) unlock('allstars');
+  }
   persist();
 }
 
-// game khatam (haare ya jeete): score save, top 10 mein aaye to naam pucho
-function endRun(won) {
-  saveHighScore(); persist();
-  if (score > 0 && (save.top.length < 10 || score > save.top[save.top.length - 1].s)) openNameBox(won);
-}
+// ---------- Controls: 1 player ya 2 player ----------
+const CTRL_SOLO = { left: ['ArrowLeft', 'KeyA', 'TLeft'], right: ['ArrowRight', 'KeyD', 'TRight'], jump: JUMP_KEYS,
+                    run: ['ShiftLeft', 'ShiftRight', 'KeyX'], fire: ['KeyF', 'KeyC'] };
+const CTRL_P1 = { left: ['KeyA', 'TLeft', 'G0L'], right: ['KeyD', 'TRight', 'G0R'], jump: ['KeyW', 'Space', 'G0J'],
+                  run: ['ShiftLeft', 'G0Run'], fire: ['KeyF', 'G0F'] };
+const CTRL_P2 = { left: ['ArrowLeft', 'G1L'], right: ['ArrowRight', 'G1R'], jump: ['ArrowUp', 'G1J'],
+                  run: ['ShiftRight', 'G1Run'], fire: ['Enter', 'NumpadEnter', 'Slash', 'Period', 'G1F'] };
+const ctrlFor = p => gameMode !== 'duo' ? CTRL_SOLO : p.idx ? CTRL_P2 : CTRL_P1;
 
 const fireBtn = document.getElementById('firebtn');
 const POWER_TXT = { fire: 'FIRE!', leaf: 'LEAF!', wing: 'WINGS!', star: 'STAR!', magnet: 'MAGNET!' };
 const POWER_COL = { fire: '#ffab40', leaf: '#c5e1a5', wing: '#ffffff', star: '#fff176', magnet: '#ef9a9a' };
-function updatePlaying() {
-  if (fireBtn) fireBtn.classList.toggle('off', !player.fire);
-  const p = player;
-  updatePlats();
-  // chalti platform pe khade ho to uske saath chalo
+
+// ek khiladi ki chaal: chalna, koodna, tairna, fire, spring, spikes
+function playerCore(p) {
+  const C = ctrlFor(p), st = CHARS[p.ch] || CHARS.fox;
   if (p.ride) {
     const pl = p.ride;
     if (pl.gone) p.ride = null;
     else { const svx = p.vx; p.vx = pl.dx; p.x += pl.dx; collideX(p); p.vx = svx; p.y += pl.dy; }
   }
-  const left = down('ArrowLeft', 'KeyA'), right = down('ArrowRight', 'KeyD');
-  const run = down('ShiftLeft', 'ShiftRight', 'KeyX');
-  const jumpHeld = down(...JUMP_KEYS);
+  const left = down(...C.left), right = down(...C.right);
+  const run = down(...C.run);
+  const jumpHeld = down(...C.jump), jumpHit = hit(...C.jump);
   const wet = inWater(p.x + p.w / 2, p.y + p.h / 2);
   if (wet && !p.wet && p.vy > 1.5) splash(p);
   p.wet = wet;
-  const max = wet ? (run ? 3.4 : 2.6) : run ? 5.2 : 3.2;
+  const max = (wet ? (run ? 3.4 : 2.6) : run ? 5.2 : 3.2) * st.speed;
   const onIce = !wet && p.onGround && footTiles(p).includes('I');
   const acc = wet ? 0.25 : onIce ? 0.13 : p.onGround ? 0.45 : 0.32;
 
@@ -885,7 +1187,7 @@ function updatePlaying() {
   if (wet) {
     // PAANI: jump = tairo, upar satah ke paas jump = bahar uchhlo
     p.coyote = 0; p.buffer = 0; p.jumping = false; p.gliding = false;
-    if (hit(...JUMP_KEYS)) {
+    if (jumpHit) {
       const nearTop = !inWater(p.x + p.w / 2, p.y - 6);
       p.vy = nearTop ? -9.5 : -4.4; p.sx = 0.85; p.sy = 1.18;
       beep(nearTop ? 300 : 480, nearTop ? 760 : 820, 0.12, 'sine', 0.06);
@@ -895,13 +1197,13 @@ function updatePlaying() {
     if (frame % 24 === 0) bubbles(p.x + p.w / 2 + p.facing * 8, p.y + 6, 1);
   } else {
     p.coyote = p.onGround ? 7 : p.coyote - 1;
-    p.buffer = hit(...JUMP_KEYS) ? 7 : p.buffer - 1;
+    p.buffer = jumpHit ? 7 : p.buffer - 1;
     if (p.buffer > 0) {
       if (p.coyote > 0) {
-        p.vy = -13; p.coyote = 0; p.buffer = 0; p.jumping = true; SFX.jump(); p.ride = null;
+        p.vy = -13 * st.jump; p.coyote = 0; p.buffer = 0; p.jumping = true; SFX.jump(); p.ride = null;
         p.sx = 0.72; p.sy = 1.3; puff(p.x + p.w / 2, p.y + p.h, 5);
       } else if (p.leaf && p.canDouble) {
-        p.vy = -11; p.canDouble = false; p.buffer = 0; p.jumping = true; SFX.djump();
+        p.vy = -11 * st.jump; p.canDouble = false; p.buffer = 0; p.jumping = true; SFX.djump();
         p.sx = 0.8; p.sy = 1.25;
         for (let i = 0; i < 8; i++) particles.push({ x: p.x + 11, y: p.y + p.h, vx: (Math.random() - 0.5) * 4,
           vy: Math.random() * 2, life: 20, color: '#a5d6a7' });
@@ -910,8 +1212,8 @@ function updatePlaying() {
     if (p.jumping && !jumpHeld && p.vy < -3) { p.vy *= 0.45; p.jumping = false; }
     if (p.vy >= 0) p.jumping = false;
     p.vy = Math.min(p.vy + GRAV, MAX_FALL);
-    // PANKH: hawa mein jump dabaye rakho to dheere-dheere utro (glide)
-    p.gliding = p.wing && !p.onGround && jumpHeld && p.vy > 1.3;
+    // PANKH (ya Chiku ullu): hawa mein jump dabaye rakho to dheere-dheere utro
+    p.gliding = (p.wing || st.glide) && !p.onGround && jumpHeld && p.vy > 1.3;
     if (p.gliding) {
       p.vy = 1.3;
       if (frame % 6 === 0) particles.push({ x: p.x + p.w / 2 - p.facing * 10, y: p.y + 10, vx: -p.facing * 0.5, vy: 0.3, g: 0,
@@ -938,11 +1240,11 @@ function updatePlaying() {
     p.sx = 1.3; p.sy = 0.72; puff(p.x + p.w / 2, p.y + p.h, vyBefore > 9 ? 8 : 4);
   }
   p.wasGround = p.onGround;
-  // FIRE: F (ya C) dabao, ek baar mein max 2 gole (paani mein aag nahi chalti)
+  // FIRE: ek baar mein max 2 gole har khiladi ke (paani mein aag nahi chalti)
   if (p.fireCd > 0) p.fireCd--;
-  if (p.fire && !wet && hit('KeyF', 'KeyC') && p.fireCd === 0 && fireballs.length < 2) {
+  if (p.fire && !wet && hit(...C.fire) && p.fireCd === 0 && fireballs.filter(f => f.owner === p.idx).length < 2) {
     fireballs.push({ x: p.facing > 0 ? p.x + p.w : p.x - 12, y: p.y + 8, w: 12, h: 12,
-                     vx: 7.5 * p.facing, vy: 2, life: 150, spin: 0 });
+                     vx: 7.5 * p.facing, vy: 2, life: 150, spin: 0, owner: p.idx });
     p.fireCd = 16; p.shootT = 10;
     beep(760, 260, 0.14, 'square', 0.05);
   }
@@ -967,30 +1269,76 @@ function updatePlaying() {
       r: 2, life: 20, color: `hsl(${(frame * 9) % 360},100%,65%)` });
   }
   if (p.magnet > 0) p.magnet--;
-  if (level.water && frame % 20 === 0) { // samundar mein bulbule
-    const bx = cam.x + Math.random() * W;
-    if (inWater(bx, 470)) bubbles(bx, 470, 1);
-  }
 
   // spikes (star power ho to kuch nahi hota)
   if (p.star <= 0) {
     const l = Math.floor(p.x / TILE), r = Math.floor((p.x + p.w) / TILE);
     const t = Math.floor(p.y / TILE), b = Math.floor((p.y + p.h) / TILE);
     for (let ty = t; ty <= b; ty++) for (let tx = l; tx <= r; tx++)
-      if (tileAt(tx, ty) === '^' && overlap(p, { x: tx * TILE + 4, y: ty * TILE + 16, w: 24, h: 16 })) hurtPlayer();
+      if (tileAt(tx, ty) === '^' && overlap(p, { x: tx * TILE + 4, y: ty * TILE + 16, w: 24, h: 16 })) hurtPlayer(p);
   }
-  if (p.y > ROWS * TILE + 20) { killPlayer(true); return; }
+  if (p.y > ROWS * TILE + 20) killPlayer(true, p);
+}
+
+// 2 player: gira hua khiladi dost ke paas wapas aata hai (ek jaan kam hoti hai)
+function updateDowned() {
+  for (const p of players) {
+    if (!p.dying) continue;
+    p.deathT++;
+    if (p.deathT > 25 && p.y < ROWS * TILE + 100) { p.vy = Math.min(p.vy + GRAV, MAX_FALL); p.y += p.vy; }
+    if (p.deathT > 120) {
+      const buddy = alivePlayers()[0];
+      if (!buddy) continue;
+      lives--;
+      if (lives <= 0) { player = p; runOver(false); return; }
+      const np = newPlayer(buddy.x, buddy.y - 4, {}, p.idx, p.ch);
+      np.invuln = 120; np.facing = buddy.facing;
+      players[players.indexOf(p)] = np;
+      for (let i = 0; i < 14; i++) particles.push({ x: np.x + 11, y: np.y + 14, vx: (Math.random() - 0.5) * 5, vy: (Math.random() - 0.5) * 5, life: 30, color: '#fff59d' });
+    }
+  }
+  player = players[0];
+}
+
+function updatePlaying() {
+  if (fireBtn) fireBtn.classList.toggle('off', !player.fire);
+  updatePlats();
+  for (const p of players) if (!p.dying) playerCore(p);
+  if (state !== 'playing') return;
+  if (gameMode === 'duo') { updateDowned(); if (state !== 'playing') return; }
+  if (level.water && frame % 20 === 0) { // samundar mein bulbule
+    const bx = cam.x + Math.random() * W;
+    if (inWater(bx, 470)) bubbles(bx, 470, 1);
+  }
 
   // timer
-  timeLeft--;
-  if (timeLeft <= 0) { timeLeft = 0; killPlayer(false); return; }
+  runT++;
+  if (gameMode !== 'endless' && gameMode !== 'trial') {
+    timeLeft--;
+    if (timeLeft <= 0) { timeLeft = 0; for (const p of alivePlayers()) killPlayer(false, p); return; }
+  }
+  if (gameMode === 'trial') ghostRecord();
 
-  // camera
-  const target = p.x + p.w / 2 - W * 0.42;
-  cam.x += (target - cam.x) * 0.15;
+  // camera: 1 khiladi ke peeche, ya 2 khiladiyon ke beech mein
+  const live = alivePlayers(), lead = live.length ? live : players;
+  const mid = lead.reduce((a, p) => a + p.x + p.w / 2, 0) / lead.length;
+  cam.x += (mid - W * 0.42 - cam.x) * 0.15;
   cam.x = Math.max(0, Math.min(cam.x, level.w * TILE - W));
-
   if (bossStarted) cam.x += (level.w * TILE - W - cam.x) * 0.12; // arena mein camera ruk jaata hai
+  if (gameMode === 'duo') for (const p of live) { // screen se bahar mat jaane do
+    if (p.x < cam.x) { p.x = cam.x; if (p.vx < 0) p.vx = 0; }
+    if (p.x + p.w > cam.x + W) { p.x = cam.x + W - p.w; if (p.vx > 0) p.vx = 0; }
+  }
+  if (curDef.endless) {
+    growEndless();
+    const tx = player.x / TILE, z = [...gen.zones].reverse().find(z => tx >= z.x);
+    if (z && z.th !== level.themeName) { level.themeName = z.th; level.theme = THEMES[z.th]; fade = 0.7; }
+    if (frame % 120 === 0) { // peeche chhoot gayi cheezein hatao
+      const cut = cam.x - 900;
+      enemies = enemies.filter(e => e.x > cut); gems = gems.filter(g => g.x > cut); hazards = hazards.filter(h => (h.x || h.cx) > cut);
+      plats = plats.filter(pl => pl.ox > cut || players.some(p => p.ride === pl));
+    }
+  }
   updateEnemies();
   updateBoss();
   updateFireballs();
@@ -998,26 +1346,38 @@ function updatePlaying() {
   updateThorns();
   if (state !== 'playing') return;
 
-  // gems (magnet ho to paas wale gems khinche chale aate hain)
+  for (const p of alivePlayers()) collectFor(p);
+  gems = gems.filter(g => !g.got);
+  items = items.filter(i => !i.got);
+  for (const it of items) { if (it.y > it.targetY) it.y = Math.max(it.targetY, it.y - 1.2); it.phase += 0.08; }
+
+  // popups & bumps
+  for (const pu of popups) { pu.y += pu.vy; pu.vy += 0.5; pu.life--; }
+  popups = popups.filter(pu => pu.life > 0);
+  for (const b of bumps) b.t--;
+  bumps = bumps.filter(b => b.t > 0);
+  updateParticles();
+  for (const s of level.secrets) if (s.found && s.a > 0) s.a = Math.max(0, s.a - 0.05);
+  for (const f of flags) if (f.wave) f.wave++;
+}
+
+// gems, power-ups, secret, checkpoint, portal: har khiladi ke liye
+function collectFor(p) {
   for (const g of gems) {
+    if (g.got) continue;
     if (p.magnet > 0) {
       const dx = p.x + p.w / 2 - (g.x + 8), dy = p.y + p.h / 2 - (g.y + 10), d = Math.hypot(dx, dy);
       if (d < 190 && d > 1) { const s = Math.min(d, 7) / d; g.x += dx * s; g.y += dy * s; }
     }
-    if (!g.got && overlap(p, g)) {
+    if (overlap(p, g)) {
       g.got = true; addGem(); score += 50; floatText(g.x + 8, g.y - 4, '+50', '#b3e5fc');
       for (let i = 0; i < 6; i++) particles.push({ x: g.x + 8, y: g.y + 10, vx: (Math.random() - 0.5) * 3,
         vy: (Math.random() - 0.5) * 3, life: 20, color: '#80deea' });
     }
   }
-  gems = gems.filter(g => !g.got);
-
-  // power-ups
   for (const it of items) {
-    if (it.y > it.targetY) it.y = Math.max(it.targetY, it.y - 1.2);
-    it.phase += 0.08;
     if (!it.got && it.y <= it.targetY + 10 && overlap(p, it)) {
-      it.got = true; SFX.power();
+      it.got = true; SFX.power(); buzz(30);
       const K = it.kind || 'leaf';
       floatText(it.x + 12, it.y - 6, POWER_TXT[K], POWER_COL[K], 18);
       if (K === 'fire') { score += p.fire ? 1000 : 500; p.fire = true; }
@@ -1027,27 +1387,13 @@ function updatePlaying() {
       else { score += p.leaf ? 1000 : 500; p.leaf = true; p.canDouble = !p.onGround; }
     }
   }
-  items = items.filter(i => !i.got);
-
-  // popups & bumps
-  for (const pu of popups) { pu.y += pu.vy; pu.vy += 0.5; pu.life--; }
-  popups = popups.filter(pu => pu.life > 0);
-  for (const b of bumps) b.t--;
-  bumps = bumps.filter(b => b.t > 0);
-  updateParticles();
-
-  // chhupe kamre
   for (const s of level.secrets) {
     if (!s.found && overlap(p, { x: s.x1 * TILE, y: s.y1 * TILE, w: (s.x2 - s.x1 + 1) * TILE, h: (s.y2 - s.y1 + 1) * TILE })) {
       s.found = true; score += 500; SFX.power(); unlock('secret');
       floatText(p.x + p.w / 2, p.y - 24, t('secret'), '#ffd54f', 20);
     }
-    if (s.found && s.a > 0) s.a = Math.max(0, s.a - 0.05);
   }
-
-  // checkpoint flags
   for (const f of flags) {
-    if (f.wave) f.wave++;
     if (!f.active && overlap(p, f)) {
       flags.forEach(o => { o.active = false; });
       f.active = true; f.wave = 1;
@@ -1057,9 +1403,8 @@ function updatePlaying() {
         vy: -Math.random() * 5, life: 40, color: ['#ffca28', '#66bb6a', '#ffffff'][i % 3] });
     }
   }
-
-  // portal
-  if (portal && overlap(p, { x: portal.x + 6, y: portal.y, w: 20, h: 64 })) {
+  if (state === 'playing' && portal && overlap(p, { x: portal.x + 6, y: portal.y, w: 20, h: 64 })) {
+    player = p;
     state = 'clear'; stateTimer = 0; SFX.clear();
     onLevelClear();
     for (let i = 0; i < 30; i++) particles.push({ x: portal.x + 16, y: portal.y + 32, vx: (Math.random() - 0.5) * 8,
@@ -1067,8 +1412,14 @@ function updatePlaying() {
   }
 }
 
+// sabse paas wala zinda khiladi (dushman isi ko nishana banate hain)
+function nearestPlayer(x) {
+  let best = player, bd = 1e9;
+  for (const p of alivePlayers()) { const d = Math.abs(p.x - x); if (d < bd) { bd = d; best = p; } }
+  return best;
+}
+
 function updateEnemies() {
-  const p = player;
   for (const e of enemies) {
     if (!e.active) { if (e.x < cam.x + W + 64) e.active = true; else continue; }
     e.anim += 0.15;
@@ -1084,11 +1435,12 @@ function updateEnemies() {
       if (Math.abs(e.x - e.ox) > e.range) { e.x = e.ox + Math.sign(e.x - e.ox) * e.range; e.vx = -e.vx; }
       e.y = e.oy + Math.sin(e.t) * (e.type === 'bat' ? 26 : 14);
     } else if (e.type === 'cactus') {
-      // ek jagah khada rehta hai aur Tikku ki taraf kaante phenkta hai
+      // ek jagah khada rehta hai aur sabse paas wale khiladi ki taraf kaante phenkta hai
+      const tp = nearestPlayer(e.x);
       e.vy = Math.min(e.vy + GRAV, MAX_FALL);
       e.prevBottom = e.y + e.h; e.y += e.vy; collideY(e, false);
-      e.face = p.x + p.w / 2 < e.x + e.w / 2 ? -1 : 1;
-      if (Math.abs(p.x - e.x) < 460 && e.x > cam.x - 40 && e.x < cam.x + W + 40 && --e.cd <= 0) {
+      e.face = tp.x + tp.w / 2 < e.x + e.w / 2 ? -1 : 1;
+      if (Math.abs(tp.x - e.x) < 460 && e.x > cam.x - 40 && e.x < cam.x + W + 40 && --e.cd <= 0) {
         e.cd = Math.round(130 / diff().spd); e.shootT = 12;
         thorns.push({ x: e.x + e.w / 2 - 6 + e.face * 10, y: e.y + 10, w: 12, h: 6,
                       vx: 3.2 * e.face * Math.min(1.25, diff().spd), life: 200 });
@@ -1111,24 +1463,26 @@ function updateEnemies() {
     }
     if (e.y > ROWS * TILE + 64) { e.dead = 999; continue; }
 
-    if (!p.dying && overlap(p, e)) {
+    for (const p of alivePlayers()) {
+      if (e.dead || !overlap(p, e)) continue;
       if (p.star > 0) { // star power: chhoote hi dushman gaya
         killEnemy(e, true);
         if (++starKills >= 5) unlock('starpower');
         continue;
       }
-      const stompable = e.type === 'slime' || e.type === 'bat' || e.type === 'fish';
+      const tough = (CHARS[p.ch] || CHARS.fox).tough; // Bholu panda kaante walon pe bhi kood sakta hai
+      const stompable = e.type === 'slime' || e.type === 'bat' || e.type === 'fish' || tough;
       if (stompable && p.vy > 0 && p.prevBottom <= e.y + 10) {
         killEnemy(e, false);
-        p.vy = p.wet ? -3 : down(...JUMP_KEYS) ? -12 : -8; p.jumping = !p.wet; p.sx = 0.8; p.sy = 1.25;
+        p.vy = p.wet ? -3 : down(...ctrlFor(p).jump) ? -12 : -8; p.jumping = !p.wet; p.sx = 0.8; p.sy = 1.25;
         p.canDouble = p.leaf;
-      } else hurtPlayer();
+      } else hurtPlayer(p);
     }
   }
   // zameen pe chalne wale dushman ek doosre se takra ke mudte hain
-  const live = enemies.filter(e => e.active && !e.dead && (e.type === 'slime' || e.type === 'hedge'));
-  for (let i = 0; i < live.length; i++) for (let j = i + 1; j < live.length; j++) {
-    const a = live[i], b = live[j];
+  const liveE = enemies.filter(e => e.active && !e.dead && (e.type === 'slime' || e.type === 'hedge'));
+  for (let i = 0; i < liveE.length; i++) for (let j = i + 1; j < liveE.length; j++) {
+    const a = liveE[i], b = liveE[j];
     if (overlap(a, b)) {
       if (a.x < b.x) { a.vx = -a.speed; b.vx = b.speed; } else { a.vx = a.speed; b.vx = -b.speed; }
     }
@@ -1156,26 +1510,29 @@ function updatePlats() {
 
 // aag ke chakkar aur girte patthar / barf ke kaante
 function updateHazards() {
-  const p = player;
   for (const hz of hazards) {
     if (hz.type === 'bar') {
       hz.a += hz.spd;
-      if (!p.dying && p.star <= 0) for (let i = 1; i <= hz.n; i++) {
-        const bx = hz.cx + Math.cos(hz.a) * i * 15, by = hz.cy + Math.sin(hz.a) * i * 15;
-        const nx = Math.max(p.x + 3, Math.min(bx, p.x + p.w - 3)), ny = Math.max(p.y + 3, Math.min(by, p.y + p.h - 2));
-        if ((bx - nx) ** 2 + (by - ny) ** 2 < 36) { hurtPlayer(); break; }
+      for (const p of alivePlayers()) {
+        if (p.star > 0) continue;
+        for (let i = 1; i <= hz.n; i++) {
+          const bx = hz.cx + Math.cos(hz.a) * i * 15, by = hz.cy + Math.sin(hz.a) * i * 15;
+          const nx = Math.max(p.x + 3, Math.min(bx, p.x + p.w - 3)), ny = Math.max(p.y + 3, Math.min(by, p.y + p.h - 2));
+          if ((bx - nx) ** 2 + (by - ny) ** 2 < 36) { hurtPlayer(p); break; }
+        }
       }
     } else if (hz.type === 'rock') {
       if (hz.st === 'hang') {
-        if (Math.abs(p.x + p.w / 2 - (hz.x + hz.w / 2)) < 64 && p.y > hz.y) { hz.st = 'shake'; hz.t = 0; beep(180, 120, 0.15, 'triangle', 0.05); }
+        if (alivePlayers().some(p => Math.abs(p.x + p.w / 2 - (hz.x + hz.w / 2)) < 64 && p.y > hz.y)) { hz.st = 'shake'; hz.t = 0; beep(180, 120, 0.15, 'triangle', 0.05); }
       } else if (hz.st === 'shake') { if (++hz.t > (hz.ice ? 45 : 24)) hz.st = 'fall'; }
       else {
         hz.vy = Math.min(hz.vy + 0.6, 12); hz.y += hz.vy;
         if (isSolid(Math.floor((hz.x + hz.w / 2) / TILE), Math.floor((hz.y + hz.h) / TILE)) || hz.y > H + 40) { shatter(hz); continue; }
       }
-      if (!p.dying && overlap(p, { x: hz.x + 4, y: hz.y, w: hz.w - 8, h: hz.h - 6 })) {
+      for (const p of alivePlayers()) {
+        if (hz.dead || !overlap(p, { x: hz.x + 4, y: hz.y, w: hz.w - 8, h: hz.h - 6 })) continue;
         if (p.star > 0) shatter(hz);
-        else { hurtPlayer(); if (hz.st === 'fall') shatter(hz); }
+        else { hurtPlayer(p); if (hz.st === 'fall') shatter(hz); }
       }
     }
   }
@@ -1190,11 +1547,10 @@ function shatter(hz) {
 
 // cactus ke kaante
 function updateThorns() {
-  const p = player;
   for (const tn of thorns) {
     tn.x += tn.vx; tn.life--;
     if (tn.life <= 0 || isSolid(Math.floor((tn.x + (tn.vx > 0 ? tn.w : 0)) / TILE), Math.floor((tn.y + 3) / TILE))) { tn.dead = true; continue; }
-    if (!p.dying && overlap(p, tn)) { tn.dead = true; if (p.star <= 0) hurtPlayer(); }
+    for (const p of alivePlayers()) if (!tn.dead && overlap(p, tn)) { tn.dead = true; if (p.star <= 0) hurtPlayer(p); }
   }
   thorns = thorns.filter(tn => !tn.dead);
 }
@@ -1216,6 +1572,21 @@ function updateParticles() {
   }
   particles = particles.filter(pt => pt.life > 0);
 }
+
+// ---------- Time trial ki parchhai (ghost): tumhara sabse tez run ----------
+let ghostRec = [], ghostPlay = null, trialNew = false;
+function ghostStart(i) {
+  ghostRec = []; ghostPlay = null;
+  if (gameMode !== 'trial') return;
+  try { ghostPlay = JSON.parse(localStorage.getItem('tikkuRunGhost' + i) || 'null'); } catch (e) {}
+}
+function ghostRecord() {
+  if (runT % 2 || ghostRec.length > 20000) return;
+  const p = player;
+  ghostRec.push(Math.round(p.x), Math.round(p.y), (p.facing > 0 ? 1 : 0) | (p.onGround ? 0 : 2) | (Math.abs(p.vx) > 0.3 ? 4 : 0));
+}
+function ghostSave(i) { try { localStorage.setItem('tikkuRunGhost' + i, JSON.stringify(ghostRec)); } catch (e) {} }
+const fmtTime = f => { const s = f / 60, m = Math.floor(s / 60); return `${m}:${(s - m * 60).toFixed(2).padStart(5, '0')}`; };
 
 // ---------- Drawing ----------
 function rr(x, y, w, h, r) {
@@ -1249,7 +1620,7 @@ function drawBackground(th, cx) {
 
   // clouds
   ctx.fillStyle = th.stars ? 'rgba(255,255,255,0.08)' : th.embers ? 'rgba(70,35,40,0.55)' : 'rgba(255,255,255,0.85)';
-  for (let i = 0; i < (th.cave || th.water ? 0 : th.sky ? 12 : 7); i++) {
+  for (let i = 0; i < (th.cave || th.water || th.temple ? 0 : th.sky ? 12 : 7); i++) {
     const x = ((i * 310 - cx * 0.2 + frame * 0.15) % 1500 + 1500) % 1500 - 200;
     const y = 50 + (i * 53) % 140;
     ctx.beginPath();
@@ -1331,6 +1702,8 @@ function drawGroundDecor(th, x, y, tx, hsh) {
     }
     return;
   }
+  if (th.city) return;
+  if (th.desert) { if (kind < 2) { ctx.fillStyle = '#d9a75a'; ctx.beginPath(); ctx.ellipse(ox, y + 1, 4, 2.5, 0, Math.PI, 0); ctx.fill(); } return; }
   if (th.embers) {
     if (kind < 2) { ctx.fillStyle = `rgba(255,${120 + ((frame * 3 + tx * 40) % 80)},60,0.85)`; ctx.fillRect(ox, y - 2, 3, 2); }
     return;
@@ -1360,7 +1733,7 @@ function drawGroundDecor(th, x, y, tx, hsh) {
 }
 
 function drawTiles(th) {
-  const x0 = Math.floor(cam.x / TILE), x1 = x0 + Math.ceil(W / TILE) + 1;
+  const x0 = Math.floor(cam.x / TILE), x1 = x0 + Math.ceil(W / viewScale / TILE) + 1;
   for (let ty = 0; ty < ROWS; ty++) for (let tx = x0; tx <= x1; tx++) {
     if (tx < 0 || tx >= level.w) continue;
     const t = level.grid[ty][tx];
@@ -1374,6 +1747,10 @@ function drawTiles(th) {
       ctx.beginPath(); ctx.ellipse(x + 6 + hsh % 18, y + 12 + (hsh >> 4) % 12, 3, 2, 0, 0, Math.PI * 2); ctx.fill();
       ctx.beginPath(); ctx.ellipse(x + 4 + (hsh >> 8) % 22, y + 20 + (hsh >> 12) % 8, 2, 1.5, 0, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fillRect(x + (hsh >> 6) % 26, y + 6 + (hsh >> 10) % 18, 3, 2);
+      if (th.city && GROUNDISH.has(tileAt(tx, ty - 1))) { // imarat ki khidkiyan
+        ctx.fillStyle = (hsh >> 3) % 3 ? 'rgba(255,224,130,0.8)' : 'rgba(30,30,50,0.85)'; ctx.fillRect(x + 6, y + 9, 7, 10);
+        ctx.fillStyle = (hsh >> 5) % 3 ? 'rgba(255,224,130,0.8)' : 'rgba(30,30,50,0.85)'; ctx.fillRect(x + 19, y + 9, 7, 10);
+      }
       const openL = !GROUNDISH.has(tileAt(tx - 1, ty)), openR = !GROUNDISH.has(tileAt(tx + 1, ty));
       ctx.fillStyle = 'rgba(0,0,0,0.18)';
       if (openL) ctx.fillRect(x, y, 3, TILE);
@@ -1529,6 +1906,29 @@ function drawScenery(th, cx) {
     else if (th === THEMES.night) { if (kind === 2) bush(x, base, 20, '#1a2046'); else roundTree(x, base, size + 30, '#141936', '#1c2347'); }
     else if (th.snow) pine(x, base, size + 20, '#5f86a3', true);
     else if (th.embers) spire(x, base, size + 30, '#2b1420', kind === 0 ? '#ff7043' : null);
+    else if (th.desert) {
+      if (kind === 0) { // door piramid
+        ctx.fillStyle = '#d8a35a'; ctx.beginPath(); ctx.moveTo(x - size * 0.8, base); ctx.lineTo(x, base - size * 0.9); ctx.lineTo(x + size * 0.8, base); ctx.fill();
+        ctx.fillStyle = 'rgba(0,0,0,0.12)'; ctx.beginPath(); ctx.moveTo(x, base - size * 0.9); ctx.lineTo(x + size * 0.8, base); ctx.lineTo(x + size * 0.15, base); ctx.fill();
+      } else { // cactus
+        const ch = size * 0.7; ctx.fillStyle = '#6f9e4a';
+        rr(x - 6, base - ch, 12, ch, 6); ctx.fill(); rr(x - 18, base - ch * 0.7, 8, ch * 0.35, 4); ctx.fill(); rr(x - 18, base - ch * 0.45, 14, 7, 3); ctx.fill();
+        rr(x + 10, base - ch * 0.8, 8, ch * 0.35, 4); ctx.fill(); rr(x + 4, base - ch * 0.52, 14, 7, 3); ctx.fill();
+      }
+    }
+    else if (th.temple) { // purane toote khambhe
+      const ph = size + 40;
+      ctx.fillStyle = '#4b5a42'; ctx.fillRect(x - 12, base - ph, 24, ph); ctx.fillRect(x - 18, base - ph - 8, 36, 10);
+      ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.fillRect(x + 4, base - ph, 8, ph);
+      if (kind === 0) { ctx.fillStyle = '#3f7d3a'; ctx.beginPath(); ctx.arc(x - 10, base - ph + 6, 11, 0, Math.PI * 2); ctx.fill(); }
+    }
+    else if (th.city) { // imaratein aur roshan khidkiyan
+      const bw = 50 + (h >> 4) % 40, bh = size * 2 + 40;
+      ctx.fillStyle = '#262a4f'; ctx.fillRect(x - bw / 2, base - bh, bw, bh);
+      ctx.fillStyle = 'rgba(255,224,130,0.5)';
+      for (let r = 0; r * 16 + 22 < bh; r++) for (let c = 0; c * 13 + 15 < bw; c++)
+        if (hash2(k * 31 + c, r) % 3 === 0) ctx.fillRect(x - bw / 2 + 7 + c * 13, base - bh + 10 + r * 16, 6, 8);
+    }
     else if (th.water) { // samundar ke andar lehrati ghaas (kelp)
       const hgt = size + 30;
       ctx.strokeStyle = kind === 0 ? '#2e7d5b' : '#3f8f6a'; ctx.lineWidth = 6; ctx.lineCap = 'round';
@@ -1544,7 +1944,17 @@ function drawScenery(th, cx) {
   }
   ctx.globalAlpha = 1;
 
-  if (th.stars) { // jugnu
+  if (th.temple) { // upar se latakti bele
+    ctx.strokeStyle = '#2e6b35'; ctx.lineWidth = 3;
+    for (let i = 0; i < 12; i++) {
+      const vx = ((i * 137 - cx * 0.6) % 1100 + 1100) % 1100 - 70, len = 60 + (i * 53) % 130;
+      ctx.beginPath(); ctx.moveTo(vx, 0);
+      for (let sg = 1; sg <= 5; sg++) ctx.lineTo(vx + Math.sin(frame * 0.02 + i + sg) * 4, len * sg / 5);
+      ctx.stroke();
+      ctx.fillStyle = '#3f8f45'; ctx.beginPath(); ctx.ellipse(vx + 4, len, 5, 3, 0.5, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  if (th.stars && !th.city) { // jugnu
     for (let i = 0; i < 18; i++) {
       const fx = ((i * 211 + frame * 0.3 * ((i % 3) + 1) - cx * 0.7) % (W + 100) + W + 100) % (W + 100) - 50;
       const fy = 260 + Math.sin(frame * 0.02 + i) * 50 + ((i * 37) % 120);
@@ -1774,19 +2184,26 @@ function drawEnemies() {
   }
 }
 
-// Tikku - chhota orange fox, green scarf ke saath
+// Kirdaar: Tikku (fox), Bunty (khargosh), Bholu (panda), Chiku (ullu) - sab ka scarf, sab ki chaal
+const CHAR_LOOK = {
+  fox:   { body: '#f28c28', belly: '#fff3e0', leg: '#7b3f12' },
+  bunny: { body: '#e9edf0', belly: '#ffffff', leg: '#b0bec5' },
+  panda: { body: '#f7f7f7', belly: '#ffffff', leg: '#212121' },
+  owl:   { body: '#8d6e63', belly: '#d7ccc8', leg: '#ff9800' },
+};
 function drawHero(cx, by, facing, anim, opts = {}) {
-  const t = frame;
+  const t = frame, kind = CHAR_LOOK[opts.kind] ? opts.kind : 'fox', P = CHAR_LOOK[kind];
   const running = opts.running, air = opts.air;
   ctx.save(); ctx.translate(cx, by); ctx.scale(facing * (opts.sx || 1), opts.sy || 1);
   if (opts.rot) ctx.rotate(opts.rot);
+  if (opts.ghost) ctx.globalAlpha *= 0.4;
   if (opts.star) { // star power: satrangi chamak
     ctx.fillStyle = `hsla(${(t * 8) % 360},100%,60%,0.45)`;
     ctx.beginPath(); ctx.arc(0, -18, 24, 0, Math.PI * 2); ctx.fill();
   }
   // legs
   const s = running ? Math.sin(anim) * 4 : 0;
-  ctx.fillStyle = '#7b3f12';
+  ctx.fillStyle = P.leg;
   if (air) { ctx.fillRect(-7, -6, 5, 5); ctx.fillRect(3, -7, 5, 5); }
   else { ctx.fillRect(-7 + s, -5, 5, 5); ctx.fillRect(3 - s, -5, 5, 5); }
   // daudte waqt shareer upar-neeche, khade ho to halki saans
@@ -1796,18 +2213,35 @@ function drawHero(cx, by, facing, anim, opts = {}) {
     drawWing(-4, -19, 12, -2.3 - fl);
   }
   // tail
-  const wag = running ? Math.sin(t * 0.4) * 0.35 : Math.sin(t * 0.15) * 0.25;
-  ctx.save(); ctx.translate(-9, -11); ctx.rotate(-0.6 + wag + (air ? -0.4 : 0) + (opts.vy || 0) * 0.02);
-  ctx.fillStyle = '#ef7d1a'; ctx.beginPath(); ctx.ellipse(-8, 0, 10, 5.5, 0, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#fff8ee'; ctx.beginPath(); ctx.ellipse(-15, 0, 4, 4, 0, 0, Math.PI * 2); ctx.fill();
-  ctx.restore();
+  if (kind === 'fox') {
+    const wag = running ? Math.sin(t * 0.4) * 0.35 : Math.sin(t * 0.15) * 0.25;
+    ctx.save(); ctx.translate(-9, -11); ctx.rotate(-0.6 + wag + (air ? -0.4 : 0) + (opts.vy || 0) * 0.02);
+    ctx.fillStyle = '#ef7d1a'; ctx.beginPath(); ctx.ellipse(-8, 0, 10, 5.5, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff8ee'; ctx.beginPath(); ctx.ellipse(-15, 0, 4, 4, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  } else if (kind === 'bunny') {
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(-10, -11, 4.5, 0, Math.PI * 2); ctx.fill();
+  } else if (kind === 'panda') {
+    ctx.fillStyle = '#212121'; ctx.beginPath(); ctx.arc(-10, -10, 3, 0, Math.PI * 2); ctx.fill();
+  } else { // ullu ki poonch ke pankh
+    ctx.fillStyle = '#6d4c41';
+    ctx.beginPath(); ctx.moveTo(-8, -8); ctx.lineTo(-16, -4); ctx.lineTo(-14, -9); ctx.lineTo(-17, -10); ctx.lineTo(-8, -13); ctx.fill();
+  }
   // body
-  ctx.fillStyle = '#f28c28'; ctx.beginPath(); ctx.ellipse(0, -12, 10, 9, 0, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#fff3e0'; ctx.beginPath(); ctx.ellipse(3, -10, 5, 6, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = P.body; ctx.beginPath(); ctx.ellipse(0, -12, 10, 9, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = P.belly; ctx.beginPath(); ctx.ellipse(3, -10, 5, 6, 0, 0, Math.PI * 2); ctx.fill();
+  if (kind === 'panda') { ctx.fillStyle = '#212121'; ctx.beginPath(); ctx.ellipse(1, -13, 4, 6, 0.3, 0, Math.PI * 2); ctx.fill(); }
+  if (kind === 'owl') { // ullu ke apne pankh
+    const fl = opts.glide ? Math.sin(t * 0.6) * 0.6 : Math.sin(t * 0.05) * 0.08;
+    ctx.save(); ctx.translate(-2, -16); ctx.rotate(0.5 - fl - (opts.glide ? 0.6 : 0));
+    ctx.fillStyle = '#6d4c41'; ctx.beginPath(); ctx.ellipse(0, 6, 5, 10, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#5d4037'; ctx.beginPath(); ctx.ellipse(0, 10, 3, 6, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
   // fire karte waqt aage badha hua paw
   if (opts.shoot) {
-    ctx.fillStyle = '#f28c28'; ctx.beginPath(); ctx.ellipse(11, -12, 5, 3, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#7b3f12'; ctx.beginPath(); ctx.arc(15, -12, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = kind === 'panda' ? '#212121' : P.body; ctx.beginPath(); ctx.ellipse(11, -12, 5, 3, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = P.leg; ctx.beginPath(); ctx.arc(15, -12, 2, 0, Math.PI * 2); ctx.fill();
   }
   // scarf
   const fl = running || air ? 4 : 2.5, fs = running ? 0.45 : 0.3;
@@ -1815,42 +2249,87 @@ function drawHero(cx, by, facing, anim, opts = {}) {
   ctx.fillRect(-6, -19, 15, 4);
   ctx.beginPath(); ctx.moveTo(-5, -18);
   ctx.lineTo(-15, -20 + Math.sin(t * fs) * fl); ctx.lineTo(-14, -15 + Math.sin(t * fs + 1) * fl); ctx.lineTo(-4, -15); ctx.fill();
-  // head
-  ctx.fillStyle = '#f28c28'; ctx.beginPath(); ctx.arc(4, -25, 8, 0, Math.PI * 2); ctx.fill();
-  // ears (halke hilte hain)
   const ew = Math.sin(t * 0.25) * (running || air ? 1.5 : 0.5);
-  ctx.beginPath(); ctx.moveTo(-2, -29); ctx.lineTo(0 + ew, -38); ctx.lineTo(4, -31); ctx.fill();
-  ctx.beginPath(); ctx.moveTo(5, -31); ctx.lineTo(9 + ew, -38); ctx.lineTo(11, -28); ctx.fill();
-  ctx.fillStyle = '#5a2a0a';
-  ctx.beginPath(); ctx.moveTo(0, -30); ctx.lineTo(0.6 + ew * 0.6, -35); ctx.lineTo(3, -31); ctx.fill();
-  ctx.beginPath(); ctx.moveTo(6.5, -31); ctx.lineTo(8.6 + ew * 0.6, -35); ctx.lineTo(9.6, -29.5); ctx.fill();
-  // snout + cheek
-  ctx.fillStyle = '#fff8ee'; ctx.beginPath(); ctx.ellipse(9.5, -22.5, 5, 3.5, 0, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = 'rgba(255,110,110,0.35)'; ctx.beginPath(); ctx.arc(5, -21.5, 2, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(14, -23.5, 1.8, 0, Math.PI * 2); ctx.fill();
-  // eye
+  let eye = [6.5, -27];
+  if (kind === 'fox') {
+    ctx.fillStyle = P.body; ctx.beginPath(); ctx.arc(4, -25, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-2, -29); ctx.lineTo(0 + ew, -38); ctx.lineTo(4, -31); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(5, -31); ctx.lineTo(9 + ew, -38); ctx.lineTo(11, -28); ctx.fill();
+    ctx.fillStyle = '#5a2a0a';
+    ctx.beginPath(); ctx.moveTo(0, -30); ctx.lineTo(0.6 + ew * 0.6, -35); ctx.lineTo(3, -31); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(6.5, -31); ctx.lineTo(8.6 + ew * 0.6, -35); ctx.lineTo(9.6, -29.5); ctx.fill();
+    ctx.fillStyle = '#fff8ee'; ctx.beginPath(); ctx.ellipse(9.5, -22.5, 5, 3.5, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,110,110,0.35)'; ctx.beginPath(); ctx.arc(5, -21.5, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(14, -23.5, 1.8, 0, Math.PI * 2); ctx.fill();
+  } else if (kind === 'bunny') {
+    for (const [ex, rot] of [[1.5, -0.2], [6.5, 0.15]]) { // lambe kaan
+      ctx.save(); ctx.translate(ex, -33); ctx.rotate(rot + ew * 0.04);
+      ctx.fillStyle = P.body; ctx.beginPath(); ctx.ellipse(0, -5, 2.8, 8.5, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#f8bbd0'; ctx.beginPath(); ctx.ellipse(0, -5, 1.3, 6, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+    ctx.fillStyle = P.body; ctx.beginPath(); ctx.arc(4, -24, 7.5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.ellipse(9.5, -21.5, 4, 3, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#f48fb1'; ctx.beginPath(); ctx.arc(13, -22.5, 1.6, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,110,140,0.35)'; ctx.beginPath(); ctx.arc(5, -20.5, 2, 0, Math.PI * 2); ctx.fill();
+    eye = [7, -25.5];
+  } else if (kind === 'panda') {
+    ctx.fillStyle = '#212121';
+    ctx.beginPath(); ctx.arc(-1, -32, 3.4, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(9, -33, 3.4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = P.body; ctx.beginPath(); ctx.arc(4, -25, 8.5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#212121'; ctx.beginPath(); ctx.ellipse(7.5, -26, 3.2, 4, 0.4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.ellipse(10.5, -22.5, 4.5, 3.2, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#212121'; ctx.beginPath(); ctx.arc(13.5, -23.3, 1.7, 0, Math.PI * 2); ctx.fill();
+    eye = [7.8, -26.4];
+  } else { // ullu
+    ctx.fillStyle = P.body;
+    ctx.beginPath(); ctx.moveTo(-3, -29); ctx.lineTo(-3 + ew * 0.5, -38); ctx.lineTo(3, -31); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(7, -32); ctx.lineTo(11 + ew * 0.5, -39); ctx.lineTo(12, -29); ctx.fill();
+    ctx.beginPath(); ctx.arc(4, -25, 9, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = P.belly; ctx.beginPath(); ctx.ellipse(8, -25, 5.5, 6, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ff9800'; ctx.beginPath(); ctx.moveTo(11, -23); ctx.lineTo(15.5, -21); ctx.lineTo(11, -19); ctx.fill();
+    eye = [8.3, -26.5];
+  }
+  // aankh
   const blink = (t % 200) < 6;
+  if (kind === 'owl' || kind === 'panda') { // badi safed aankh
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(eye[0], eye[1], kind === 'owl' ? 3.6 : 2.2, 0, Math.PI * 2); ctx.fill();
+  }
   ctx.fillStyle = '#222';
-  if (opts.dead) { ctx.fillRect(4, -28, 4, 1.5); }
-  else if (blink) ctx.fillRect(4.5, -27, 3.5, 1.4);
-  else { ctx.beginPath(); ctx.arc(6.5, -27, 1.9, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillRect(6.6, -28.2, 1, 1); }
+  if (opts.dead) { ctx.fillRect(eye[0] - 2.5, eye[1] - 1, 4, 1.5); }
+  else if (blink) ctx.fillRect(eye[0] - 2, eye[1], 3.5, 1.4);
+  else { ctx.beginPath(); ctx.arc(eye[0], eye[1], kind === 'owl' ? 1.9 : 1.8, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillRect(eye[0] + 0.1, eye[1] - 1.2, 1, 1); }
   // leaf power on head
   if (opts.leaf) drawLeafShape(1, -37, 6, -0.3 + Math.sin(t * 0.1) * 0.2);
   ctx.restore();
 }
 
+function playerOpts(p) {
+  return {
+    kind: p.ch, running: Math.abs(p.vx) > 0.3 && (p.onGround || p.wet), air: !p.onGround && !p.wet, leaf: p.leaf, fire: p.fire,
+    wing: p.wing, glide: p.gliding, star: p.star > 0 && (p.star > 90 || frame % 10 < 6),
+    scarf: p.idx ? '#1e88e5' : scarfCol(), sx: p.sx, sy: p.sy, shoot: p.shootT > 0, vy: p.vy,
+    dead: p.dying, rot: p.dying ? Math.PI * Math.min(1, (gameMode === 'duo' && state === 'playing' ? p.deathT : stateTimer) / 25) : 0 };
+}
 function drawPlayer() {
-  const p = player;
-  if (!p.dying) {
-    const gy = groundBelow(p, 8);
-    if (gy !== null) drawShadow(p.x + p.w / 2, gy, Math.max(4, 11 - (gy - p.y - p.h) * 0.04));
+  // time trial: pichhle best run ki parchhai
+  if (ghostPlay && gameMode === 'trial') {
+    const k = Math.min(Math.floor(runT / 2), ghostPlay.length / 3 - 1) * 3;
+    if (k >= 0) {
+      const f = ghostPlay[k + 2];
+      drawHero(ghostPlay[k] + 11, ghostPlay[k + 1] + 28, f & 1 ? 1 : -1, runT * 0.25, { kind: save.char, ghost: true, air: !!(f & 2), running: !!(f & 4), scarf: '#ffffff' });
+    }
   }
-  if (p.invuln > 0 && Math.floor(p.invuln / 4) % 2 === 0) return;
-  drawHero(p.x + p.w / 2, p.y + p.h, p.facing, p.anim, {
-    running: Math.abs(p.vx) > 0.3 && (p.onGround || p.wet), air: !p.onGround && !p.wet, leaf: p.leaf, fire: p.fire,
-    wing: p.wing, glide: p.gliding, star: p.star > 0 && (p.star > 90 || frame % 10 < 6), scarf: scarfCol(),
-    sx: p.sx, sy: p.sy, shoot: p.shootT > 0, vy: p.vy,
-    dead: p.dying, rot: p.dying ? Math.PI * Math.min(1, stateTimer / 25) : 0 });
+  for (const p of players) {
+    if (!p.dying) {
+      const gy = groundBelow(p, 8);
+      if (gy !== null) drawShadow(p.x + p.w / 2, gy, Math.max(4, 11 - (gy - p.y - p.h) * 0.04));
+    }
+    if (p.invuln > 0 && Math.floor(p.invuln / 4) % 2 === 0) continue;
+    drawHero(p.x + p.w / 2, p.y + p.h, p.facing, p.anim, playerOpts(p));
+    if (gameMode === 'duo' && !p.dying) text(p.idx ? 'P2' : 'P1', p.x + p.w / 2, p.y - 22, 12, p.idx ? '#90caf9' : '#ffe082');
+  }
 }
 
 function drawParticles() {
@@ -1873,8 +2352,8 @@ function text(str, x, y, size, color = '#fff', align = 'center') {
 function drawHUD() {
   ctx.fillStyle = 'rgba(10,14,30,0.5)'; rr(8, 5, W - 16, 38, 12); ctx.fill();
   ctx.strokeStyle = 'rgba(255,255,255,0.18)'; ctx.lineWidth = 1.5; rr(8.5, 5.5, W - 17, 37, 12); ctx.stroke();
-  drawHero(30, 38, 1, 0, { scarf: scarfCol() });
-  text('x ' + lives, 50, 24, 20, '#fff', 'left');
+  drawHero(30, 38, 1, 0, { kind: save.char, scarf: scarfCol() });
+  if (gameMode !== 'trial' && gameMode !== 'endless') text('x ' + lives, 50, 24, 20, '#fff', 'left');
   drawGemShape(132, 24, 10);
   text('x ' + String(gemCount).padStart(2, '0'), 147, 24, 20, '#fff', 'left');
   let ix = 204;
@@ -1888,15 +2367,26 @@ function drawHUD() {
     if (player.magnet > 0 && blinkOk(player.magnet)) icon(x => drawMagnet(x, 26, 6));
   }
   text('SCORE ' + String(score).padStart(6, '0'), 385, 24, 20);
-  text('HI ' + String(Math.max(highScore, score)).padStart(6, '0'), 510, 24, 16, '#ffe082');
-  text('WORLD ' + (levelIndex + 1) + '  ' + level.name, 690, 24, 16);
-  const tl = Math.ceil(timeLeft / 60), tc = tl < 60 ? '#ff8a80' : '#fff';
-  ctx.strokeStyle = tc; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.arc(858, 24, 8, 0, Math.PI * 2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(858, 24); ctx.lineTo(858, 19); ctx.moveTo(858, 24); ctx.lineTo(862, 26); ctx.stroke();
-  text(String(tl), 874, 24, 20, tc, 'left');
-  if (muted) text(t('muted'), W - 60, 60, 14, '#ffcc80');
-  else if (!musicOn) text(t('musicOff'), W - 70, 60, 14, '#ffcc80');
+  if (gameMode === 'adv' || gameMode === 'duo') text('HI ' + String(Math.max(highScore, score)).padStart(6, '0'), 510, 24, 16, '#ffe082');
+  if (gameMode === 'endless') {
+    text(`${Math.floor(player.x / TILE)} m`, 640, 24, 22, '#b3e5fc');
+    text(`BEST ${save.best.endless} m`, 820, 24, 15, '#ffe082');
+  } else if (gameMode === 'trial' || gameMode === 'rush') {
+    text(gameMode === 'trial' ? 'WORLD ' + (levelIndex + 1) : `BOSS RUSH ${rushIdx + 1}/${RUSH.length}`, 620, 24, 16);
+    text(fmtTime(runT), 830, 24, 22, '#ffffff');
+    const best = gameMode === 'trial' ? save.times[levelIndex] : 0;
+    if (best) text('BEST ' + fmtTime(best), 830, 54, 13, '#ffe082');
+  } else {
+    const label = gameMode === 'daily' ? t('dailyName') : gameMode === 'custom' ? t('myLevel') : 'WORLD ' + (levelIndex + 1) + '  ' + level.name;
+    text(label, 690, 24, 16);
+    const tl = Math.ceil(timeLeft / 60), tc = tl < 60 ? '#ff8a80' : '#fff';
+    ctx.strokeStyle = tc; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(858, 24, 8, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(858, 24); ctx.lineTo(858, 19); ctx.moveTo(858, 24); ctx.lineTo(862, 26); ctx.stroke();
+    text(String(tl), 874, 24, 20, tc, 'left');
+  }
+  if (muted) text(t('muted'), W - 60, 72, 14, '#ffcc80');
+  else if (!musicOn) text(t('musicOff'), W - 70, 72, 14, '#ffcc80');
   if (boss && bossStarted && !boss.gone) {
     const bw = 320, bx = W / 2 - bw / 2, by = 58, frost = boss.kind === 'frosto';
     text(t(bossKey('Name')), W / 2, by, 16, frost ? '#b3e5fc' : '#ffab91');
@@ -2000,12 +2490,15 @@ function makeBoss(kind = 'magmo') {
 }
 
 function updateBoss() {
-  const b = boss, p = player;
+  const b = boss;
   if (!b || b.gone) { if (b) b.dead++; updateWaves(); return; }
+  const p = nearestPlayer(b.x + b.w / 2);
 
   if (!bossStarted) {
-    if (p.x > (ARENA_LEFT + 3) * TILE) {
-      bossStarted = true; bossIntro = 140; shake = 10;
+    if (players.some(q => !q.dying && q.x > (ARENA_LEFT + 3) * TILE)) {
+      bossStarted = true; bossIntro = 140; shake = 10; buzz(120);
+      // 2 player: peeche reh gaya dost bhi arena mein aa jaaye
+      for (const q of alivePlayers()) if (q.x < (ARENA_LEFT + 1) * TILE) { q.x = (ARENA_LEFT + 2) * TILE; q.y = 14 * TILE - 4; q.vy = 0; }
       for (let ty = 11; ty <= 14; ty++) level.grid[ty][ARENA_LEFT] = 'B'; // gate band
       SFX.bump(); beep(80, 40, 0.6, 'sawtooth', 0.1);
     }
@@ -2085,13 +2578,14 @@ function updateBoss() {
   }
 
   // Tikku vs boss: sar pe kood ke maaro
-  if (!p.dying && overlap(p, b)) {
-    const fromAbove = p.vy > 0 && p.prevBottom <= b.y + 22;
+  for (const q of alivePlayers()) {
+    if (b.dead || !overlap(q, b)) continue;
+    const fromAbove = q.vy > 0 && q.prevBottom <= b.y + 22;
     if (fromAbove) {
-      p.vy = -12; p.jumping = true; p.canDouble = p.leaf;
+      q.vy = -12; q.jumping = true; q.canDouble = q.leaf;
       if (b.invuln === 0) damageBoss();
-    } else if (p.star > 0) { if (b.invuln === 0) damageBoss(); }
-    else hurtPlayer();
+    } else if (q.star > 0) { if (b.invuln === 0) damageBoss(); }
+    else hurtPlayer(q);
   }
   updateWaves();
 }
@@ -2100,7 +2594,8 @@ function updateBoss() {
 function dropIcicles(anger) {
   const n = 2 + Math.min(2, Math.floor(anger / 2));
   for (let i = 0; i < n; i++) {
-    const x = Math.max((ARENA_LEFT + 1) * TILE, Math.min(level.w * TILE - 40, player.x + (i - (n - 1) / 2) * 110 + (Math.random() - 0.5) * 30));
+    const tp = alivePlayers()[i % Math.max(1, alivePlayers().length)] || player;
+    const x = Math.max((ARENA_LEFT + 1) * TILE, Math.min(level.w * TILE - 40, tp.x + (i - (n - 1) / 2) * 110 + (Math.random() - 0.5) * 30));
     hazards.push({ type: 'rock', ice: true, x, y: 40, w: 22, h: 30, st: 'shake', t: 0, vy: 0 });
   }
   beep(1200, 600, 0.2, 'triangle', 0.05);
@@ -2109,7 +2604,7 @@ function dropIcicles(anger) {
 function updateWaves() {
   for (const w of waves) {
     w.x += w.dir * 4.5; w.age = (w.age || 0) + 1;
-    if (!player.dying && overlap(player, { x: w.x + 2, y: 15 * TILE - 20, w: 20, h: 20 })) hurtPlayer();
+    for (const q of alivePlayers()) if (overlap(q, { x: w.x + 2, y: 15 * TILE - 20, w: 20, h: 20 })) hurtPlayer(q);
   }
   waves = waves.filter(w => w.x > (ARENA_LEFT + 1) * TILE - 24 && w.x < level.w * TILE);
 }
@@ -2118,7 +2613,7 @@ function damageBoss() {
   const b = boss;
   floatText(b.x + b.w / 2, b.y - 10, '+1000', '#ffd54f', 22);
   b.hp--; b.invuln = 70; b.squash = 14; shake = 8; score += 1000;
-  SFX.stomp(); beep(220, 60, 0.35, 'square', 0.08);
+  SFX.stomp(); beep(220, 60, 0.35, 'square', 0.08); buzz(60);
   if (b.hp <= 0) {
     b.dead = 1; b.vx = 0; b.mode = 'wait'; score += 5000; waves = [];
     hazards = hazards.filter(h => !h.ice);
@@ -2297,6 +2792,7 @@ function drawBossAt(kind, x, by, s = 1, face = -1) {
 }
 
 // ---------- Poori duniya draw karna ----------
+let viewScale = 1; // editor mein chhota dikhane ke liye
 function renderWorld() {
   if (!level) loadLevel(0);
   const th = level.theme;
@@ -2313,12 +2809,18 @@ function renderWorld() {
   drawLighting(th);
 }
 
+let resultInfo = { title: '', lines: [], won: false };
+function readyTitle() {
+  return gameMode === 'endless' ? 'ENDLESS RUN' : gameMode === 'daily' ? t('dailyName') : gameMode === 'custom' ? t('myLevel')
+    : gameMode === 'rush' ? `BOSS RUSH  ${rushIdx + 1}/${RUSH.length}` : 'WORLD ' + (levelIndex + 1);
+}
+
 function renderScene() {
   ui = [];
   if (state === 'map') return drawMap();
   if (state === 'story') return drawStory();
+  if (state === 'editor') return drawEditor();
   renderWorld();
-  const blink = Math.floor(frame / 30) % 2 === 0;
   if (SUB_SCREENS[state]) { overlay(0.62); SUB_SCREENS[state](); return; }
   if (state === 'title') {
     overlay(0.3);
@@ -2326,22 +2828,25 @@ function renderScene() {
     text(t('high') + ' ' + String(highScore).padStart(6, '0'), W - 20, 28, 20, '#ffe082', 'right');
     drawLogo(GAME_TITLE, W / 2, 92, 80);
     text(t('subtitle'), W / 2, 150, 22, '#ffe9b0');
-    ctx.save(); ctx.translate(165, 468); ctx.scale(3.2, 3.2);
-    drawHero(0, 0, 1, frame * 0.3, { running: true, leaf: true, scarf: scarfCol() }); ctx.restore();
-    drawBossAt('magmo', 815, 468, 1.1);
-    drawMenu(menuItems(), W / 2 - 150, 186, 300, 38, 44, 19);
+    ctx.save(); ctx.translate(140, 470); ctx.scale(3, 3);
+    drawHero(0, 0, 1, frame * 0.3, { kind: save.char, running: true, leaf: true, scarf: scarfCol() }); ctx.restore();
+    drawBossAt('magmo', 840, 470, 1);
+    drawMenuGrid(menuItems(), W / 2 - 255, 182, 250, 38, 10, 9, 2, 18);
     text(touchMode ? t('touchCtrl') : t('ctrl1'), W / 2, 526, 14, 'rgba(255,255,255,0.85)');
     return;
   }
   drawHUD();
   if (state === 'ready') {
     overlay(0.35);
-    text('WORLD ' + (levelIndex + 1), W / 2, 220, 48, '#ffcc4d');
-    text(level.name, W / 2, 275, 30);
-    if (LEVELS[levelIndex].boss) text(t('bossLevel'), W / 2, 170, 28, '#ff7043');
-    else if (LEVELS[levelIndex].water) text(t('waterTip'), W / 2, 170, 20, '#81d4fa');
-    text(HERO_NAME + ' x ' + lives, W / 2, 330, 22);
-    if (checkpoint && checkpoint.level === levelIndex) text(t('fromCp'), W / 2, 365, 20, '#a5d6a7');
+    text(readyTitle(), W / 2, 220, 48, '#ffcc4d');
+    if (gameMode !== 'endless') text(level.name, W / 2, 275, 30);
+    if (curDef.boss) text(t('bossLevel'), W / 2, 170, 28, '#ff7043');
+    else if (curDef.water) text(t('waterTip'), W / 2, 170, 20, '#81d4fa');
+    const who = gameMode === 'duo' ? `${charName(players[0].ch)} + ${charName(players[1].ch)}` : charName();
+    if (gameMode === 'trial') text(t('trialTip'), W / 2, 330, 22);
+    else text(who + ' x ' + lives, W / 2, 330, 22);
+    if (gameMode === 'duo') text(t('dDuo'), W / 2, 370, 15, '#b3e5fc');
+    else if (checkpoint && checkpoint.level === levelIndex) text(t('fromCp'), W / 2, 365, 20, '#a5d6a7');
   } else if (state === 'playing' && boss && !paused) {
     if (bossIntro > 0) {
       text(t(bossKey('Intro')), W / 2, 200, 44, boss.kind === 'frosto' ? '#81d4fa' : '#ff7043');
@@ -2358,14 +2863,20 @@ function renderScene() {
     text(t('score') + ': ' + score, W / 2, 245, 28);
     text(t('hs') + ': ' + highScore, W / 2, 280, 22, '#ffe082');
     drawMenu(menuItems(), W / 2 - 150, 320, 300, 42, 50);
+  } else if (state === 'result') {
+    overlay(0.68);
+    const R = resultInfo;
+    text(R.title, W / 2, 125, 52, R.won ? '#ffcc4d' : '#ff6e6e');
+    R.lines.forEach((ln, i) => text(ln, W / 2, 185 + i * 32, 23, i === 0 ? '#ffffff' : '#b3e5fc'));
+    drawMenu(menuItems(), W / 2 - 150, 330, 300, 42, 50);
   } else if (state === 'win') {
     overlay(0.6);
     if (newHigh) text(t('newHigh'), W / 2, 70, 30, '#ffeb3b');
     text(t('winTitle'), W / 2, 125, 68, '#ffcc4d');
-    text(t('winLine', HERO_NAME), W / 2, 180, 24);
+    text(t('winLine', charName()), W / 2, 180, 24);
     text(t('final') + ': ' + score + '     ' + t('best') + ': ' + highScore, W / 2, 215, 24, '#b3e5fc');
     ctx.save(); ctx.translate(W / 2, 318); ctx.scale(1.9, 1.9);
-    drawHero(0, 0, 1, 0, { leaf: true, scarf: scarfCol() }); ctx.restore();
+    drawHero(0, 0, 1, 0, { kind: save.char, leaf: true, scarf: scarfCol() }); ctx.restore();
     drawCrystal(W / 2 + 40, 250, 12);
     drawMenu(menuItems(), W / 2 - 150, 335, 300, 42, 50);
   }
@@ -2376,9 +2887,15 @@ function renderScene() {
   }
 }
 
-// level clear: 3 star ek-ek karke aate hain
+// level clear: 3 star ek-ek karke aate hain (time trial mein time dikhta hai)
 function drawClear() {
   text(t('levelClear'), W / 2, 170, 56, '#ffeb3b');
+  if (gameMode === 'trial') {
+    text(fmtTime(runT), W / 2, 250, 50, '#ffffff');
+    if (trialNew) text(t('newRecord'), W / 2, 305, 28, '#ffd54f');
+    else text(t('best') + ': ' + fmtTime(save.times[levelIndex] || runT), W / 2, 305, 22, '#ffe082');
+    return;
+  }
   const labels = [t('starClear'), `${t('starGems')} ${Math.min(levelGemsGot, levelTotalGems)}/${levelTotalGems}`, t('starNoDeath')];
   for (let k = 0; k < 3; k++) {
     const x = W / 2 + (k - 1) * 140, appear = stateTimer - (30 + k * 25);
@@ -2412,6 +2929,15 @@ function drawLighting(th) {
     const g = ctx.createLinearGradient(0, H, 0, H - 220);
     g.addColorStop(0, 'rgba(255,87,34,0.22)'); g.addColorStop(1, 'rgba(255,87,34,0)');
     ctx.fillStyle = g; ctx.fillRect(0, H - 220, W, 220);
+  }
+  if (th.rain) { // baarish + kabhi-kabhi bijli
+    ctx.strokeStyle = 'rgba(180,200,255,0.35)'; ctx.lineWidth = 1.2; ctx.beginPath();
+    for (let i = 0; i < 90; i++) {
+      const rx = ((i * 97 + frame * 3) % (W + 60)) - 30, ry = (i * 61 + frame * 11) % (H + 40) - 20;
+      ctx.moveTo(rx, ry); ctx.lineTo(rx - 4, ry + 14);
+    }
+    ctx.stroke();
+    if (frame % 700 < 8 && frame % 700 !== 4) { ctx.fillStyle = 'rgba(255,255,255,0.22)'; ctx.fillRect(0, 0, W, H); }
   }
   const v = ctx.createRadialGradient(W / 2, H / 2, H * 0.45, W / 2, H / 2, W * 0.7); // kinaare halke andhere
   v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,0.28)');
@@ -2604,14 +3130,16 @@ function shopBuy(s) {
 let menuSel = 0, menuFor = null;
 const cyc = (v, d, n) => (v + d + n) % n;
 function goState(s) { state = s; menuFor = null; }
-function menuBack() { SFX.tick(); if (state === 'gameover') openMap(); else goState('title'); }
+function menuBack() { SFX.tick(); if (state === 'gameover') openMap(); else if (state === 'cloud') goState('settings'); else goState('title'); }
 function openMap() { goState('map'); paused = false; mapSel = Math.min(save.unlocked, LEVELS.length - 1); }
 function toggleLang() { setLang(lang === 'hi' ? 'en' : 'hi'); }
 
 function menuItems() {
   if (state === 'title') {
     const it = [
-      { label: t('mPlay'), act: openMap },
+      { label: t('mPlay'), act: () => { gameMode = 'adv'; openMap(); } },
+      { label: t('mModes'), act: () => goState('modes') },
+      { label: t('mChars'), act: () => goState('chars') },
       { label: t('mShop'), act: () => goState('shop') },
       { label: t('mAch'), act: () => goState('achievements') },
       { label: t('mScores'), act: () => goState('scores') },
@@ -2619,23 +3147,53 @@ function menuItems() {
       { label: t('mHelp'), act: () => goState('help') },
     ];
     if (canInstall()) it.push({ label: t('mInstall'), act: doInstall });
+    it.cols = 2;
     return it;
   }
   if (state === 'settings') {
     const S = save.set, vol = (k, d) => () => { S[k] = Math.max(0, Math.min(10, S[k] + d)); persist(); if (k === 'sfx') SFX.gem(); };
+    const vib = () => { S.vib = !S.vib; persist(); buzz(60); };
     return [
       { label: () => `${t('sMusic')}     ◀  ${S.music}  ▶`, left: vol('music', -1), right: vol('music', 1) },
       { label: () => `${t('sSfx')}     ◀  ${S.sfx}  ▶`, left: vol('sfx', -1), right: vol('sfx', 1) },
       { label: () => `${t('sDiff')}     ◀  ${t('diffs')[S.diff]}  ▶`,
         left: () => { S.diff = cyc(S.diff, -1, 3); persist(); }, right: () => { S.diff = cyc(S.diff, 1, 3); persist(); } },
       { label: () => `${t('sLang')}     ◀  ${lang === 'hi' ? 'HINGLISH' : 'ENGLISH'}  ▶`, left: toggleLang, right: toggleLang },
+      { label: () => `${t('sVib')}     ◀  ${S.vib ? t('on') : t('off')}  ▶`, left: vib, right: vib },
+      { label: () => `${t('sName')}:  ${save.lastName || t('noName')}`,
+        act: () => openTextBox(t('sName'), save.lastName, 12, v => { if (v !== null) { save.lastName = v.trim().slice(0, 12); persist(); } }) },
+      { label: t('sCloud'), act: () => goState('cloud') },
       { label: t('sStory'), act: () => startStory(INTRO, () => goState('settings')) },
       { label: t('back'), act: menuBack },
     ];
   }
   if (state === 'shop') return [...SCARVES.map(s => ({ label: () => shopLabel(s), act: () => shopBuy(s), scarf: s.id })),
                                  { label: t('back'), act: menuBack }];
-  if (state === 'achievements' || state === 'scores' || state === 'help') return [{ label: t('back'), act: menuBack }];
+  if (state === 'chars') return [...CHAR_IDS.map(id => ({ label: () => charLabel(id), act: () => charBuy(id), ch: id })),
+                                  { label: t('back'), act: menuBack }];
+  if (state === 'modes') return [
+    { label: t('modeEndless'), act: startEndless, d: () => t('dEndless', save.best.endless) },
+    { label: t('modeTrial'), act: () => { gameMode = 'trial'; openMap(); }, d: () => t('dTrial') },
+    { label: t('modeRush'), act: () => { if (save.unlocked > RUSH[0]) startRush(); else toast(t('rushLocked'), '#ffcc80'); }, d: () => t('dRush') },
+    { label: t('modeDaily'), act: startDaily, d: () => t('dDaily', save.daily.streak, save.daily.date === String(todayKey()) ? save.daily.best : 0) },
+    { label: t('modeDuo'), act: () => { if (touchMode) toast(t('duoTouch'), '#ffcc80'); gameMode = 'duo'; openMap(); }, d: () => t('dDuo') },
+    { label: t('modeEditor'), act: openEditor, d: () => t('dEditor') },
+    { label: t('back'), act: menuBack },
+  ];
+  if (state === 'scores') {
+    const nb = BOARDS.length;
+    return [
+      { label: () => `◀   ${t('boards')[BOARDS[scoreBoard]]}   ▶`, left: () => { scoreBoard = cyc(scoreBoard, -1, nb); }, right: () => { scoreBoard = cyc(scoreBoard, 1, nb); } },
+      { label: () => scoreOnline ? t('srcOnline') : t('srcLocal'), act: () => { scoreOnline = !scoreOnline; } },
+      { label: t('back'), act: menuBack },
+    ];
+  }
+  if (state === 'cloud') return [
+    { label: t('cloudUp'), act: cloudUpload },
+    { label: t('cloudDown'), act: cloudDownload },
+    { label: t('back'), act: menuBack },
+  ];
+  if (state === 'achievements' || state === 'help') return [{ label: t('back'), act: menuBack }];
   if (state === 'gameover') return [
     { label: t('retry'), act: () => startFrom(levelIndex) },
     { label: t('toMap'), act: openMap },
@@ -2646,9 +3204,18 @@ function menuItems() {
     { label: t('mScores'), act: () => goState('scores') },
     { label: t('menu'), act: () => goState('title') },
   ];
+  if (state === 'result') {
+    const again = { endless: startEndless, rush: startRush, daily: startDaily, custom: () => startCustom(curDef) }[gameMode] || (() => goState('title'));
+    const it = [{ label: t('retry'), act: again }];
+    if (gameMode === 'custom') it.push({ label: t('edEdit'), act: () => { if (curDef.code) ed = edDecode(curDef.code) || ed; openEditor(); } });
+    else it.push({ label: t('share'), act: shareScore });
+    it.push({ label: t('menu'), act: () => goState('title') });
+    return it;
+  }
   if (state === 'playing' && paused) return [
     { label: t('resume'), act: () => { paused = false; } },
-    { label: t('toMap'), act: () => { saveHighScore(); persist(); openMap(); } },
+    { label: gameMode === 'adv' || gameMode === 'duo' || gameMode === 'trial' ? t('toMap') : t('menu'),
+      act: () => { saveHighScore(); persist(); if (gameMode === 'adv' || gameMode === 'duo' || gameMode === 'trial') openMap(); else goState('title'); paused = false; } },
   ];
   return [];
 }
@@ -2658,12 +3225,13 @@ function menuUpdate(items) {
   if (menuFor !== key) { menuFor = key; menuSel = 0; }
   const n = items.length; if (!n) return;
   if (menuSel >= n) menuSel = n - 1;
-  if (hit('ArrowUp', 'KeyW', 'PadUp')) { menuSel = cyc(menuSel, -1, n); SFX.tick(); }
-  if (hit('ArrowDown', 'KeyS', 'PadDown')) { menuSel = cyc(menuSel, 1, n); SFX.tick(); }
+  const cols = items.cols || 1;
   const it = items[menuSel];
-  if (it.left && hit('ArrowLeft', 'KeyA')) { it.left(); SFX.tick(); }
-  if (it.right && hit('ArrowRight', 'KeyD')) { it.right(); SFX.tick(); }
-  if (hit(...OK_KEYS)) { SFX.tick(); if (it.act) it.act(); else if (it.right) it.right(); }
+  if (hit('ArrowUp', 'KeyW', 'PadUp')) { menuSel = cols > 1 ? (menuSel - cols + n * cols) % n : cyc(menuSel, -1, n); SFX.tick(); }
+  else if (hit('ArrowDown', 'KeyS', 'PadDown')) { menuSel = cols > 1 ? (menuSel + cols) % n : cyc(menuSel, 1, n); SFX.tick(); }
+  else if (hit('ArrowLeft', 'KeyA')) { if (it.left) it.left(); else if (cols > 1) menuSel = cyc(menuSel, -1, n); SFX.tick(); }
+  else if (hit('ArrowRight', 'KeyD')) { if (it.right) it.right(); else if (cols > 1) menuSel = cyc(menuSel, 1, n); SFX.tick(); }
+  else if (hit(...OK_KEYS)) { SFX.tick(); if (it.act) it.act(); else if (it.right) it.right(); }
 }
 
 function drawButton(label, x, y, w, h, sel, act, size = 20) {
@@ -2687,59 +3255,71 @@ function drawMenu(items, x, y, w, h, gap, size = 20) {
 }
 
 // ---------- World map: level chuno ----------
+function drawMenuGrid(items, x, y, w, h, gx, gy, cols, size = 19) {
+  items.forEach((it, i) => {
+    const label = typeof it.label === 'function' ? it.label() : it.label;
+    drawButton(label, x + (i % cols) * (w + gx), y + Math.floor(i / cols) * (h + gy), w, h, i === menuSel,
+      () => { menuSel = i; SFX.tick(); if (it.act) it.act(); }, size);
+  });
+}
 let mapSel = 0;
-const mapNode = i => ({ x: 92 + i * 97, y: 262 + Math.sin(i * 1.25 + 0.4) * 72 });
+const mapNode = i => ({ x: 62 + i * (836 / (LEVELS.length - 1)), y: 262 + Math.sin(i * 1.25 + 0.4) * 72 });
 const NODE_COL = { day: '#4caf50', sunset: '#ff8a65', water: '#29b6f6', night: '#5c6bc0', snow: '#90caf9',
-                   cave: '#7e57c2', sky: '#4fc3f7', lava: '#ff5722' };
+                   cave: '#7e57c2', sky: '#4fc3f7', lava: '#ff5722', desert: '#ffb74d', temple: '#66bb6a', city: '#9575cd' };
 function toastLocked() { toast(t('locked'), '#ffcc80'); SFX.bump(); }
+function mapBack() { SFX.tick(); goState(gameMode === 'adv' ? 'title' : 'modes'); }
 function updateMap() {
   const maxU = Math.min(save.unlocked, LEVELS.length - 1);
-  if (hit('ArrowLeft', 'KeyA') && mapSel > 0) { mapSel--; SFX.tick(); }
-  if (hit('ArrowRight', 'KeyD')) { if (mapSel < maxU) { mapSel++; SFX.tick(); } else if (mapSel < LEVELS.length - 1) toastLocked(); }
-  if (hit('Escape', 'PadBack')) { SFX.tick(); goState('title'); }
+  if (hit('ArrowLeft', 'KeyA', 'TLeft') && mapSel > 0) { mapSel--; SFX.tick(); }
+  if (hit('ArrowRight', 'KeyD', 'TRight')) { if (mapSel < maxU) { mapSel++; SFX.tick(); } else if (mapSel < LEVELS.length - 1) toastLocked(); }
+  if (hit('Escape', 'PadBack')) mapBack();
   else if (hit(...OK_KEYS)) { SFX.tick(); startFrom(mapSel); }
 }
 function drawMap() {
   cam.x = frame * 0.6;
   drawBackground(THEMES.day, cam.x);
   overlay(0.2);
-  ctx.fillStyle = 'rgba(0,0,0,0.35)'; rr(W / 2 - 170, 12, 340, 48, 14); ctx.fill();
-  text(t('map'), W / 2, 37, 30, '#ffcc4d');
+  const title = gameMode === 'trial' ? t('modeTrial') : gameMode === 'duo' ? t('modeDuo') : t('map');
+  ctx.fillStyle = 'rgba(0,0,0,0.35)'; rr(W / 2 - 190, 12, 380, 48, 14); ctx.fill();
+  text(title, W / 2, 37, 30, '#ffcc4d');
   const maxU = Math.min(save.unlocked, LEVELS.length - 1);
   ctx.save(); ctx.setLineDash([12, 10]); ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.strokeStyle = 'rgba(110,70,30,0.6)';
   ctx.beginPath(); LEVELS.forEach((_, i) => { const n = mapNode(i); i ? ctx.lineTo(n.x, n.y) : ctx.moveTo(n.x, n.y); }); ctx.stroke();
   ctx.restore();
   LEVELS.forEach((L, i) => {
-    const n = mapNode(i), open = i <= maxU, sel = i === mapSel, r = L.boss ? 29 : 24;
+    const n = mapNode(i), open = i <= maxU, sel = i === mapSel, r = L.boss ? 26 : 21;
     if (sel) {
-      const g = ctx.createRadialGradient(n.x, n.y, r, n.x, n.y, r + 26);
+      const g = ctx.createRadialGradient(n.x, n.y, r, n.x, n.y, r + 24);
       g.addColorStop(0, 'rgba(255,241,118,0.6)'); g.addColorStop(1, 'rgba(255,241,118,0)');
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.x, n.y, r + 26, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.x, n.y, r + 24, 0, Math.PI * 2); ctx.fill();
     }
     ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(n.x, n.y + r - 2, r, r * 0.35, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = open ? NODE_COL[L.theme] : '#616161'; ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = open ? NODE_COL[L.theme] || '#8bc34a' : '#616161'; ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.beginPath(); ctx.ellipse(n.x - r * 0.3, n.y - r * 0.4, r * 0.45, r * 0.25, -0.4, 0, Math.PI * 2); ctx.fill();
     ctx.lineWidth = sel ? 5 : 3; ctx.strokeStyle = sel ? '#fff59d' : L.boss ? '#ff1744' : '#ffffff';
     ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, Math.PI * 2); ctx.stroke();
-    if (open) text(String(i + 1), n.x, n.y + 1, 24, '#fff'); else drawLock(n.x, n.y);
-    for (let k = 0; k < 3; k++) drawStar(n.x - 17 + k * 17, n.y + r + 14, 7, k < (save.stars[i] || 0) ? '#ffd54f' : 'rgba(255,255,255,0.3)');
-    if (L.boss) text('BOSS', n.x, n.y + r + 32, 12, '#ff8a80');
+    if (open) text(String(i + 1), n.x, n.y + 1, 21, '#fff'); else drawLock(n.x, n.y);
+    if (gameMode === 'trial') { if (save.times[i]) text(fmtTime(save.times[i]), n.x, n.y + r + 13, 11, '#e1f5fe'); }
+    else for (let k = 0; k < 3; k++) drawStar(n.x - 14 + k * 14, n.y + r + 12, 6, k < (save.stars[i] || 0) ? '#ffd54f' : 'rgba(255,255,255,0.3)');
+    if (L.boss) text('BOSS', n.x, n.y + r + 28, 11, '#ff8a80');
     ui.push({ x: n.x - r - 8, y: n.y - r - 8, w: 2 * r + 16, h: 2 * r + 16, act: () => {
       if (!open) return toastLocked();
       if (mapSel === i) startFrom(i); else { mapSel = i; SFX.tick(); }
     } });
   });
   const n = mapNode(mapSel), hop = Math.abs(Math.sin(frame * 0.1)) * 10;
-  ctx.save(); ctx.translate(n.x, n.y - (LEVELS[mapSel].boss ? 29 : 24) - 2 - hop); ctx.scale(1.4, 1.4);
-  drawHero(0, 0, 1, 0, { scarf: scarfCol() }); ctx.restore();
+  ctx.save(); ctx.translate(n.x, n.y - (LEVELS[mapSel].boss ? 26 : 21) - 2 - hop); ctx.scale(1.3, 1.3);
+  drawHero(0, 0, 1, 0, { kind: save.char, scarf: scarfCol() }); ctx.restore();
   const L = LEVELS[mapSel];
   ctx.fillStyle = 'rgba(10,12,30,0.72)'; rr(220, 404, 520, 56, 14); ctx.fill();
   text(`WORLD ${mapSel + 1}  -  ${L.name}`, W / 2, 424, 22, '#fff');
-  text(`${t('sDiff')}: ${t('diffs')[save.set.diff]}`, W / 2, 447, 14, '#ffe082');
-  drawButton(t('back'), 20, 480, 170, 44, false, () => { SFX.tick(); goState('title'); }, 18);
+  const sub = gameMode === 'trial' ? `${t('best')}: ${save.times[mapSel] ? fmtTime(save.times[mapSel]) : '--'}` : `${t('sDiff')}: ${t('diffs')[save.set.diff]}`;
+  text(sub, W / 2, 447, 14, '#ffe082');
+  drawButton(t('back'), 20, 480, 170, 44, false, mapBack, 18);
   drawButton(t('play'), W / 2 - 110, 474, 220, 52, true, () => { SFX.tick(); startFrom(mapSel); }, 22);
   if (!touchMode) text(t('mapHint'), W - 20, 502, 13, '#fff', 'right');
 }
+
 
 // ---------- Kahani (shuru aur end mein) ----------
 const INTRO = [{ th: 'day', scene: 'home', key: 'st1' }, { th: 'lava', scene: 'steal', key: 'st2' }, { th: 'sunset', scene: 'go', key: 'st3' }];
@@ -2803,10 +3383,6 @@ function drawStory() {
 }
 
 // ---------- Settings / Dukaan / Achievements / Scores / Help screens ----------
-function drawSettings() {
-  text(t('mSettings'), W / 2, 50, 34, '#ffcc4d');
-  drawMenu(menuItems(), W / 2 - 240, 100, 480, 48, 60, 20);
-}
 function drawShop() {
   text(t('shop'), W / 2, 42, 34, '#ffcc4d');
   ctx.fillStyle = 'rgba(0,0,0,0.45)'; rr(W - 200, 20, 180, 42, 12); ctx.fill();
@@ -2814,37 +3390,10 @@ function drawShop() {
   const items = menuItems(), cur = (items[menuSel] && items[menuSel].scarf) || save.scarf;
   ctx.fillStyle = 'rgba(0,0,0,0.3)'; rr(50, 96, 340, 380, 20); ctx.fill();
   ctx.save(); ctx.translate(220, 400); ctx.scale(4.2, 4.2);
-  drawHero(0, 0, 1, frame * 0.2, { running: true, scarf: scarfCol(cur) }); ctx.restore();
+  drawHero(0, 0, 1, frame * 0.2, { kind: save.char, running: true, scarf: scarfCol(cur) }); ctx.restore();
   text(t('scarves')[cur], 220, 440, 22, '#fff');
   drawMenu(items, 420, 96, 490, 46, 54, 18);
   text(t('shopNote'), W / 2, 512, 14, '#cfd8dc');
-}
-function drawAchievements() {
-  const got = ACH.filter(a => save.ach[a.id]).length;
-  text(`${t('achTitle')}   ${got}/${ACH.length}`, W / 2, 36, 30, '#ffcc4d');
-  ACH.forEach((a, i) => {
-    const x = 30 + (i % 2) * 455, y = 66 + Math.floor(i / 2) * 50, ok = !!save.ach[a.id];
-    ctx.fillStyle = ok ? 'rgba(255,204,77,0.2)' : 'rgba(0,0,0,0.42)'; rr(x, y, 445, 44, 10); ctx.fill();
-    drawMedal(x + 24, y + 22, ok);
-    text(a.name[lang], x + 48, y + 14, 17, ok ? '#ffe082' : '#bdbdbd', 'left');
-    text(a.desc[lang], x + 48, y + 33, 13, ok ? '#ffffff' : '#9e9e9e', 'left');
-  });
-  drawMenu(menuItems(), W / 2 - 110, 478, 220, 42, 0, 18);
-}
-function drawScores() {
-  text(t('scoresTitle'), W / 2, 40, 32, '#ffcc4d');
-  if (!save.top.length) text(t('noScores'), W / 2, 240, 22, '#fff');
-  save.top.forEach((r, i) => {
-    const y = 92 + i * 36, c = ['#ffd54f', '#e0e0e0', '#ffab91'][i] || '#ffffff';
-    ctx.fillStyle = i % 2 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.45)'; rr(170, y - 15, 620, 32, 8); ctx.fill();
-    text(`${i + 1}.`, 195, y, 18, c, 'left');
-    text(String(r.n), 245, y, 18, c, 'left');
-    text(String(r.s), 590, y, 18, c, 'right');
-    text(r.w ? `${t('world')} ${r.w}` : '★ ' + t('win'), 625, y, 15, '#b3e5fc', 'left');
-    text((t('diffs')[r.d] || '').slice(0, 1), 772, y, 14, '#ffe082', 'right');
-  });
-  text(t('localNote'), W / 2, 462, 14, '#cfd8dc');
-  drawMenu(menuItems(), W / 2 - 110, 480, 220, 42, 0, 18);
 }
 function drawHelp() {
   text(t('helpTitle'), W / 2, 36, 32, '#ffcc4d');
@@ -2855,40 +3404,141 @@ function drawHelp() {
   });
   drawMenu(menuItems(), W / 2 - 110, 484, 220, 40, 0, 18);
 }
-const SUB_SCREENS = { settings: drawSettings, shop: drawShop, achievements: drawAchievements, scores: drawScores, help: drawHelp };
+function drawSettings() {
+  text(t('mSettings'), W / 2, 40, 32, '#ffcc4d');
+  drawMenu(menuItems(), W / 2 - 240, 74, 480, 42, 49, 19);
+}
+function drawAchievements() {
+  const got = ACH.filter(a => save.ach[a.id]).length;
+  text(`${t('achTitle')}   ${got}/${ACH.length}`, W / 2, 34, 30, '#ffcc4d');
+  ACH.forEach((a, i) => {
+    const x = 16 + (i % 3) * 312, y = 62 + Math.floor(i / 3) * 58, ok = !!save.ach[a.id];
+    ctx.fillStyle = ok ? 'rgba(255,204,77,0.2)' : 'rgba(0,0,0,0.42)'; rr(x, y, 304, 52, 10); ctx.fill();
+    drawMedal(x + 22, y + 26, ok);
+    text(a.name[lang], x + 44, y + 17, 16, ok ? '#ffe082' : '#bdbdbd', 'left');
+    text(a.desc[lang], x + 44, y + 37, 12, ok ? '#ffffff' : '#9e9e9e', 'left');
+  });
+  drawMenu(menuItems(), W / 2 - 110, 478, 220, 42, 0, 18);
+}
+const BOARDS = ['adv', 'endless', 'rush', 'daily'];
+let scoreBoard = 0, scoreOnline = false;
+function drawScores() {
+  const b = BOARDS[scoreBoard];
+  text(`${t('scoresTitle')}  -  ${t('boards')[b]}`, W / 2, 36, 28, '#ffcc4d');
+  let rows = save.tops[b] || [], msg = null;
+  if (scoreOnline) {
+    if (!online()) { rows = []; msg = t('offline'); }
+    else {
+      const c = onlineCache[b];
+      if (!c) { onlineCache[b] = { st: 'loading', rows: [] }; fbTop(b).then(r => { onlineCache[b] = { st: 'ok', rows: r }; }).catch(() => { onlineCache[b] = { st: 'err', rows: [] }; }); }
+      rows = c ? c.rows : [];
+      if (!c || c.st === 'loading') msg = t('loading'); else if (c.st === 'err') msg = t('loadFail');
+    }
+  }
+  if (!msg && !rows.length) msg = t('noScores');
+  if (msg) text(msg, W / 2, 200, 20, '#fff');
+  rows.slice(0, 10).forEach((r, i) => {
+    const y = 78 + i * 31, c = ['#ffd54f', '#e0e0e0', '#ffab91'][i] || '#ffffff';
+    ctx.fillStyle = i % 2 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.45)'; rr(170, y - 14, 620, 28, 8); ctx.fill();
+    text(`${i + 1}.`, 195, y, 17, c, 'left');
+    text(String(r.n), 245, y, 17, c, 'left');
+    text(String(r.s), 590, y, 17, c, 'right');
+    const info = b === 'adv' ? (+r.w ? `${t('world')} ${r.w}` : '★ ' + t('win')) : b === 'daily' && r.w ? String(r.w).slice(6) + '/' + String(r.w).slice(4, 6) : '';
+    text(info, 625, y, 14, '#b3e5fc', 'left');
+  });
+  if (!scoreOnline) text(t('localNote'), W / 2, 394, 13, '#cfd8dc');
+  drawMenu(menuItems(), W / 2 - 170, 408, 340, 36, 43, 17);
+}
+function drawModes() {
+  text(t('mModes'), W / 2, 40, 32, '#ffcc4d');
+  const items = menuItems();
+  drawMenu(items, W / 2 - 200, 78, 400, 44, 52, 19);
+  const it = items[menuSel];
+  if (it && it.d) { ctx.fillStyle = 'rgba(0,0,0,0.5)'; rr(60, 450, 840, 44, 12); ctx.fill(); text(it.d(), W / 2, 472, 16, '#ffe082'); }
+}
+function charLabel(id) {
+  const c = CHARS[id];
+  const st = save.char === id ? t('selected') : save.chars.includes(id) ? t('select') : t('buy', c.price);
+  return `${c.name}   -   ${st}`;
+}
+function charBuy(id) {
+  const c = CHARS[id];
+  if (save.chars.includes(id)) { save.char = id; persist(); return; }
+  if (save.wallet < c.price) { toast(t('noGems'), '#ff8a80'); SFX.bump(); return; }
+  save.wallet -= c.price; save.chars.push(id); save.char = id; persist();
+  SFX.power(); toast(t('newFriend', c.name), '#a5d6a7'); unlock('friend');
+  track('char-' + id, 'Kirdaar khola: ' + c.name);
+}
+function drawChars() {
+  text(t('mChars'), W / 2, 42, 34, '#ffcc4d');
+  ctx.fillStyle = 'rgba(0,0,0,0.45)'; rr(W - 200, 20, 180, 42, 12); ctx.fill();
+  drawGemShape(W - 172, 41, 12); text(String(save.wallet), W - 150, 41, 22, '#b3e5fc', 'left');
+  const items = menuItems(), cur = (items[menuSel] && items[menuSel].ch) || save.char;
+  ctx.fillStyle = 'rgba(0,0,0,0.3)'; rr(50, 96, 340, 380, 20); ctx.fill();
+  ctx.save(); ctx.translate(220, 380); ctx.scale(4.2, 4.2);
+  drawHero(0, 0, 1, frame * 0.2, { kind: cur, running: true, scarf: scarfCol() }); ctx.restore();
+  text(CHARS[cur].name, 220, 420, 24, '#fff');
+  text(t('charDesc')[cur], 220, 450, 13, '#ffe082');
+  drawMenu(items, 420, 110, 490, 50, 62, 19);
+}
+function drawCloud() {
+  text(t('cloudTitle'), W / 2, 50, 32, '#ffcc4d');
+  ctx.fillStyle = 'rgba(0,0,0,0.45)'; rr(110, 90, 740, 120, 14); ctx.fill();
+  text(t('cloudInfo1'), W / 2, 122, 16, '#fff');
+  text(save.cloud ? t('cloudCode', save.cloud) : t('cloudNoCode'), W / 2, 160, 22, save.cloud ? '#ffd54f' : '#bdbdbd');
+  if (!online()) text(t('offline'), W / 2, 192, 14, '#ff8a80');
+  drawMenu(menuItems(), W / 2 - 200, 250, 400, 48, 60, 19);
+}
+const SUB_SCREENS = { settings: drawSettings, shop: drawShop, achievements: drawAchievements, scores: drawScores, help: drawHelp,
+                      modes: drawModes, chars: drawChars, cloud: drawCloud };
 
-// ---------- Top 10: naam likhne ka box ----------
-let nameOpen = false, nameWon = false;
+
+// ---------- Naam / code likhne ka box ----------
+let textOpen = false, textCb = null;
 const nameBox = document.getElementById('namebox'), nameInput = document.getElementById('nb-input');
-function openNameBox(won) {
-  if (!nameBox) return;
-  nameWon = won; nameOpen = true;
-  document.getElementById('nb-title').textContent = t('nameTitle');
+function openTextBox(title, value, maxLen, cb) {
+  if (!nameBox) { cb(null); return; }
+  textOpen = true; textCb = cb;
+  document.getElementById('nb-title').textContent = title;
   document.getElementById('nb-ok').textContent = t('nameOk');
   document.getElementById('nb-skip').textContent = t('nameSkip');
-  nameInput.value = save.lastName || '';
+  nameInput.maxLength = maxLen; nameInput.value = value || '';
   nameBox.classList.add('show');
   setTimeout(() => { try { nameInput.focus(); } catch (e) {} }, 60);
 }
-function closeNameBox(keep) {
-  if (!nameOpen) return;
-  nameOpen = false; nameBox.classList.remove('show'); nameInput.blur();
+function closeTextBox(keep) {
+  if (!textOpen) return;
+  textOpen = false; nameBox.classList.remove('show'); nameInput.blur();
   for (const k in keys) keys[k] = false;
-  if (!keep) return;
-  const n = (nameInput.value || '').replace(/\s+/g, ' ').trim().slice(0, 12) || HERO_NAME;
-  save.lastName = n;
-  save.top.push({ n, s: score, w: nameWon ? 0 : levelIndex + 1, d: save.set.diff });
-  save.top.sort((a, b) => b.s - a.s); save.top = save.top.slice(0, 10); persist();
-  toast(t('savedTop'), '#ffe082');
+  const cb = textCb; textCb = null;
+  if (cb) cb(keep ? (nameInput.value || '').replace(/\s+/g, ' ').trim() : null);
 }
 if (nameBox) {
-  document.getElementById('nb-ok').addEventListener('click', () => closeNameBox(true));
-  document.getElementById('nb-skip').addEventListener('click', () => closeNameBox(false));
+  document.getElementById('nb-ok').addEventListener('click', () => closeTextBox(true));
+  document.getElementById('nb-skip').addEventListener('click', () => closeTextBox(false));
   nameInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { e.preventDefault(); closeNameBox(true); }
-    else if (e.key === 'Escape') closeNameBox(false);
+    if (e.key === 'Enter') { e.preventDefault(); closeTextBox(true); }
+    else if (e.key === 'Escape') closeTextBox(false);
   });
 }
+// game khatam: local top 10 + online leaderboard (naam pehli baar hi poochte hain)
+function endRun(board, won) {
+  saveHighScore(); persist();
+  if (score <= 0) return;
+  const list = save.tops[board] || (save.tops[board] = []);
+  const info = board === 'adv' ? (won ? 0 : levelIndex + 1) : board === 'daily' ? todayKey() : 0;
+  const qualifies = list.length < 10 || score > list[list.length - 1].s;
+  if (!qualifies && !online()) return;
+  const sc = score;
+  const submit = name => {
+    if (qualifies) { list.push({ n: name, s: sc, w: info, d: save.set.diff, c: save.char }); list.sort((a, b) => b.s - a.s); list.splice(10); toast(t('savedTop'), '#ffe082'); }
+    save.lastName = name; persist();
+    if (online()) fbSubmit(board, name, sc, String(info)).then(ok => { if (ok) { toast(t('sentOnline'), '#a5d6a7'); onlineCache[board] = null; } }).catch(() => {});
+  };
+  if (save.lastName) submit(save.lastName);
+  else openTextBox(t('nameTitle'), '', 12, v => submit((v || '').slice(0, 12) || charName()));
+}
+
 
 // ---------- Score share (WhatsApp / phone ka share menu) ----------
 function shareScore() {
@@ -2911,20 +3561,27 @@ function doInstall() {
   else if (isIOS) toast(t('installIOS'), '#b3e5fc');
 }
 
-// ---------- Game controller (Xbox / PlayStation / Bluetooth gamepad) ----------
-const PAD_MAP = { 0: ['Space'], 1: ['ShiftLeft', 'PadBack'], 2: ['KeyF'], 3: ['KeyF'], 6: ['ShiftLeft'], 7: ['ShiftLeft'],
-                  8: ['PadBack'], 9: ['PadStart'], 12: ['PadUp'], 13: ['PadDown'], 14: ['ArrowLeft'], 15: ['ArrowRight'] };
+// ---------- Game controller (Xbox / PlayStation / Bluetooth gamepad) - 2 controller = 2 player ----------
+const PAD_KEYS = ['G0L', 'G0R', 'G0J', 'G0Run', 'G0F', 'G1L', 'G1R', 'G1J', 'G1Run', 'G1F'];
 let padHeld = new Set();
 function pollPad() {
   if (!navigator.getGamepads) return;
   let pads; try { pads = navigator.getGamepads(); } catch (e) { return; }
-  const now = new Set();
-  for (const gp of pads) {
+  const now = new Set(), duoPlay = gameMode === 'duo' && !isMenuState();
+  let slot = 0;
+  for (const gp of pads || []) {
     if (!gp) continue;
-    gp.buttons.forEach((b, i) => { if ((b.pressed || b.value > 0.5) && PAD_MAP[i]) PAD_MAP[i].forEach(k => now.add(k)); });
+    const b = i => gp.buttons[i] && (gp.buttons[i].pressed || gp.buttons[i].value > 0.5);
     const ax = gp.axes[0] || 0, ay = gp.axes[1] || 0;
-    if (ax < -0.45) now.add('ArrowLeft'); if (ax > 0.45) now.add('ArrowRight');
-    if (ay < -0.6) now.add('PadUp'); if (ay > 0.6) now.add('PadDown');
+    const L = b(14) || ax < -0.45, R = b(15) || ax > 0.45, J = b(0), Run = b(1) || b(6) || b(7), F = b(2) || b(3);
+    const tag = 'G' + Math.min(slot, 1);
+    if (L) now.add(tag + 'L'); if (R) now.add(tag + 'R'); if (J) now.add(tag + 'J'); if (Run) now.add(tag + 'Run'); if (F) now.add(tag + 'F');
+    if (!duoPlay) { if (L) now.add('ArrowLeft'); if (R) now.add('ArrowRight'); if (J) now.add('Space'); if (Run) now.add('ShiftLeft'); if (F) now.add('KeyF'); }
+    if (b(9)) now.add('PadStart');
+    if (b(8) || b(1)) now.add('PadBack');
+    if (b(12) || ay < -0.6) now.add('PadUp');
+    if (b(13) || ay > 0.6) now.add('PadDown');
+    slot++;
   }
   for (const k of now) if (!padHeld.has(k)) { keys[k] = true; pressed.add(k); }
   for (const k of padHeld) if (!now.has(k)) keys[k] = false;
@@ -3132,6 +3789,323 @@ function drawToasts() {
     y -= 60;
   }
 }
+
+// =====================================================
+//  MODES, KIRDAAR, LEVEL EDITOR, ONLINE LEADERBOARD, CLOUD SAVE
+// =====================================================
+Object.assign(STR.hi, {
+  mModes: 'MODES', mChars: 'KIRDAAR',
+  modeEndless: 'ENDLESS RUN', modeTrial: 'TIME TRIAL', modeRush: 'BOSS RUSH', modeDaily: 'AAJ KA CHALLENGE',
+  modeDuo: '2 PLAYER', modeEditor: 'LEVEL EDITOR',
+  dEndless: b => `Jitna door ja sako! Ek jaan, raasta kabhi khatam nahi hota.   Best: ${b} m`,
+  dTrial: 'Level jaldi se jaldi paar karo - apni pichhli parchhai (ghost) se race',
+  dRush: 'Frosto aur Magmo, ek ke baad ek - bina ruke!',
+  dDaily: (s, b) => `Har din naya level, sabke liye same.   Streak: ${s}   Aaj ka best: ${b}`,
+  dDuo: 'P1: W A D + Shift + F      P2: Arrows + Right Shift + Enter      (ya 2 controller)',
+  dEditor: 'Apna level banao, khelo aur doston ko link bhejo',
+  duoTouch: '2 Player ke liye keyboard ya 2 controller chahiye', rushLocked: 'Pehle kahani mein Frost Fort tak pahuncho!',
+  endlessOver: 'ENDLESS KHATAM', distance: 'Doori', newBest: 'NAYA RECORD!', time: 'Time', newRecord: 'NAYA RECORD!',
+  rushWin: 'BOSS RUSH PAAR!', dailyWin: 'CHALLENGE PAAR!', streak: 'Streak (lagatar din)', dailyRetry: 'Dobara koshish karo!',
+  trialTip: 'Jitna jaldi ho sake portal tak pahuncho!', myLevel: 'MERA LEVEL', dailyName: 'AAJ KA CHALLENGE',
+  charDesc: { fox: 'Sab kuch barabar - shuruaat ke liye best', bunny: 'Sabse ooncha koodta hai',
+              panda: 'Kaante wale dushmano pe bhi kood sakta hai', owl: 'Jump dabaye rakho to hamesha glide' },
+  select: 'CHUNO', selected: 'CHUNA HUA ✓', newFriend: n => `${n} ab tumhara dost hai!`,
+  sVib: 'Vibration', on: 'ON', off: 'OFF', sName: 'Tumhara naam', sCloud: 'CLOUD SAVE', noName: '(nahi)',
+  cloudTitle: 'CLOUD SAVE', cloudInfo1: 'Progress online save karo, doosre phone pe code daal ke wapas lao',
+  cloudUp: 'UPLOAD KARO (code banao)', cloudDown: 'DOWNLOAD KARO (code daalo)', cloudCode: c => `Tumhara code: ${c}`,
+  cloudNoCode: 'Abhi koi code nahi bana', cloudOk: 'Save upload ho gaya!', cloudLoaded: 'Save wapas aa gaya!',
+  cloudFail: 'Nahi hua - internet ya code check karo', cloudAsk: 'Cloud save ka code daalo:',
+  offline: 'Online abhi chalu nahi hua (Firebase setup baaki hai)', working: 'Ho raha hai...',
+  boards: { adv: 'KAHANI', endless: 'ENDLESS', rush: 'BOSS RUSH', daily: 'AAJ KA' },
+  srcLocal: 'IS PHONE KE SCORES', srcOnline: 'DUNIYA KE SCORES (ONLINE)', loading: 'Load ho raha hai...',
+  loadFail: 'Online scores nahi mile', sentOnline: 'Score online bhej diya!',
+  edEdit: 'EDIT KARO', edTest: 'KHELO ▶', edShare: 'SHARE', edClear: 'SAAF', edClearAsk: 'Sab mitana hai? Dobara SAAF dabao',
+  edNeed: '@ (start) aur F (portal) dono lagao!', edShared: 'Level ka link taiyaar!', edLoaded: 'Dost ka banaya level!',
+  edCopied: 'Link copy ho gaya - kahin bhi paste karo', shareLvlMsg: 'Maine TIKKU RUN mein apna level banaya hai - khel ke dekho!',
+  edTools: { '#': 'Zameen', B: 'Patthar', I: 'Barf', '=': 'Lakdi', '^': 'Kaante', J: 'Spring', C: 'Gem crate', P: 'Patta crate',
+             R: 'Aag crate', T: 'Taara crate', M: 'Magnet crate', W: 'Pankh crate', G: 'Gem', S: 'Slime', H: 'Hedgehog',
+             V: 'Chamgaadad', Y: 'Cactus', O: 'Aag chakkar', r: 'Girta patthar', h: 'Chalti platform ↔', v: 'Chalti platform ↕',
+             d: 'Girti platform', K: 'Checkpoint', '@': 'Start', F: 'Portal (end)', '.': 'Mitao' },
+});
+Object.assign(STR.en, {
+  mModes: 'MODES', mChars: 'CHARACTERS',
+  modeEndless: 'ENDLESS RUN', modeTrial: 'TIME TRIAL', modeRush: 'BOSS RUSH', modeDaily: 'DAILY CHALLENGE',
+  modeDuo: '2 PLAYER', modeEditor: 'LEVEL EDITOR',
+  dEndless: b => `Go as far as you can! One life, the road never ends.   Best: ${b} m`,
+  dTrial: 'Clear levels as fast as possible - race your own ghost',
+  dRush: 'Frosto and Magmo, back to back - no breaks!',
+  dDaily: (s, b) => `A new level every day, same for everyone.   Streak: ${s}   Today's best: ${b}`,
+  dDuo: 'P1: W A D + Shift + F      P2: Arrows + Right Shift + Enter      (or 2 controllers)',
+  dEditor: 'Build your own level, play it and send the link to friends',
+  duoTouch: '2 Player needs a keyboard or 2 controllers', rushLocked: 'Reach Frost Fort in the story first!',
+  endlessOver: 'RUN OVER', distance: 'Distance', newBest: 'NEW RECORD!', time: 'Time', newRecord: 'NEW RECORD!',
+  rushWin: 'BOSS RUSH CLEARED!', dailyWin: 'CHALLENGE CLEARED!', streak: 'Streak (days in a row)', dailyRetry: 'Try again!',
+  trialTip: 'Reach the portal as fast as you can!', myLevel: 'MY LEVEL', dailyName: 'DAILY CHALLENGE',
+  charDesc: { fox: 'Well balanced - best to start with', bunny: 'Jumps the highest',
+              panda: 'Can stomp even spiky enemies', owl: 'Hold jump to glide any time' },
+  select: 'SELECT', selected: 'SELECTED ✓', newFriend: n => `${n} joined your team!`,
+  sVib: 'Vibration', on: 'ON', off: 'OFF', sName: 'Your name', sCloud: 'CLOUD SAVE', noName: '(none)',
+  cloudTitle: 'CLOUD SAVE', cloudInfo1: 'Save your progress online and restore it on another phone with a code',
+  cloudUp: 'UPLOAD (make a code)', cloudDown: 'DOWNLOAD (enter a code)', cloudCode: c => `Your code: ${c}`,
+  cloudNoCode: 'No code yet', cloudOk: 'Save uploaded!', cloudLoaded: 'Save restored!',
+  cloudFail: 'Failed - check internet or the code', cloudAsk: 'Enter your cloud save code:',
+  offline: 'Online is not set up yet (Firebase setup pending)', working: 'Working...',
+  boards: { adv: 'STORY', endless: 'ENDLESS', rush: 'BOSS RUSH', daily: 'TODAY' },
+  srcLocal: 'SCORES ON THIS DEVICE', srcOnline: 'WORLD SCORES (ONLINE)', loading: 'Loading...',
+  loadFail: 'Could not load online scores', sentOnline: 'Score sent online!',
+  edEdit: 'EDIT', edTest: 'PLAY ▶', edShare: 'SHARE', edClear: 'CLEAR', edClearAsk: 'Erase everything? Press CLEAR again',
+  edNeed: 'Place both @ (start) and F (portal)!', edShared: 'Level link ready!', edLoaded: 'A level made by a friend!',
+  edCopied: 'Link copied - paste it anywhere', shareLvlMsg: 'I built my own level in TIKKU RUN - try it!',
+  edTools: { '#': 'Ground', B: 'Stone', I: 'Ice', '=': 'Wood', '^': 'Spikes', J: 'Spring', C: 'Gem crate', P: 'Leaf crate',
+             R: 'Fire crate', T: 'Star crate', M: 'Magnet crate', W: 'Wings crate', G: 'Gem', S: 'Slime', H: 'Hedgehog',
+             V: 'Bat', Y: 'Cactus', O: 'Fire bar', r: 'Falling rock', h: 'Moving platform ↔', v: 'Moving platform ↕',
+             d: 'Falling platform', K: 'Checkpoint', '@': 'Start', F: 'Portal (end)', '.': 'Erase' },
+});
+ACH.push(
+  { id: 'endless500', name: { hi: 'Lambi Daud', en: 'Marathon' }, desc: { hi: 'Endless mein 500 m', en: '500 m in Endless Run' } },
+  { id: 'daily', name: { hi: 'Roz ka Khiladi', en: 'Daily Player' }, desc: { hi: 'Aaj ka challenge paar karo', en: 'Clear a daily challenge' } },
+  { id: 'rush', name: { hi: 'Boss ka Baap', en: 'Boss Slayer' }, desc: { hi: 'Boss Rush paar karo', en: 'Clear Boss Rush' } },
+  { id: 'duo', name: { hi: 'Dosti Zindabad', en: 'Better Together' }, desc: { hi: '2 Player mein level paar karo', en: 'Clear a level in 2 Player' } },
+  { id: 'creator', name: { hi: 'Level Designer', en: 'Level Designer' }, desc: { hi: 'Apna banaya level paar karo', en: 'Clear a level you built' } },
+  { id: 'friend', name: { hi: 'Naya Dost', en: 'New Friend' }, desc: { hi: 'Naya kirdaar kholo', en: 'Unlock a new character' } },
+);
+
+// ---------- Online leaderboard + cloud save (Firebase Firestore) ----------
+// index.html mein FIREBASE_CONFIG bharna hoga - tab tak ye sab chupchaap band rehta hai
+const FB = window.FIREBASE_CONFIG || null;
+const online = () => !!(FB && FB.projectId && FB.apiKey && !/APNA|APNI/.test(FB.projectId + FB.apiKey));
+const fbBase = () => `https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents`;
+const boardColl = b => b === 'daily' ? 'daily_' + todayKey() : 'scores_' + b;
+let onlineCache = {};
+async function fbSubmit(board, name, sc, info) {
+  if (!online() || sc <= 0) return false;
+  const body = { fields: { name: { stringValue: String(name).slice(0, 12) }, score: { integerValue: String(Math.floor(sc)) },
+    char: { stringValue: save.char }, info: { stringValue: String(info || '').slice(0, 20) }, ts: { timestampValue: new Date().toISOString() } } };
+  const r = await fetch(`${fbBase()}/${boardColl(board)}?key=${FB.apiKey}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  return r.ok;
+}
+async function fbTop(board) {
+  const q = { structuredQuery: { from: [{ collectionId: boardColl(board) }], orderBy: [{ field: { fieldPath: 'score' }, direction: 'DESCENDING' }], limit: 10 } };
+  const r = await fetch(`${fbBase()}:runQuery?key=${FB.apiKey}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(q) });
+  if (!r.ok) throw new Error('fb ' + r.status);
+  const rows = await r.json();
+  return rows.filter(x => x.document).map(x => {
+    const f = x.document.fields;
+    return { n: f.name ? f.name.stringValue : '?', s: f.score ? +f.score.integerValue : 0, w: f.info ? f.info.stringValue : '' };
+  });
+}
+function newCode() {
+  const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', v = new Uint32Array(10);
+  (window.crypto || window.msCrypto).getRandomValues(v);
+  return Array.from(v, n => A[n % A.length]).join('');
+}
+function cloudUpload() {
+  if (!online()) { toast(t('offline'), '#ffcc80'); return; }
+  if (!save.cloud) { save.cloud = newCode(); persist(); }
+  toast(t('working'));
+  const data = JSON.stringify(save);
+  fetch(`${fbBase()}/saves/${save.cloud}?key=${FB.apiKey}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: { data: { stringValue: data }, ts: { timestampValue: new Date().toISOString() } } }) })
+    .then(r => { if (!r.ok) throw new Error(r.status); toast(t('cloudOk'), '#a5d6a7'); track('cloud-up', 'Cloud save upload'); })
+    .catch(() => toast(t('cloudFail'), '#ff8a80'));
+}
+function cloudDownload() {
+  if (!online()) { toast(t('offline'), '#ffcc80'); return; }
+  openTextBox(t('cloudAsk'), '', 12, code => {
+    if (!code) return;
+    code = code.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (code.length < 10) { toast(t('cloudFail'), '#ff8a80'); return; }
+    toast(t('working'));
+    fetch(`${fbBase()}/saves/${code}?key=${FB.apiKey}`).then(r => r.ok ? r.json() : Promise.reject(r.status)).then(doc => {
+      const s = JSON.parse(doc.fields.data.stringValue);
+      for (const k in save) if (k in s && s[k] !== null) {
+        const d = save[k];
+        if (d && typeof d === 'object' && !Array.isArray(d)) Object.assign(d, s[k]); else save[k] = s[k];
+      }
+      save.cloud = code; persist();
+      toast(t('cloudLoaded'), '#a5d6a7'); track('cloud-down', 'Cloud save download');
+    }).catch(() => toast(t('cloudFail'), '#ff8a80'));
+  });
+}
+
+// ---------- LEVEL EDITOR ----------
+const ED_TOOLS = ['#', 'B', 'I', '=', '^', 'J', 'C', 'P', 'R', 'T', 'M', 'W', 'G', 'S', 'H', 'V', 'Y', 'O', 'r', 'h', 'v', 'd', 'K', '@', 'F', '.'];
+const ED_THEMES = ['day', 'sunset', 'night', 'snow', 'cave', 'sky', 'desert', 'temple', 'city', 'lava'];
+const ED_W = 120, ED_S = 0.8;
+let ed = null;
+function edNew() {
+  const g = [];
+  for (let r = 0; r < ROWS; r++) g.push(new Array(ED_W).fill('.'));
+  for (let x = 0; x < ED_W; x++) { g[15][x] = '#'; g[16][x] = '#'; }
+  g[14][3] = '@'; g[13][114] = 'F';
+  return { grid: g, theme: 'day', tool: 0, camX: 0, paint: false, clearArm: 0 };
+}
+function edEncode(e) {
+  let s = ED_THEMES.indexOf(e.theme) + ';' + e.grid[0].length + ';';
+  for (const row of e.grid) {
+    let i = 0;
+    while (i < row.length) { let j = i; while (j < row.length && row[j] === row[i]) j++; s += row[i] + (j - i > 1 ? j - i : ''); i = j; }
+    s += '|';
+  }
+  return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function edDecode(code) {
+  try {
+    const s = atob(String(code).replace(/-/g, '+').replace(/_/g, '/'));
+    const parts = s.split(';'), th = ED_THEMES[+parts[0]] || 'day', w = Math.min(400, +parts[1] || ED_W);
+    const rows = parts.slice(2).join(';').split('|').slice(0, ROWS), ok = new Set(ED_TOOLS);
+    const g = [];
+    for (let r = 0; r < ROWS; r++) {
+      const row = [];
+      const re = /([^\d])(\d*)/g; let m;
+      while ((m = re.exec(rows[r] || '')) && row.length < w) { const c = ok.has(m[1]) ? m[1] : '.'; for (let k = 0; k < (+m[2] || 1) && row.length < w; k++) row.push(c); }
+      while (row.length < w) row.push('.');
+      g.push(row);
+    }
+    return { grid: g, theme: th, tool: 0, camX: 0, paint: false, clearArm: 0 };
+  } catch (e) { return null; }
+}
+function edSaveLocal() { if (ed) { save.custom = edEncode(ed); persist(); } }
+function openEditor() { if (!ed) ed = (save.custom && edDecode(save.custom)) || edNew(); ed.paint = false; goState('editor'); }
+function edDef(e = ed, mine = true) {
+  const code = edEncode(e), g = e.grid;
+  return { name: t('myLevel'), theme: e.theme, w: g[0].length, mine, code,
+    build(L) { for (let y = 0; y < ROWS; y++) for (let x = 0; x < g[y].length; x++) if (g[y][x] !== '.') L.set(x, y, g[y][x]); } };
+}
+function edTest() {
+  const has = c => ed.grid.some(r => r.includes(c));
+  if (!has('@') || !has('F')) { toast(t('edNeed'), '#ff8a80'); SFX.bump(); return; }
+  edSaveLocal(); track('level-test', 'Apna level khela'); startCustom(edDef());
+}
+function edShare() {
+  edSaveLocal();
+  const url = location.origin + location.pathname + '?lvl=' + edEncode(ed), msg = t('shareLvlMsg');
+  track('level-share', 'Level share kiya');
+  const copy = () => { try { navigator.clipboard.writeText(msg + ' ' + url).then(() => toast(t('edCopied'), '#a5d6a7')).catch(() => window.open('https://wa.me/?text=' + encodeURIComponent(msg + ' ' + url), '_blank')); } catch (e) { window.open('https://wa.me/?text=' + encodeURIComponent(msg + ' ' + url), '_blank'); } };
+  if (navigator.share) navigator.share({ title: GAME_TITLE, text: msg, url }).catch(e => { if (!e || e.name !== 'AbortError') copy(); });
+  else copy();
+}
+function edPaint(x, y) {
+  const tx = Math.floor((x / ED_S + ed.camX) / TILE), ty = Math.floor(y / ED_S / TILE);
+  if (ty < 0 || ty >= ROWS || tx < 0 || tx >= ed.grid[0].length) return;
+  const c = ED_TOOLS[ed.tool];
+  if (ed.grid[ty][tx] === c) return;
+  if (c === '@' || c === 'F') for (const row of ed.grid) for (let i = 0; i < row.length; i++) if (row[i] === c) row[i] = '.';
+  ed.grid[ty][tx] = c;
+  beep(c === '.' ? 300 : 520, c === '.' ? 200 : 620, 0.04, 'square', 0.025);
+}
+function edPointer(x, y) { if (y < ROWS * TILE * ED_S) { ed.paint = true; edPaint(x, y); } }
+const canvasXY = e => { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) * W / r.width, (e.clientY - r.top) * H / r.height]; };
+canvas.addEventListener('pointermove', e => { if (state === 'editor' && ed && ed.paint) { const [x, y] = canvasXY(e); edPaint(x, y); } });
+window.addEventListener('pointerup', () => { if (ed && ed.paint) { ed.paint = false; edSaveLocal(); } });
+canvas.addEventListener('wheel', e => { if (state === 'editor' && ed) { e.preventDefault(); edScroll((e.deltaY + e.deltaX) * 0.6); } }, { passive: false });
+function edScroll(d) { ed.camX = Math.max(0, Math.min(ed.camX + d, ed.grid[0].length * TILE - W / ED_S)); }
+function updateEditor() {
+  if (down('ArrowLeft', 'KeyA')) edScroll(-9);
+  if (down('ArrowRight', 'KeyD')) edScroll(9);
+  if (hit('KeyQ', 'BracketLeft')) ed.tool = cyc(ed.tool, -1, ED_TOOLS.length);
+  if (hit('KeyE', 'BracketRight')) ed.tool = cyc(ed.tool, 1, ED_TOOLS.length);
+  if (ed.clearArm > 0) ed.clearArm--;
+  if (hit('Enter')) edTest();
+  if (hit('Escape', 'PadBack')) { edSaveLocal(); goState('modes'); }
+}
+function drawEditor() {
+  const th = THEMES[ed.theme], saved = level, savedCam = cam.x;
+  viewScale = ED_S;
+  level = { w: ed.grid[0].length, grid: ed.grid, theme: th, themeName: ed.theme, secrets: [], water: null };
+  cam.x = ed.camX;
+  drawBackground(th, cam.x * ED_S);
+  ctx.save(); ctx.scale(ED_S, ED_S); ctx.translate(-Math.round(cam.x), 0);
+  drawTiles(th);
+  const x0 = Math.floor(cam.x / TILE), x1 = Math.min(level.w - 1, x0 + Math.ceil(W / ED_S / TILE) + 1);
+  for (let ty = 0; ty < ROWS; ty++) for (let tx = x0; tx <= x1; tx++) {
+    const c = ed.grid[ty][tx];
+    if ('GSHVYOrhvdK@F'.includes(c)) drawEdIcon(c, tx * TILE + 16, ty * TILE + 16, 26, true);
+  }
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let tx = x0; tx <= x1 + 1; tx++) { ctx.moveTo(tx * TILE, 0); ctx.lineTo(tx * TILE, ROWS * TILE); }
+  for (let ty = 0; ty <= ROWS; ty++) { ctx.moveTo(x0 * TILE, ty * TILE); ctx.lineTo((x1 + 1) * TILE, ty * TILE); }
+  ctx.stroke();
+  ctx.restore();
+  level = saved; cam.x = savedCam; viewScale = 1;
+  // neeche toolbar
+  const top = ROWS * TILE * ED_S;
+  ctx.fillStyle = 'rgba(12,14,30,0.94)'; ctx.fillRect(0, top, W, H - top);
+  ED_TOOLS.forEach((c, i) => {
+    const x = 8 + (i % 13) * 36, y = top + 6 + Math.floor(i / 13) * 38, sel = i === ed.tool;
+    ctx.fillStyle = sel ? '#ffcc4d' : 'rgba(255,255,255,0.12)'; rr(x, y, 34, 34, 7); ctx.fill();
+    drawEdIcon(c, x + 17, y + 17, 26, false);
+    ui.push({ x, y, w: 34, h: 34, act: () => { ed.tool = i; SFX.tick(); } });
+  });
+  text('▸ ' + (t('edTools')[ED_TOOLS[ed.tool]] || ''), 12, top + 95, 13, '#ffe082', 'left');
+  drawButton('◀', 482, top + 6, 44, 36, false, () => edScroll(-W * 0.6), 18);
+  drawButton('▶', 530, top + 6, 44, 36, false, () => edScroll(W * 0.6), 18);
+  drawButton(`${t('edTheme')}: ${ed.theme}`, 580, top + 6, 180, 36, false, () => { ed.theme = ED_THEMES[cyc(ED_THEMES.indexOf(ed.theme), 1, ED_THEMES.length)]; edSaveLocal(); }, 15);
+  drawButton(t('edTest'), 766, top + 6, 186, 36, true, edTest, 18);
+  drawButton(t('edShare'), 580, top + 48, 120, 34, false, edShare, 15);
+  drawButton(t('edClear'), 706, top + 48, 110, 34, false, () => {
+    if (ed.clearArm > 0) { ed = edNew(); edSaveLocal(); ed.clearArm = 0; } else { ed.clearArm = 180; toast(t('edClearAsk'), '#ffcc80'); }
+  }, 15);
+  drawButton(t('back'), 822, top + 48, 130, 34, false, () => { edSaveLocal(); goState('modes'); }, 15);
+  // mini map: poore level mein kahan ho
+  const mw = 470, mx = 482, my = top + 104;
+  if (my + 4 < H) {
+    ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.fillRect(mx, my - 6, mw, 4);
+    const vw = (W / ED_S) / (ed.grid[0].length * TILE) * mw;
+    ctx.fillStyle = '#ffcc4d'; ctx.fillRect(mx + ed.camX / (ed.grid[0].length * TILE) * mw, my - 7, vw, 6);
+  }
+}
+// editor ke chhote icons (palette aur level dono mein)
+function drawEdIcon(c, cx, cy, s, inLevel) {
+  const h = s / 2;
+  ctx.save();
+  if (!inLevel && '#BI=^JCPRTMWX'.includes(c)) { // tile ka chhota roop
+    if (c === '#') { ctx.fillStyle = '#a0643a'; ctx.fillRect(cx - h, cy - h, s, s); ctx.fillStyle = '#4caf50'; ctx.fillRect(cx - h, cy - h, s, 7); }
+    else if (c === 'B') { ctx.translate(cx - h, cy - h); ctx.scale(s / TILE, s / TILE); drawStone(0, 0, 4); }
+    else if (c === 'I') { ctx.fillStyle = '#b9e6ff'; ctx.fillRect(cx - h, cy - h, s, s); ctx.fillStyle = '#fff'; ctx.fillRect(cx - h, cy - h, s, 4); }
+    else if (c === '=') { ctx.fillStyle = '#a0703c'; ctx.fillRect(cx - h, cy - h, s, 10); ctx.fillStyle = '#d9a35e'; ctx.fillRect(cx - h, cy - h, s, 3); }
+    else if (c === '^') { ctx.fillStyle = '#cfd8dc'; for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.moveTo(cx - h + i * s / 3, cy + h); ctx.lineTo(cx - h + i * s / 3 + s / 6, cy - 2); ctx.lineTo(cx - h + (i + 1) * s / 3, cy + h); ctx.fill(); } }
+    else if (c === 'J') { ctx.fillStyle = '#546e7a'; ctx.fillRect(cx - h, cy, s, h); ctx.fillStyle = '#e53935'; ctx.fillRect(cx - h, cy - h + 4, s, 6); }
+    else {
+      ctx.fillStyle = '#c98b4a'; ctx.fillRect(cx - h, cy - h, s, s); ctx.strokeStyle = '#8d5a2b'; ctx.lineWidth = 3; ctx.strokeRect(cx - h + 1.5, cy - h + 1.5, s - 3, s - 3);
+      if (c === 'C') drawGemShape(cx, cy, 7); else if (c === 'P') drawLeafShape(cx, cy, 7, 0); else if (c === 'R') drawFlame(cx, cy + 2, 6);
+      else if (c === 'T') drawStar(cx, cy, 7, '#ffeb3b'); else if (c === 'M') drawMagnet(cx, cy + 2, 5); else if (c === 'W') drawWing(cx - 6, cy + 2, 8, -0.5);
+    }
+  } else if (c === 'G') drawGemShape(cx, cy, 8);
+  else if (c === 'S' || c === 'H') drawHelpIcon(c === 'S' ? 'slime' : 'hedge', cx, cy + 2);
+  else if (c === 'V') { ctx.fillStyle = '#4527a0'; ctx.beginPath(); ctx.moveTo(cx - 13, cy - 4); ctx.lineTo(cx, cy); ctx.lineTo(cx + 13, cy - 4); ctx.lineTo(cx, cy + 6); ctx.fill(); ctx.fillStyle = '#5e35b1'; ctx.beginPath(); ctx.arc(cx, cy, 6, 0, Math.PI * 2); ctx.fill(); }
+  else if (c === 'Y') { ctx.fillStyle = '#7cb342'; rr(cx - 4, cy - 11, 8, 22, 4); ctx.fill(); rr(cx - 10, cy - 5, 5, 9, 2); ctx.fill(); rr(cx + 5, cy - 8, 5, 9, 2); ctx.fill(); }
+  else if (c === 'O') { ctx.fillStyle = '#8f96a3'; ctx.fillRect(cx - 7, cy - 7, 14, 14); drawFlame(cx + 9, cy - 5, 5); drawFlame(cx - 9, cy + 6, 5); }
+  else if (c === 'r') { ctx.fillStyle = '#6d5f74'; ctx.beginPath(); ctx.moveTo(cx - 9, cy - 12); ctx.lineTo(cx + 9, cy - 12); ctx.lineTo(cx, cy + 12); ctx.fill(); }
+  else if (c === 'h' || c === 'v' || c === 'd') {
+    const w = inLevel ? (c === 'd' ? 64 : 96) : s, x = inLevel ? cx - 16 : cx - h;
+    ctx.fillStyle = c === 'd' ? '#9c7b5b' : '#5c6bc0'; rr(x, cy - 6, w, 12, 4); ctx.fill();
+    ctx.fillStyle = '#fff'; text(c === 'h' ? '↔' : c === 'v' ? '↕' : '↓', x + w / 2, cy, 12, '#fff');
+  }
+  else if (c === 'K') { ctx.fillStyle = '#d7ccc8'; ctx.fillRect(cx - 6, cy - 12, 3, 24); ctx.fillStyle = '#2e9d5b'; ctx.fillRect(cx - 3, cy - 12, 12, 8); }
+  else if (c === '@') { ctx.translate(cx, cy + h); ctx.scale(0.75, 0.75); drawHero(0, 0, 1, 0, { kind: save.char, scarf: scarfCol() }); }
+  else if (c === 'F') {
+    const ph = inLevel ? 64 : s, py = inLevel ? cy - 16 + 32 : cy;
+    ctx.strokeStyle = '#e040fb'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(cx, py, inLevel ? 12 : 7, ph / 2 - 2, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = '#40c4ff'; ctx.beginPath(); ctx.ellipse(cx, py, inLevel ? 7 : 4, ph / 2 - 8, 0, 0, Math.PI * 2); ctx.stroke();
+  }
+  else if (c === '.') { ctx.strokeStyle = '#ff5252'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cx - 8, cy - 8); ctx.lineTo(cx + 8, cy + 8); ctx.moveTo(cx + 8, cy - 8); ctx.lineTo(cx - 8, cy + 8); ctx.stroke(); }
+  ctx.restore();
+}
+Object.assign(STR.hi, { edTheme: 'Theme' }); Object.assign(STR.en, { edTheme: 'Theme' });
+
+// dost ka bheja hua level (?lvl=...) seedha khulta hai
+setTimeout(() => {
+  try {
+    const code = new URLSearchParams(location.search).get('lvl');
+    if (!code) return;
+    const e = edDecode(code);
+    if (!e || !e.grid.some(r => r.includes('@')) || !e.grid.some(r => r.includes('F'))) return;
+    toast(t('edLoaded'), '#a5d6a7'); track('level-open', 'Dost ka level khola');
+    startCustom(edDef(e, false));
+  } catch (err) {}
+}, 50);
 
 // ---------- Main loop (fixed 60 FPS logic) ----------
 let last = performance.now(), acc = 0;
