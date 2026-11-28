@@ -6,7 +6,12 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Tikku Run" />
 <meta name="theme-color" content="#10131f" />
+<meta name="description" content="Tikku Run - ek chhote fox ka bada safar. Free browser platformer game." />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" type="image/png" href="icon-192.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <title>Tikku Run</title>
 <style>
   html, body {
@@ -32,7 +37,7 @@
     touch-action: none;
   }
 
-  /* ---- touch controls: sirf phone/tablet pe dikhte hain ---- */
+  /* ---- touch controls: sirf phone/tablet pe, aur sirf khelte waqt ---- */
   #touch, #topbtns, #rotate { display: none; }
   body.touch #touch {
     display: flex; justify-content: space-between; align-items: flex-end;
@@ -40,6 +45,7 @@
     padding: 0 max(14px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
     pointer-events: none;
   }
+  body.touch.inmenu #touch { display: none; }
   #touch .grp { display: flex; gap: 12px; align-items: flex-end; pointer-events: auto; }
   #touch button {
     --s: clamp(56px, 15vmin, 96px);
@@ -76,6 +82,31 @@
     }
     body.touch #topbtns { top: auto; bottom: calc(clamp(68px, 19vmin, 118px) + 40px); }
   }
+
+  /* ---- Top 10 mein aane par naam likhne ka box ---- */
+  #namebox {
+    display: none; position: fixed; inset: 0; z-index: 10;
+    background: rgba(5,8,20,.6); align-items: center; justify-content: center;
+  }
+  #namebox.show { display: flex; }
+  #namebox .card {
+    background: #1d2340; border: 2px solid #ffcc4d; border-radius: 16px;
+    padding: 18px 20px; width: min(420px, 88vw); text-align: center; color: #fff;
+    box-shadow: 0 10px 40px rgba(0,0,0,.6);
+  }
+  #nb-title { font-weight: 700; font-size: 18px; margin-bottom: 12px; color: #ffe082; }
+  #nb-input {
+    width: 100%; box-sizing: border-box; font-size: 20px; padding: 10px 12px;
+    border-radius: 10px; border: 2px solid #8090c0; background: #0f1430; color: #fff;
+    -webkit-user-select: text; user-select: text; touch-action: manipulation;
+  }
+  #namebox .row { display: flex; gap: 10px; margin-top: 14px; }
+  #namebox .row button {
+    flex: 1; font-size: 17px; font-weight: 700; padding: 10px; border-radius: 10px; border: 0;
+    touch-action: manipulation;
+  }
+  #nb-ok { background: #ffcc4d; color: #3a2000; }
+  #nb-skip { background: #3a4270; color: #fff; }
 </style>
 </head>
 <body>
@@ -97,10 +128,15 @@
     <button data-key="Space" class="big" aria-label="Jump">&#9650;</button>
   </div>
 </div>
+<div id="namebox">
+  <div class="card">
+    <div id="nb-title"></div>
+    <input id="nb-input" maxlength="12" autocomplete="off" />
+    <div class="row"><button id="nb-skip"></button><button id="nb-ok"></button></div>
+  </div>
+</div>
 <script>
   // ---- Visitor counter (GoatCounter) ----
-  // 'APNA-CODE' ki jagah apna GoatCounter code likho (jaise 'harshraja').
-  // Jab tak code nahi likha, counter band rahega aur game normal chalega.
   var GC_CODE = 'harshbamniya1432';
   if (GC_CODE !== 'APNA-CODE') {
     var gc = document.createElement('script');
@@ -110,6 +146,10 @@
     // profile page ke "Play here" (iframe) se khelne walon ko bhi gino
     gc.setAttribute('data-goatcounter-settings', '{"allow_frame": true}');
     document.head.appendChild(gc);
+  }
+  // ---- App (PWA): phone pe install + bina internet ke bhi chale ----
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
   }
 </script>
 <script src="game.js"></script>
